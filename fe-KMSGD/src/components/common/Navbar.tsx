@@ -31,7 +31,7 @@ export const Navbar: React.FC = () => {
                     <div className="w-6 h-6 rounded-md bg-transparent" />
                 </div>
                 <span className="text-[#FACC15] font-bold text-lg md:text-xl tracking-wider uppercase">
-                    KMSGD JABODETABEK
+                    <span className="text-white">KMSGD</span> JABODETABEK
                 </span>
             </Link>
 

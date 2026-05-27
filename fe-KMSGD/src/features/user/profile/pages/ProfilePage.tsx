@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { profileDemisioner, profileDivisions } from "../services/profileService";
+import { profileDemisioner } from "../services/profileService";
+import StrukturSection from "../components/ProfilePengurusAktif";
 
 const ProfilePage = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -12,7 +13,7 @@ const ProfilePage = () => {
         {/* HERO */}
         <section className="py-20 px-6 max-w-7xl mx-auto border-b border-[#2a2a2a]">
           <h1 className="text-5xl md:text-6xl font-bold font-['Montserrat'] text-[#ffd700] mb-4 leading-tight">
-            Profil Organisasi
+            <span className="text-white" >Profil</span> Organisasi
           </h1>
           <p className="text-[#d0c6ab] text-lg leading-relaxed max-w-3xl">
             Mengenal lebih dekat identitas, sejarah, dan arah gerak Keluarga
@@ -81,53 +82,12 @@ const ProfilePage = () => {
         </section>
 
         {/* STRUKTUR KEPENGURUSAN */}
-        <section className="py-20 px-6 max-w-7xl mx-auto border-t border-[#2a2a2a]">
-          <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#ffd700] mb-12 text-center">
-            Struktur Kepengurusan Aktif
-          </h2>
-
-          <div className="flex flex-col items-center">
-            {/* Ketua */}
-            <div className="bg-[#20201f] border border-[#ffd700] p-6 rounded-lg text-center w-64 mb-0 z-10 relative">
-              <div className="w-16 h-16 bg-[#2a2a2a] rounded-full mx-auto mb-4 flex items-center justify-center border border-[#ffd700]">
-                <span className="text-[#ffd700] text-2xl">👤</span>
-              </div>
-              <h4 className="text-sm font-bold tracking-widest text-[#ffd700] uppercase">
-                Ketua Umum
-              </h4>
-              <p className="text-[#e5e2e1] mt-1 text-base">Ahmad Faisal</p>
-            </div>
-
-            {/* Connector */}
-            <div className="w-px h-8 bg-[#ffd700]" />
-            <div className="w-3/4 max-w-lg h-px bg-[#ffd700]" />
-
-            {/* Divisi */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl mt-0 relative">
-              {/* Top connector lines */}
-              <div className="absolute -top-4 left-[16.66%] w-px h-4 bg-[#ffd700] hidden md:block" />
-              <div className="absolute -top-4 left-[50%] w-px h-4 bg-[#ffd700] hidden md:block" />
-              <div className="absolute -top-4 left-[83.33%] w-px h-4 bg-[#ffd700] hidden md:block" />
-
-              {profileDivisions.map(({ jabatan, nama }) => (
-                <div
-                  key={jabatan}
-                  className="bg-[#20201f] border border-[#353535] p-6 rounded-lg text-center"
-                >
-                  <h4 className="text-sm font-bold tracking-widest text-[#ffd700] uppercase mb-2">
-                    {jabatan}
-                  </h4>
-                  <p className="text-[#e5e2e1] text-base">{nama}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <StrukturSection />
 
         {/* DEMISIONER */}
         <section className="py-20 px-6 max-w-7xl mx-auto border-t border-[#2a2a2a]">
           <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#ffd700] mb-8">
-            Demisioner Pengurus
+            <span className="text-white">Demisioner</span> Pengurus
           </h2>
           <div className="max-w-3xl">
             {profileDemisioner.map(({ periode, anggota }, i) => (
