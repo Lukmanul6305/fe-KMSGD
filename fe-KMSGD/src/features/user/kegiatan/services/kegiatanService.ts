@@ -1,47 +1,105 @@
-export const kegiatanFilters = ["Semua", "Seminar", "Lomba", "Sosial"];
+import type { Kegiatan, KegiatanKategori } from "../types/kegiatan.types";
 
-export const featuredKegiatan = {
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAVPgSbojLQhOFaueDBbBLl6EWHyvaC2WpSRlMYrwuPlcKj-VAlPgaMUykwBzulT5JsHh9r6khdZUpX1KBfZX_yHP_Y3tMX3QViIKcZtvTc2LojoG1z7Db5ZrPHgSnB-bSCQGlhpf6obYhj7MkN0GwOleG6Ng91stnsE4Qe7lZWYu_8xFd_z5EZKeXGFANVSinSHfsMzYKgIkrOUsT-HjixBcZFJ-IQ9LKMGmhQSfdqijTDrPOaQk5xqTdwlNrtwmOcG8D6X8huMKvN",
-    imageAlt: "Featured Event",
-    date: "24 Nov 2024",
-    category: "Seminar",
-    title: "Simposium Nasional Mahasiswa Jabodetabek 2024",
-    description: "Diskusi mendalam mengenai peran mahasiswa daerah dalam pembangunan ibukota dan sekitarnya, menghadirkan tokoh-tokoh alumni sukses.",
-    location: "Gedung Utama UIN Jkt",
-};
+export const kegiatanFilters: KegiatanKategori[] = ["Semua", "Sosial", "Pendidikan", "Olahraga", "Seni", "Keagamaan", "Lainnya"];
 
-export const secondaryKegiatan = {
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHsXz3cWjt6bNwNPJSeYMwKDPg-8i8Kya7MrLZsA6PHur9cae18JZsNhD4ITQC1jf8R43NK_UnHU5rBjohlEJFZ5xWIcYt4wVO3MMRUYfoyl6WZIxksYSnKmNbZvBqpkEpcp7-m-DFc7zJ6eHyLV7gTj5i07b9ZnHESGIuORe1OJ8GSx77yULMbkQLm6nFWv6JGiueY9AyIn3csjj8B_H7t5x8N3fzHPOq3kR5RcRbxfwBaxXZ0K0E7R-j3p3tifiKb8t85zghdFrz",
-    imageAlt: "Event",
-    category: "Lomba",
-    date: "10 Des 2024",
-    title: "Kompetisi Debat Mahasiswa Nasional",
-    description: "Ajang adu gagasan antar mahasiswa se-Jabodetabek dengan tema pembangunan berkelanjutan.",
-};
-
-export const kegiatanCards = [
-    {
-        icon: "ðŸ¤",
-        date: "15 Des 2024",
-        kategori: "SOSIAL",
-        title: "Bakti Sosial KMSGD Peduli",
-        desc: "Kegiatan penggalangan dana dan penyaluran bantuan untuk panti asuhan di area pinggiran Jakarta.",
-        status: "Pendaftaran Dibuka",
-    },
-    {
-        icon: "âš½",
-        date: "20 Jan 2025",
-        kategori: "LOMBA",
-        title: "Liga Futsal KMSGD Cup",
-        desc: "Turnamen futsal tahunan untuk mempererat solidaritas antar anggota KMSGD se-Jabodetabek.",
-        status: "Segera Hadir",
-    },
-    {
-        icon: "ðŸŽ“",
-        date: "05 Feb 2025",
-        kategori: "SEMINAR",
-        title: "Workshop Kepemimpinan Masa Depan",
-        desc: "Pelatihan intensif manajemen organisasi dan public speaking untuk kader-kader baru.",
-        status: "Segera Hadir",
-    },
+export const kegiatanList: Kegiatan[] = [
+  {
+    id: "1",
+    title: "Halal Bihalal KMSGD 2025",
+    description: "Acara silaturahmi tahunan seluruh anggota KMSGD Jabodetabek dalam rangka Hari Raya Idul Fitri 1446 H. Dihadiri oleh alumni, pengurus, dan anggota aktif.",
+    event_date: "20 Apr 2025",
+    event_date_raw: "2025-04-20",
+    location: "Gedung Serbaguna Asrama",
+    cover_image: "https://placehold.co/800x500/1a1a1a/ffd700?text=Halal+Bihalal",
+    imageAlt: "Foto Halal Bihalal KMSGD 2025",
+    category: "Keagamaan",
+    status: "selesai",
+    jumlah_peserta: 120,
+    penanggungjawab: "Ahmad Fauzi",
+  },
+  {
+    id: "2",
+    title: "Lomba Karya Tulis Ilmiah Antar Asrama",
+    description: "Kompetisi LKTI tingkat asrama se-Jabodetabek. Peserta mempresentasikan karya di hadapan dewan juri dari akademisi dan praktisi.",
+    event_date: "15 Jun 2025",
+    event_date_raw: "2025-06-15",
+    location: "Aula Universitas Islam Negeri Jakarta",
+    cover_image: "https://placehold.co/400x300/1a1a1a/ffd700?text=LKTI+2025",
+    imageAlt: "Foto LKTI 2025",
+    category: "Pendidikan",
+    status: "akan_datang",
+    jumlah_peserta: 60,
+    penanggungjawab: "Siti Rahayu",
+  },
+  {
+    id: "3",
+    title: "Bakti Sosial Ramadhan",
+    description: "Kegiatan berbagi sembako dan santunan anak yatim di sekitar lingkungan asrama selama bulan Ramadhan.",
+    event_date: "10 Mar 2025",
+    event_date_raw: "2025-03-10",
+    location: "Kelurahan Cipayung, Jakarta Timur",
+    cover_image: "https://placehold.co/400x300/1a1a1a/ffd700?text=Baksos",
+    imageAlt: "Foto Bakti Sosial",
+    category: "Sosial",
+    status: "selesai",
+    jumlah_peserta: 45,
+    penanggungjawab: "Rizky Maulana",
+  },
+  {
+    id: "4",
+    title: "Turnamen Futsal Internal KMSGD",
+    description: "Turnamen futsal antar divisi untuk mempererat kebersamaan anggota dan menjaga kebugaran fisik.",
+    event_date: "28 Jun 2025",
+    event_date_raw: "2025-06-28",
+    location: "Lapangan Futsal Asrama",
+    cover_image: "https://placehold.co/400x300/1a1a1a/ffd700?text=Futsal",
+    imageAlt: "Foto Turnamen Futsal",
+    category: "Olahraga",
+    status: "akan_datang",
+    jumlah_peserta: 80,
+    penanggungjawab: "Deden Suryana",
+  },
+  {
+    id: "5",
+    title: "Malam Kesenian & Budaya Sunda",
+    description: "Penampilan seni budaya Sunda oleh anggota KMSGD: tari jaipongan, calung, dan musikalisasi puisi Sunda.",
+    event_date: "05 Mei 2025",
+    event_date_raw: "2025-05-05",
+    location: "Taman Budaya Asrama",
+    cover_image: "https://placehold.co/400x300/1a1a1a/ffd700?text=Kesenian",
+    imageAlt: "Foto Malam Kesenian",
+    category: "Seni",
+    status: "berlangsung",
+    jumlah_peserta: 95,
+    penanggungjawab: "Neng Fitriani",
+  },
 ];
+
+const statusPriority: Record<string, number> = {
+  berlangsung: 0,
+  akan_datang: 1,
+  selesai: 2,
+};
+
+const sortedKegiatanList = [...kegiatanList].sort((a, b) => {
+  if (a.status !== b.status) {
+    return statusPriority[a.status] - statusPriority[b.status];
+  }
+
+  const dateA = new Date(a.event_date_raw).getTime();
+  const dateB = new Date(b.event_date_raw).getTime();
+
+  if (a.status === "akan_datang") {
+    return dateA - dateB;
+  }
+
+  if (a.status === "selesai") {
+    return dateB - dateA;
+  }
+
+  return 0;
+});
+
+export const featuredKegiatan = sortedKegiatanList[0];
+export const secondaryKegiatan = sortedKegiatanList[1];
+export const smallKegiatanList = sortedKegiatanList.slice(2);

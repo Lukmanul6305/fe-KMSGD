@@ -1,11 +1,8 @@
-import { useState } from "react";
-import { profileDemisioner } from "../services/profileService";
-import StrukturSection from "../components/ProfilePengurusAktif";
+import ProfilePengurusAktif from "../components/ProfilePengurusAktif";
+import ProfileDepartemen from "../components/ProfileDepartemen";
+import ProfileDemisioner from "../components/ProfileDemisoner";
 
 const ProfilePage = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const toggle = (i: number) => setOpenIndex(openIndex === i ? null : i);
 
   return (
     <div className="bg-[#131313] text-[#e5e2e1] font-['Inter'] min-h-screen">
@@ -61,7 +58,7 @@ const ProfilePage = () => {
         <section className="py-20 px-6 max-w-7xl mx-auto border-t border-[#2a2a2a]">
           {/* Judul Seksi */}
           <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#ffd700] mb-10 text-center">
-            Jejak Langkah
+            <span className="text-white">Jejak</span> Langkah
           </h2>
 
           {/* Blok Deskripsi Narasi */}
@@ -82,54 +79,18 @@ const ProfilePage = () => {
         </section>
 
         {/* STRUKTUR KEPENGURUSAN */}
-        <StrukturSection />
+        <ProfilePengurusAktif />
+
+        {/* DEPARTEMENTS */}
+        <ProfileDepartemen />
 
         {/* DEMISIONER */}
-        <section className="py-20 px-6 max-w-7xl mx-auto border-t border-[#2a2a2a]">
-          <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#ffd700] mb-8">
-            <span className="text-white">Demisioner</span> Pengurus
-          </h2>
-          <div className="max-w-3xl">
-            {profileDemisioner.map(({ periode, anggota }, i) => (
-              <div
-                key={i}
-                className="bg-[#20201f] border border-[#353535] mb-4 cursor-pointer hover:border-[#ffd700] transition-colors duration-300"
-              >
-                <button
-                  onClick={() => toggle(i)}
-                  className="w-full flex justify-between items-center p-6 text-left"
-                >
-                  <span className="text-xl font-bold font-['Montserrat'] text-[#ffd700]">
-                    {periode}
-                  </span>
-                  <span
-                    className={`text-[#ffd700] text-xl transition-transform duration-300 ${openIndex === i ? "rotate-180" : ""
-                      }`}
-                  >
-                    ▾
-                  </span>
-                </button>
-
-                {openIndex === i && (
-                  <div className="px-6 pb-6 border-t border-[#353535] pt-4">
-                    <ul className="space-y-2 mt-2">
-                      {anggota.map(({ jabatan, nama }) => (
-                        <li key={jabatan} className="text-[#d0c6ab] text-sm">
-                          <strong className="text-[#e5e2e1]">{jabatan}:</strong> {nama}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
+        <ProfileDemisioner />
 
         {/* HYMNE & MARS */}
         <section className="py-20 px-6 max-w-7xl mx-auto border-t border-[#2a2a2a]">
           <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#ffd700] mb-8">
-            Hymne &amp; Mars KMSGD
+            <span className="text-white">Hymne</span> &amp; Mars KMSGD
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
             {/* Hymne */}

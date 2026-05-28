@@ -108,7 +108,7 @@ const HomePage = () => {
                     transition: "opacity 0.5s ease, transform 0.5s ease",
                 }}
             >
-{/* ======================================================== */}
+                {/* ======================================================== */}
                 {/* HERO — animasi masuk setelah intro selesai                */}
                 {/* ======================================================== */}
                 <section className="relative min-h-screen flex items-center px-6 pt-20">
@@ -243,8 +243,8 @@ const HomePage = () => {
                 <section className="py-24 px-6 max-w-300 mx-auto">
                     <Reveal className="flex justify-between items-end mb-12 border-b border-[#353535] pb-4">
                         <div>
-                            <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#e5e2e1] mb-2">
-                                Fokus Kegiatan
+                            <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#ffd700] mb-2">
+                                <span className="text-white">Fokus</span> Kegiatan
                             </h2>
                             <p className="text-[#d0c6ab] text-base">Pilar utama pergerakan organisasi kami.</p>
                         </div>
@@ -283,8 +283,8 @@ const HomePage = () => {
                             <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#20201f] border border-[#353535] text-[#d0c6ab] text-xs font-semibold tracking-widest mb-6">
                                 ✦ Legacy & Honor
                             </div>
-                            <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#e5e2e1] mb-4">
-                                Dewan Pendiri KMSGD
+                            <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#FFD700] mb-4">
+                                <span className="text-white">Dewan</span> Pendiri KMSGD
                             </h2>
                             <p className="text-[#d0c6ab] text-base max-w-2xl mx-auto">
                                 Mengenang jasa para pendiri yang telah meletakkan dasar perjuangan
@@ -325,8 +325,8 @@ const HomePage = () => {
                         <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#20201f] border border-[#353535] text-[#d0c6ab] text-xs font-semibold tracking-widest mb-6">
                             ✦ Testimoni
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#e5e2e1] mb-4">
-                            Apa Kata Mereka?
+                        <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#FFD700] mb-4">
+                            <span className="text-white">Apa</span> Kata Mereka?
                         </h2>
                         <p className="text-[#d0c6ab] text-base">
                             Cerita dari anggota yang telah merasakan manfaat bergabung bersama kami.
@@ -356,16 +356,16 @@ const HomePage = () => {
                 {/* ======================================================== */}
                 {/* GALERI                                                    */}
                 {/* ======================================================== */}
-                <section className="py-24 px-6 bg-[#0e0e0e] border-y border-[#353535] overflow-hidden">
+                <section className="py-24 px-6 bg-[#0e0e0e] border-y border-[#353535] overflow-hidden gap-5">
                     <div className="max-w-350 mx-auto">
                         <Reveal className="flex justify-between items-end mb-12 border-b border-[#353535] pb-4">
-                            <div>
-                                <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#e5e2e1] mb-2">
-                                    Galeri Kegiatan
+                            <div className="ml-20">
+                                <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#ffd700] mb-2">
+                                    <span className="text-white">Galeri</span> Kegiatan
                                 </h2>
                                 <p className="text-[#d0c6ab] text-base">Momen kebersamaan dan aksi nyata KMSGD.</p>
                             </div>
-                            <button className="text-[#ffd700] text-sm font-semibold hidden md:flex items-center gap-1 hover:underline cursor-pointer">
+                            <button className="text-[#ffd700] text-sm font-semibold hidden md:flex items-center gap-1 hover:underline cursor-pointer mr-20">
                                 Lihat Semua Foto ↗
                             </button>
                         </Reveal>
