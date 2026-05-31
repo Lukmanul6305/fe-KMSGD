@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ChevronDown, User } from "lucide-react";
-import { profileDemisioner } from "../services/profileService";
-import MemberCard from "./MemberCard";
+import { profileDemisioner } from "../../services/tentangService";
+import MemberCard from "../../components/MemberCard";
 
 export default function ProfileDemisioner() {
     const [openIndex, setOpenIndex] = useState<number | null>(null);

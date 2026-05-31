@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp, User } from "lucide-react";
-import { profileDivisions, ketua } from "../services/profileService";
+import { profileDivisions, ketua } from "../../services/tentangService";
 
 export default function ProfilePengurusAktif() {
     const [showAll, setShowAll] = useState(false);

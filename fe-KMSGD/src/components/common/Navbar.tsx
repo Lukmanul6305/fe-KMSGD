@@ -18,7 +18,7 @@ export const Navbar: React.FC = () => {
     const [lightMode, setLightMode] = useState<boolean>(false);
 
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
-
+    
     function handleButton() {
         setLightMode(prev => !prev);
     }
@@ -29,7 +29,9 @@ export const Navbar: React.FC = () => {
             label: 'Tentang',
             subItems: [
                 { label: 'Profil', path: '/profil' },
-                { label: 'Kepengurusan', path: '/kepengurusan' }
+                { label: 'Struktur Organisasi', path: '/kepengurusan/struktur' },
+                { label: 'Departemen', path: '/kepengurusan/departemen' },
+                { label: 'Demisoner', path: '/kepengurusan/demisoner' }
             ]
         },
         { label: 'Kegiatan', path: '/kegiatan' },
@@ -61,7 +63,7 @@ export const Navbar: React.FC = () => {
                             {item.path ? (
                                 <Link
                                     to={item.path}
-                                    // Ditambahkan: "inline-flex", "items-center", dan "border-transparent"
+                                    onClick={() => setIsDropdownOpen(false)}
                                     className={`inline-flex items-center text-sm font-medium tracking-wide transition-all duration-200 pb-1 ${isActive
                                         ? 'text-[#FACC15] border-b-2 border-[#FACC15]'
                                         : 'text-gray-300 border-b-2 border-transparent hover:text-[#FACC15]'

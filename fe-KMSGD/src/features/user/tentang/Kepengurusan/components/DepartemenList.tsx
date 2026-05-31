@@ -4,8 +4,8 @@ import {
     ChevronUp,
     GraduationCap,
 } from "lucide-react";
-import { departments } from "../services/profileService";
-import MemberCard from "./MemberCard";
+import { departments } from "../../services/tentangService";
+import MemberCard from "../../components/MemberCard";
 
 export default function ProfileDepartemen() {
     const [openIndex, setOpenIndex] = useState<number | null>(null);

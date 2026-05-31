@@ -1,5 +1,5 @@
 import { User } from "lucide-react";
-import type { Member, MemberVariant } from "../types/member";
+import type { Member, MemberVariant } from "../types/tentang.types";
 
 interface MemberCardProps {
     member: Member;

@@ -1,16 +1,11 @@
-import ProfilePengurusAktif from "../components/ProfilePengurusAktif";
-import ProfileDepartemen from "../components/ProfileDepartemen";
-import ProfileDemisioner from "../components/ProfileDemisoner";
-
 const ProfilePage = () => {
-
   return (
     <div className="bg-[#131313] text-[#e5e2e1] font-['Inter'] min-h-screen">
       <main className="pt-20 w-full">
         {/* HERO */}
         <section className="py-20 px-6 max-w-7xl mx-auto border-b border-[#2a2a2a]">
           <h1 className="text-5xl md:text-6xl font-bold font-['Montserrat'] text-[#ffd700] mb-4 leading-tight">
-            <span className="text-white" >Profil</span> Organisasi
+            <span className="text-white">Profil</span> Organisasi
           </h1>
           <p className="text-[#d0c6ab] text-lg leading-relaxed max-w-3xl">
             Mengenal lebih dekat identitas, sejarah, dan arah gerak Keluarga
@@ -78,15 +73,6 @@ const ProfilePage = () => {
           </div>
         </section>
 
-        {/* STRUKTUR KEPENGURUSAN */}
-        <ProfilePengurusAktif />
-
-        {/* DEPARTEMENTS */}
-        <ProfileDepartemen />
-
-        {/* DEMISIONER */}
-        <ProfileDemisioner />
-
         {/* HYMNE & MARS */}
         <section className="py-20 px-6 max-w-7xl mx-auto border-t border-[#2a2a2a]">
           <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#ffd700] mb-8">
@@ -132,11 +118,9 @@ const ProfilePage = () => {
             </div>
           </div>
         </section>
-
       </main>
     </div>
   );
 };
 
 export default ProfilePage;
-

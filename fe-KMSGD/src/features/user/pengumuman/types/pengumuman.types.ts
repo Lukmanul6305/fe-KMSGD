@@ -1,0 +1,13 @@
+export type KategoriType = "Pengumuman" | "Kegiatan" | "Prestasi";
+
+export interface Pengumuman {
+  id: number;
+  day: number;
+  month: string;
+  kategori: KategoriType;
+  title: string;
+  desc: string;
+  author: string;
+  image: string;
+  isPenting: boolean;
+}

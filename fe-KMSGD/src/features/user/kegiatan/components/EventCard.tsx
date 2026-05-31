@@ -1,0 +1,58 @@
+import type { Kegiatan } from "../types/kegiatan.types";
+import ActionButton from "./ActionButton";
+
+interface Props {
+    event: Kegiatan;
+}
+
+export default function EventCard({ event }: Props) {
+    const isSpecial = event.tag === "SPESIAL";
+    const tagColor = isSpecial ? "text-[#ffd700]" : "text-[#22c55e]";
+
+    return (
+        <div className="flex flex-col md:flex-row bg-[#111] border border-[#1f1f1f] overflow-hidden min-h-48 hover:border-[#ffd700]/40 transition-all duration-300 group">
+
+            {/* Image */}
+            <div className="w-full md:w-56 flex shrink-0 overflow-hidden">
+                <img
+                    src={event.image}
+                    alt={event.title}
+                    className="w-full h-48 md:h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+            </div>
+
+            {/* Content */}
+            <div className="flex flex-col gap-3 p-8 flex-1">
+                <div className="flex items-center gap-4">
+                    <span className="text-[10px] text-[#777] uppercase tracking-[2px] font-semibold">
+                        {event.date}
+                    </span>
+                    <span className="text-[#2a2a2a]">|</span>
+                    <span className={`text-[10px] font-bold uppercase tracking-[2px] ${tagColor}`}>
+                        {event.tag}
+                    </span>
+                </div>
+
+                <h3 className="text-xl font-bold text-white font-['Montserrat'] group-hover:text-[#ffd700] transition-colors duration-300">
+                    {event.title}
+                </h3>
+
+                <p className="text-sm text-[#888] leading-relaxed flex-1 font-['Inter']">
+                    {event.desc}
+                </p>
+
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-[#1f1f1f]">
+                    <div className="flex items-center gap-2 text-[#666]">
+                        <svg className="w-4 h-4 text-[#ffd700]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
+                        </svg>
+                        <span className="text-xs uppercase tracking-[1px] font-medium">
+                            {event.location}
+                        </span>
+                    </div>
+                    <ActionButton style={event.actionStyle} label={event.action} />
+                </div>
+            </div>
+        </div>
+    );
+}
