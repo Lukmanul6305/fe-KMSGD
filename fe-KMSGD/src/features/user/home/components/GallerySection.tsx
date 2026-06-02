@@ -4,40 +4,71 @@ import { homeGalleryPreview } from "../services/homeService";
 
 export default function GallerySection() {
     const wrapRef = useRef<HTMLDivElement>(null);
-    const innerRef = useRef<HTMLDivElement>(null);
     const isDragging = useRef(false);
     const startX = useRef(0);
     const scrollLeft = useRef(0);
+    const animationRef = useRef<number | null>(null);
+    const speed = 1; // Mengatur kecepatan jalan otomatis (pixel per frame)
 
+    // Gandakan data agar proses looping berjalan tanpa celah kosong
     const doubled = [...homeGalleryPreview, ...homeGalleryPreview];
 
     useEffect(() => {
         const wrap = wrapRef.current;
-        const inner = innerRef.current;
-        if (!wrap || !inner) return;
+        if (!wrap) return;
+
+        // Fungsi animasi otomatis (Auto-scroll) menggunakan requestAnimationFrame (Sangat ringan!)
+        const autoScroll = () => {
+            if (!isDragging.current) {
+                wrap.scrollLeft += speed;
+
+                // Jika scroll sudah mencapai setengah dari total lebar (akhir array pertama), reset ke 0
+                // Efeknya akan terlihat menyambung tanpa jeda (seamless)
+                if (wrap.scrollLeft >= wrap.scrollWidth / 2) {
+                    wrap.scrollLeft = 0;
+                }
+            }
+            animationRef.current = requestAnimationFrame(autoScroll);
+        };
+
+        // Memulai auto-scroll otomatis saat komponen dimuat
+        animationRef.current = requestAnimationFrame(autoScroll);
 
         const onMouseDown = (e: MouseEvent) => {
             isDragging.current = true;
             wrap.style.cursor = "grabbing";
             startX.current = e.pageX - wrap.offsetLeft;
             scrollLeft.current = wrap.scrollLeft;
-            inner.style.animationPlayState = "paused";
         };
+
         const onMouseLeave = () => {
             isDragging.current = false;
             wrap.style.cursor = "grab";
-            inner.style.animationPlayState = "running";
         };
+
         const onMouseUp = () => {
             isDragging.current = false;
             wrap.style.cursor = "grab";
         };
+
         const onMouseMove = (e: MouseEvent) => {
             if (!isDragging.current) return;
             e.preventDefault();
             const x = e.pageX - wrap.offsetLeft;
             const walk = (x - startX.current) * 1.5;
-            wrap.scrollLeft = scrollLeft.current - walk;
+            let newScrollLeft = scrollLeft.current - walk;
+
+            // Logika Infinite Loop sewaktu user melakukan drag manual
+            const halfWidth = wrap.scrollWidth / 2;
+            if (newScrollLeft >= halfWidth) {
+                newScrollLeft -= halfWidth;
+                startX.current = x - (newScrollLeft - scrollLeft.current); // Kalibrasi ulang posisi start agar tidak patah
+            } else if (newScrollLeft < 0) {
+                newScrollLeft += halfWidth;
+                startX.current = x - (newScrollLeft - scrollLeft.current);
+            }
+
+            wrap.scrollLeft = newScrollLeft;
         };
 
         wrap.addEventListener("mousedown", onMouseDown);
@@ -46,6 +77,7 @@ export default function GallerySection() {
         wrap.addEventListener("mousemove", onMouseMove);
 
         return () => {
+            if (animationRef.current) cancelAnimationFrame(animationRef.current);
             wrap.removeEventListener("mousedown", onMouseDown);
             wrap.removeEventListener("mouseleave", onMouseLeave);
             wrap.removeEventListener("mouseup", onMouseUp);
@@ -68,18 +100,17 @@ export default function GallerySection() {
                     </button>
                 </Reveal>
 
+                {/* Container utama scrollbar */}
                 <div
                     ref={wrapRef}
-                    className="overflow-x-auto cursor-grab select-none scrollbar-none"
-                    style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
+                    className="overflow-x-hidden cursor-grab select-none px-6"
+                    style={{ scrollbarWidth: "none" }}
                 >
+                    {/* Inner wrapper tanpa animasi CSS Marquee berat */}
                     <div
-                        ref={innerRef}
-                        className="flex gap-4 px-6"
+                        className="flex gap-4 pr-4"
                         style={{
                             width: "max-content",
-                            animation: "marquee 28s linear infinite",
-                            willChange: "transform",
                         }}
                     >
                         {doubled.map((src, idx) => (

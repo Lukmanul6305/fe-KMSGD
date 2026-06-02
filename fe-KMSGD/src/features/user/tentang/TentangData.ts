@@ -1,0 +1,17 @@
+export const CONTENT_HEADER = {
+  struktur: {
+    judul: "Struktur",
+    judul2: "Organisasi",
+    deskripsi: "Susunan kepengurusan aktif Keluarga Mahasiswa Sunan Gunung Djati Jabodetabek periode saat ini.",
+  },
+  departemen: {
+    judul: "Departemen",
+    judul2: "Organisasi",
+    deskripsi: "Mengenal berbagai departemen yang menjadi motor penggerak kegiatan di KMSGD Jabodetabek.",
+  },
+  demisioner: {
+    judul: "Struktur",
+    judul2: "Organisasi",
+    deskripsi: "Susunan kepengurusan aktif Keluarga Mahasiswa Sunan Gunung Djati Jabodetabek periode saat ini.",
+  },
+};

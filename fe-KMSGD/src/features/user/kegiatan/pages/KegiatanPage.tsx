@@ -4,6 +4,9 @@ import type { Kegiatan } from "../types/kegiatan.types";
 import EventCard from "../components/EventCard";
 import SearchBar from "../../../../components/SearchBar";
 import { Pagination } from "../../../../components/Pagination";
+import Header from "../../../../components/Header";
+import { CONTENT_HEADER } from "../kegiatanData";
+import UserLayout from "../../../../layouts/UserLayout";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -28,21 +31,13 @@ export default function KegiatanPage() {
             item.location.toLowerCase().includes(q),
     });
 
+
+
     return (
         <div className="bg-[#131313] text-[#e5e2e1] font-['Inter'] min-h-screen">
-            <main className="w-full max-w-7xl mx-auto px-6 pt-30 pb-20">
+            <UserLayout>
 
-                <header className="mb-20">
-                    <h1 className="text-4xl md:text-6xl font-bold font-['Montserrat'] mb-4 leading-tight">
-                        <span className="text-[#e5e2e1]">Kegiatan</span>{" "}
-                        <span className="text-[#ffd700]">Kami</span>
-                    </h1>
-                    <p className="text-[#d0c6ab] text-lg leading-relaxed max-w-2xl">
-                        Jelajahi berbagai agenda, seminar, kompetisi, dan kegiatan sosial yang
-                        diselenggarakan oleh Keluarga Mahasiswa Sunan Gunung Djati Jabodetabek.
-                    </p>
-                </header>
-
+                <Header judul={CONTENT_HEADER.judul} judul2={CONTENT_HEADER.judul2} deskripsi={CONTENT_HEADER.deskripsi} />
                 <SearchBar
                     filters={kegiatanFilters}
                     activeFilter={activeFilter}
@@ -88,7 +83,7 @@ export default function KegiatanPage() {
                     </div>
                 )}
 
-            </main>
+            </UserLayout>
         </div>
     );
 }

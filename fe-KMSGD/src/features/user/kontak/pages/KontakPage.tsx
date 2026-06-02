@@ -1,4 +1,5 @@
 import { useState } from "react";
+import UserLayout from "../../../../layouts/UserLayout";
 
 const KontakPage = () => {
   const [form, setForm] = useState({
@@ -18,7 +19,7 @@ const KontakPage = () => {
 
   return (
     <div className="bg-[#131313] text-[#e5e2e1] font-['Inter'] min-h-screen flex flex-col">
-      <main className="w-full max-w-7xl mx-auto px-6 pt-30 pb-20">
+      <UserLayout>
 
         {/* HEADER */}
         <section className="mb-20 max-w-3xl">
@@ -183,7 +184,7 @@ const KontakPage = () => {
           </div>
 
         </div>
-      </main>
+      </UserLayout>
     </div>
   );
 };

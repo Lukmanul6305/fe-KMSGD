@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ChevronDown, ChevronUp, User } from "lucide-react";
 import { profileDivisions, ketua } from "../../services/tentangService";
 
-export default function ProfilePengurusAktif() {
+export default function StrukturOrganisasi() {
     const [showAll, setShowAll] = useState(false);
 
     const visibleDivisions = showAll
@@ -10,7 +10,7 @@ export default function ProfilePengurusAktif() {
         : profileDivisions.slice(0, 6);
 
     return (
-        <section className="py-10 pb-2 px-6 max-w-7xl mx-auto border-t border-[#2a2a2a]">
+        <section className="bg-[#131313] text-[#e5e2e1] font-['Inter'] min-h-screen">
             <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#ffd700] mb-12 text-center">
                 <span className="text-white">Struktur</span> Kepengurusan Aktif
             </h2>

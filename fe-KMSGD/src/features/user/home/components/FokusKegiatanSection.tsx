@@ -1,9 +1,9 @@
 import Reveal from "./Reveal";
 import KegiatanCard from "./KegiatanCard";
-import { homeKegiatanList } from "../services/homeService";
+import { getLatestKegiatan } from "../../kegiatan/services/kegiatanService";
 
 export default function FokusKegiatanSection() {
-    const latest = homeKegiatanList.slice(0, 3);
+    const latest = getLatestKegiatan(3);
 
     return (
         <section className="py-24 px-6 max-w-7xl mx-auto">
@@ -20,9 +20,9 @@ export default function FokusKegiatanSection() {
             </Reveal>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {latest.map(({ img, title, desc }, i) => (
-                    <Reveal key={title} delay={i * 120}>
-                        <KegiatanCard img={img} title={title} desc={desc} />
+                {latest.map(({ id, image, title, desc }, i) => (
+                    <Reveal key={id} delay={i * 120}>
+                        <KegiatanCard img={image} title={title} desc={desc} />
                     </Reveal>
                 ))}
             </div>

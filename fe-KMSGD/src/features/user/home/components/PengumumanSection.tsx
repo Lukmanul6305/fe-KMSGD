@@ -1,5 +1,5 @@
 import Reveal from "./Reveal";
-import PengumumanHomeCard from "./PengumumanHomeCard";
+import PengumumanCard from "../../../../components/PengumumanCard";
 import { pengumumanList } from "../../pengumuman/services/pengumumanService";
 
 export default function PengumumanSection() {
@@ -15,7 +15,7 @@ export default function PengumumanSection() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {latest.map((item, i) => (
                     <Reveal key={item.id} delay={i * 120}>
-                        <PengumumanHomeCard item={item} />
+                        <PengumumanCard item={item} />
                     </Reveal>
                 ))}
             </div>

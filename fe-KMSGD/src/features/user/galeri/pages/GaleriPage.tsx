@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { galeriFilters, galeriPhotos, galeriVideos } from "../services/galeriService";
+import { galeriPhotos, galeriVideos } from "../services/galeriService";
 
 const GaleriPage = () => {
-  const [activeFilter, setActiveFilter] = useState("Semua");
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
 
   return (
@@ -21,41 +20,27 @@ const GaleriPage = () => {
 
       {/* GALERI FOTO */}
       <section className="pb-20 px-6 max-w-7xl mx-auto w-full">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center mb-6">
           <h2 className="text-xl font-bold font-['Montserrat'] text-[#ffd700] flex items-center gap-2">
             🖼 Galeri Foto
           </h2>
-          <div className="hidden md:flex gap-4">
-            {galeriFilters.map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveFilter(tab)}
-                className={`px-4 py-2 border rounded text-sm font-semibold transition-colors ${activeFilter === tab
-                  ? "border-[#ffd700] text-[#ffd700] bg-[#131313]"
-                  : "border-[#353535] text-[#d0c6ab] hover:border-[#ffd700] hover:text-[#ffd700]"
-                  }`}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
         </div>
 
-        {/* MASONRY GRID */}
-        <div className="columns-1 md:columns-2 lg:columns-3 gap-6">
+        {/* MASONRY GRID — gap dikecilkan, card mengikuti ukuran asli gambar */}
+        <div className="columns-1 md:columns-2 lg:columns-3 gap-3">
           {galeriPhotos.map(({ src, alt }) => (
             <div
               key={alt}
-              className="break-inside-avoid mb-6 relative group cursor-pointer"
+              className="break-inside-avoid mb-3 relative group cursor-pointer"
               onClick={() => setLightboxSrc(src)}
             >
               <img
                 src={src}
                 alt={alt}
-                className="w-full h-auto rounded border border-[#353535] group-hover:border-[#ffd700] transition-colors duration-300"
+                className="w-full h-auto block rounded border border-[#353535] group-hover:border-[#ffd700] transition-colors duration-300"
               />
               <div className="absolute inset-0 bg-[#131313]/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded flex items-center justify-center border-2 border-[#ffd700]">
-                <span className="text-[#ffd700] text-4xl">🔍</span>
+                <span className="text-[#ffd700] text-3xl">🔍</span>
               </div>
             </div>
           ))}
@@ -121,4 +106,3 @@ const GaleriPage = () => {
 };
 
 export default GaleriPage;
-

@@ -3,7 +3,7 @@ import { ChevronDown, User } from "lucide-react";
 import { profileDemisioner } from "../../services/tentangService";
 import MemberCard from "../../components/MemberCard";
 
-export default function ProfileDemisioner() {
+export default function DemisionerList() {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
 
     // show all anggota per periode

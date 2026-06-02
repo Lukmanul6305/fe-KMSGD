@@ -3,7 +3,6 @@ import StatsSection from "../components/StatsSection";
 import KetuaSection from "../components/KetuaSection";
 import FokusKegiatanSection from "../components/FokusKegiatanSection";
 import DewanPendiriSection from "../components/DewanPendiriSection";
-import TestimoniSection from "../components/TestimoniSection";
 import GallerySection from "../components/GallerySection";
 import PengumumanSection from "../components/PengumumanSection";
 import CTASection from "../components/CTASection";
@@ -27,7 +26,6 @@ export default function HomePage() {
                 <KetuaSection />
                 <FokusKegiatanSection />
                 <DewanPendiriSection />
-                <TestimoniSection />
                 <GallerySection />
                 <PengumumanSection />
                 <CTASection />

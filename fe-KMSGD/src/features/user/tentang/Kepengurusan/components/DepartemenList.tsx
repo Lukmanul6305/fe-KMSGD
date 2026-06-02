@@ -7,7 +7,7 @@ import {
 import { departments } from "../../services/tentangService";
 import MemberCard from "../../components/MemberCard";
 
-export default function ProfileDepartemen() {
+export default function DepartemenList() {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
     const [showAll, setShowAll] = useState(false);
     const visibleDivisions = showAll

@@ -1,8 +1,9 @@
 import SearchBar from "../../../../components/SearchBar";
 import { pengumumanFilters, pengumumanList } from "../services/pengumumanService";
 import { Pagination } from "../../../../components/Pagination";
-import PengumumanCard from "../components/PengumumanCard";
+import PengumumanCard from "../../../../components/PengumumanCard";
 import { usePaginatedFilter } from "../../../../hooks/usePaginatedFilter";
+import UserLayout from "../../../../layouts/UserLayout";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -29,7 +30,7 @@ const PengumumanPage = () => {
 
     return (
         <div className="bg-[#131313] text-[#e5e2e1] font-['Inter'] min-h-screen flex flex-col">
-            <main className="w-full max-w-7xl mx-auto px-6 pt-30 pb-20">
+            <UserLayout>
 
                 <header className="mb-20">
                     <h1 className="text-4xl md:text-6xl font-bold font-['Montserrat'] text-[#e5e2e1] mb-4">
@@ -88,7 +89,7 @@ const PengumumanPage = () => {
                     )}
                 </section>
 
-            </main>
+            </UserLayout>
         </div>
     );
 };

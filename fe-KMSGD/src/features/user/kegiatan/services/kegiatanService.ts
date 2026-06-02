@@ -50,3 +50,16 @@ export const filterKegiatan = (activeTab: string): Kegiatan[] => {
   if (activeTab === "Semua") return kegiatanList;
   return kegiatanList.filter((e) => e.tag === activeTab.toUpperCase());
 };
+
+const getDateTime = (date: string): number => {
+  const time = new Date(date).getTime();
+  return Number.isNaN(time) ? 0 : time;
+};
+
+export const getLatestKegiatan = (limit = 3): Kegiatan[] =>
+  [...kegiatanList]
+    .sort((a, b) => {
+      const dateDiff = getDateTime(b.date) - getDateTime(a.date);
+      return dateDiff || b.id - a.id;
+    })
+    .slice(0, limit);
