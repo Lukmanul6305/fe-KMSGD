@@ -10,7 +10,7 @@ export const homeNavLinks = [
 export const homeStats = [
     { value: "500+", label: "Anggota Aktif" },
     { value: "50+", label: "Program Kegiatan" },
-    { value: "15+", label: "Cabang Daerah" },
+    { value: "15+", label: "Tahun berdiri" },
 ];
 
 export const homeKegiatanList = [

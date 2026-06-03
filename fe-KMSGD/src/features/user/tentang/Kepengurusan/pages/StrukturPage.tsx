@@ -5,17 +5,15 @@ import StrukturOrganisasi from "../components/StrukturOrganisasi";
 
 const StrukturPage = () => {
   return (
-    <div className="bg-[#131313] text-[#e5e2e1] font-['Inter'] min-h-screen">
-      <UserLayout>
-        <Header
-          judul={CONTENT_HEADER.struktur.judul}
-          judul2={CONTENT_HEADER.struktur.judul2}
-          deskripsi={CONTENT_HEADER.struktur.deskripsi}
-        />
+    <UserLayout>
+      <Header
+        judul={CONTENT_HEADER.struktur.judul}
+        judul2={CONTENT_HEADER.struktur.judul2}
+        deskripsi={CONTENT_HEADER.struktur.deskripsi}
+      />
 
-        <StrukturOrganisasi />
-      </UserLayout>
-    </div>
+      <StrukturOrganisasi />
+    </UserLayout>
   );
 };
 

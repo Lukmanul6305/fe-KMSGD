@@ -1,6 +1,6 @@
-import Reveal from "./Reveal";
-import KegiatanCard from "./KegiatanCard";
-import { getLatestKegiatan } from "../../kegiatan/services/kegiatanService";
+import Reveal from "../ui/Reveal";
+import KegiatanCard from "../cards/KegiatanCard";
+import { getLatestKegiatan } from "../../../kegiatan/services/kegiatanService";
 
 export default function FokusKegiatanSection() {
     const latest = getLatestKegiatan(3);

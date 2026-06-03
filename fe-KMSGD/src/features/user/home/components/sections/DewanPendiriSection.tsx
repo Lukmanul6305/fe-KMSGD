@@ -1,5 +1,5 @@
-import Reveal from "./Reveal";
-import { homeFounders } from "../services/homeService";
+import Reveal from "../ui/Reveal";
+import { homeFounders } from "../../services/homeService";
 
 export default function DewanPendiriSection() {
     return (

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useScrollReveal } from "../../../../hooks/useScrollReveal";
+import { useScrollReveal } from "../../../../../hooks/useScrollReveal";
 
 type RevealDirection = "bottom" | "left" | "right" | "fade";
 

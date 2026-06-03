@@ -1,4 +1,4 @@
-import Reveal from "./Reveal";
+import Reveal from "../ui/Reveal";
 
 export default function KetuaSection() {
     return (
@@ -26,9 +26,6 @@ export default function KetuaSection() {
                             "Selamat datang di rumah kita bersama. KMSGD Jabodetabek bukan sekadar organisasi, melainkan keluarga
                             tempat kita tumbuh, belajar, dan memberikan kontribusi nyata bagi masyarakat."
                         </p>
-                        <button className="text-[#ffd700] text-sm font-semibold hover:underline flex items-center gap-2 w-fit cursor-pointer">
-                            Baca Selengkapnya →
-                        </button>
                     </Reveal>
                 </div>
             </Reveal>

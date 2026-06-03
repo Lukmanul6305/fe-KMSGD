@@ -1,12 +1,13 @@
-import HeroSection from "../components/HeroSection";
-import StatsSection from "../components/StatsSection";
-import KetuaSection from "../components/KetuaSection";
-import FokusKegiatanSection from "../components/FokusKegiatanSection";
-import DewanPendiriSection from "../components/DewanPendiriSection";
-import GallerySection from "../components/GallerySection";
-import PengumumanSection from "../components/PengumumanSection";
-import CTASection from "../components/CTASection";
-import WhatsAppFloat from "../components/WhatsAppFloat";
+import HeroSection from "../components/sections/HeroSection";
+import StatsSection from "../components/sections/StatsSection";
+import KetuaSection from "../components/sections/KetuaSection";
+import FokusKegiatanSection from "../components/sections/FokusKegiatanSection";
+import DewanPendiriSection from "../components/sections/DewanPendiriSection";
+import GallerySection from "../components/sections/GallerySection";
+import PengumumanSection from "../components/sections/PengumumanSection";
+import CTASection from "../components/sections/CTASection";
+import WhatsAppFloat from "../components/ui/WhatsAppFloat";
+import UserLayout from "../../../../layouts/UserLayout";
 
 export default function HomePage() {
     return (
@@ -20,17 +21,17 @@ export default function HomePage() {
         .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-            <div className="bg-[#131313] text-[#e5e2e1] font-['Inter'] min-h-screen">
+            <UserLayout isHome>
                 <HeroSection />
                 <StatsSection />
                 <KetuaSection />
-                <FokusKegiatanSection />
                 <DewanPendiriSection />
+                <FokusKegiatanSection />
                 <GallerySection />
                 <PengumumanSection />
                 <CTASection />
                 <WhatsAppFloat />
-            </div>
+            </UserLayout>
         </>
     );
 }

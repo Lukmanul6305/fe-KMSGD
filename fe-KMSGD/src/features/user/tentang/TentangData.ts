@@ -10,8 +10,8 @@ export const CONTENT_HEADER = {
     deskripsi: "Mengenal berbagai departemen yang menjadi motor penggerak kegiatan di KMSGD Jabodetabek.",
   },
   demisioner: {
-    judul: "Struktur",
-    judul2: "Organisasi",
-    deskripsi: "Susunan kepengurusan aktif Keluarga Mahasiswa Sunan Gunung Djati Jabodetabek periode saat ini.",
+    judul: "Demisioner",
+    judul2: "Pengurus",
+    deskripsi: "Kumpulan data kepengurusan dari tahun ke tahun yang telah menyelesaikan masa baktinya dengan penuh dedikasi.",
   },
 };

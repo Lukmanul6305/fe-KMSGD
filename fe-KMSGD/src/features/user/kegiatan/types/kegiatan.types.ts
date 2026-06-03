@@ -5,6 +5,8 @@ export type TagType = "SPESIAL" | "SOSIAL";
 export interface Kegiatan {
   id: number;
   date: string;
+  startTime: string;
+  endTime: string;
   tag: TagType;
   title: string;
   desc: string;
@@ -13,8 +15,4 @@ export interface Kegiatan {
   type: EventType;
   action: string;
   actionStyle: ActionStyle;
-}
-
-export interface FooterLink {
-  [section: string]: string[];
 }

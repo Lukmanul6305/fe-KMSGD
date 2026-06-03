@@ -2,7 +2,6 @@ import UserLayout from "../../../../../layouts/UserLayout";
 
 const ProfilePage = () => {
   return (
-    <div className="bg-[#131313] text-[#e5e2e1] font-['Inter'] min-h-screen">
       <UserLayout>
         {/* HERO */}
         <section className="mb-2">
@@ -16,7 +15,7 @@ const ProfilePage = () => {
         </section>
 
         {/* VISI & MISI */}
-        <section className="py-20 px-6 max-w-7xl mx-auto">
+        <section className="py-20 px-6 mt-15 max-w-7xl mx-auto border-t border-[#2a2a2a]">
           <div className="grid md:grid-cols-2 gap-6">
             {/* Visi */}
             <div className="bg-[#20201f] border-t-[3px] border-[#ffd700] p-8">
@@ -121,7 +120,6 @@ const ProfilePage = () => {
           </div>
         </section>
       </UserLayout>
-    </div>
   );
 };
 

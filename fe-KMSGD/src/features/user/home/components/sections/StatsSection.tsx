@@ -1,5 +1,5 @@
-import Reveal from "./Reveal";
-import { homeStats } from "../services/homeService";
+import Reveal from "../ui/Reveal";
+import { homeStats } from "../../services/homeService";
 
 export default function StatsSection() {
     return (

@@ -1,4 +1,3 @@
-// components/WhatsAppFloat.tsx
 export default function WhatsAppFloat() {
     return (
         <a

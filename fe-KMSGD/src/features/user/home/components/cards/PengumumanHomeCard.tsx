@@ -1,4 +1,4 @@
-import type { Pengumuman } from "../../pengumuman/types/pengumuman.types";
+import type { Pengumuman } from "../../../pengumuman/types/pengumuman.types";
 
 interface Props {
     item: Pengumuman;

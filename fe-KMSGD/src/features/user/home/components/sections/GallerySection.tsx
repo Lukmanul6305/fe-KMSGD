@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import Reveal from "./Reveal";
-import { homeGalleryPreview } from "../services/homeService";
+import Reveal from "../ui/Reveal";
+import { homeGalleryPreview } from "../../services/homeService";
 
 export default function GallerySection() {
     const wrapRef = useRef<HTMLDivElement>(null);

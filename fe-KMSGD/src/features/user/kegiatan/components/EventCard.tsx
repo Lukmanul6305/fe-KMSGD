@@ -42,15 +42,32 @@ export default function EventCard({ event }: Props) {
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-[#1f1f1f]">
-                    <div className="flex items-center gap-2 text-[#666]">
-                        <svg className="w-4 h-4 text-[#ffd700]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
-                        </svg>
-                        <span className="text-xs uppercase tracking-[1px] font-medium">
-                            {event.location}
-                        </span>
+                    {/* Lokasi + Jam */}
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                        <div className="flex items-center gap-2 text-[#666]">
+                            <svg className="w-4 h-4 text-[#ffd700]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
+                            </svg>
+                            <span className="text-xs uppercase tracking-[1px] font-medium">
+                                {event.location}
+                            </span>
+                        </div>
+
+                        <span className="hidden sm:block text-[#2a2a2a]">|</span>
+
+                        {/* Jam */}
+                        <div className="flex items-center gap-2 text-[#666]">
+                            <svg className="w-4 h-4 text-[#ffd700]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg>
+                            <span className="text-xs uppercase tracking-[1px] font-medium">
+                                {event.startTime} – {event.endTime} WIB
+                            </span>
+                        </div>
                     </div>
-                    <ActionButton style={event.actionStyle} label={event.action} />
+
+                    <ActionButton label={event.action} />
                 </div>
             </div>
         </div>

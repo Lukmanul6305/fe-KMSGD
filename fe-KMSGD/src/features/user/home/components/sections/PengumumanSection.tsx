@@ -1,6 +1,6 @@
-import Reveal from "./Reveal";
-import PengumumanCard from "../../../../components/PengumumanCard";
-import { pengumumanList } from "../../pengumuman/services/pengumumanService";
+import Reveal from "../ui/Reveal";
+import PengumumanCard from "../../../../../components/PengumumanCard";
+import { pengumumanList } from "../../../pengumuman/services/pengumumanService";
 
 export default function PengumumanSection() {
     const latest = pengumumanList.slice(0, 3);
