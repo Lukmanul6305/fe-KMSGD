@@ -8,13 +8,13 @@ export default function KetuaSection() {
                     <Reveal from="left" className="w-full max-w-xs md:w-72 flex shrink-0">
                         <div className="aspect-4/5 w-full border border-[#353535] relative group overflow-hidden">
                             <img
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPZ-QRObMKNDnnorQKAWdsImi-RDCWuQ8TpJxDKH6SOcomenSRjnJ2KJFxR43EwpX5iWsC7FXYOQZNNnQfYoCHTdBKkOr9pDnRpk5EI5E7MLowA9OP4-XUnGgB6J6HVtVAoBJ_CNiUXKAsVSiEj66kLwFxscw2BUZyxqrFO_F0KXqBjI5pUc0cnG5B_-SHo0UByeGXznth9xRTeikpjsxdadxEbvuFjXMiZl_23vUR-_zxabbnRwWbB8eYvBZlFqZRAP97QhGhEDbw"
+                                src="../../../../../../public/bph/HAMZAH-HAFID.jpeg"
                                 alt="Ketua Umum"
                                 className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                                 loading="lazy"
                             />
                             <div className="absolute bottom-4 left-4 bg-[#131313] px-4 py-2 border border-[#ffd700]">
-                                <div className="text-[#ffd700] font-bold font-['Montserrat'] text-base">Ahmad Fauzi</div>
+                                <div className="text-[#ffd700] font-bold font-['Montserrat'] text-base">Hamzah Hafid</div>
                                 <div className="text-[#d0c6ab] text-xs font-semibold tracking-wide">Ketua Umum 2024-2025</div>
                             </div>
                         </div>

@@ -14,12 +14,12 @@ export default function HomePage() {
         <>
             <style>{`
         @keyframes marquee {
-          from { transform: translateX(0); }
-          to   { transform: translateX(-50%); }
+        from { transform: translateX(0); }
+        to   { transform: translateX(-50%); }
         }
         .scrollbar-none::-webkit-scrollbar { display: none; }
         .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
-      `}</style>
+    `}</style>
 
             <UserLayout isHome>
                 <HeroSection />

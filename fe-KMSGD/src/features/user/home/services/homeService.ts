@@ -33,29 +33,41 @@ export const homeKegiatanList = [
 
 export const homeFounders = [
     {
-        nama: "KH. Abdul Halim",
+        nama: "Achmadi",
         peran: "Pendiri Utama",
         tahun: "1928â€“1962",
-        img: "https://via.placeholder.com/300x400/2D2D2D/FFD700?text=KH.+A.+Halim",
+        img: "../../../../../public/dewanPendiri/Achmadi.jpg",
     },
     {
-        nama: "KH. Ahmad Sanusi",
+        nama: "Dr Priguna Sidharta",
         peran: "Dewan Pendiri",
         tahun: "1928â€“1950",
-        img: "https://via.placeholder.com/300x400/2D2D2D/FFD700?text=KH.+A.+Sanusi",
+        img: "../../../../../public/dewanPendiri/DrPrigunaSidharta.jpg",
     },
     {
-        nama: "KH. R. Muhammad",
+        nama: "Machmud Pasha",
         peran: "Dewan Pendiri",
         tahun: "1928â€“1955",
-        img: "https://via.placeholder.com/300x400/2D2D2D/FFD700?text=KH.+R.+Muhammad",
+        img: "../../../../../public/dewanPendiri/MachmudPasha.jpg",
     },
     {
-        nama: "KH. Abdullah",
+        nama: "Moh. Matsna HS",
         peran: "Dewan Pendiri",
         tahun: "1928â€“1968",
-        img: "https://via.placeholder.com/300x400/2D2D2D/FFD700?text=KH.+Abdullah",
+        img: "../../../../../public/dewanPendiri/Moh.MatsnaHS.jpg",
     },
+    {
+        nama: "Soeparno",
+        peran: "Dewan Pendiri",
+        tahun: "1928â€“1968",
+        img: "../../../../../public/dewanPendiri/Soeparno.png",    
+    },
+    {
+        nama: "Surya Darma",
+        peran: "Dewan Pendiri",
+        tahun: "1928â€“1968",
+        img: "../../../../../public/dewanPendiri/Suryadarma.jpg",
+    }
 ];
 
 export const homeTestimonials = [

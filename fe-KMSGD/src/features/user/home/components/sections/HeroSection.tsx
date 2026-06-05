@@ -3,7 +3,7 @@ export default function HeroSection() {
         <section className="relative min-h-screen flex items-center px-6 pt-20">
             <div className="absolute inset-0 z-0">
                 <img
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-wSYHpemhYV00YT3vAMMorQcJ0YGAEiJk9NQa7VxuDhyzHoJKTEFF3MCOOlICel_o1Rthol7k5u9g-oexyp0qUgXhtnlWp_mvydr2q9w1uDTguI8eDBcAf8TzECjvJPxuoESeqRxK3xS6acU4EQ3Y8Ef1axA9h91eCCEm1Pb9LH612a1rsLLVWyyZtAisxqJLSn4fkoAyZZg8RW_5Cw8zvoBiF6iVBNjcu69SCCIJRyj_FSUU8Uao7A3-KZdzVivNCD-JPBof6KXY"
+                    src="../../../../../../public/bg.jpeg"
                     alt="hero"
                     className="w-full h-full object-cover opacity-20"
                     fetchPriority="high"

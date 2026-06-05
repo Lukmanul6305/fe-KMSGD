@@ -7,6 +7,8 @@ import {
     MdKeyboardArrowUp
 } from "react-icons/md";
 
+
+
 interface NavItem {
     label: string;
     path?: string;
@@ -44,9 +46,13 @@ export const Navbar: React.FC = () => {
         <nav className="w-full bg-[#141414] fixed z-999 border-b-[3px] border-[#FACC15] px-6 py-4 md:px-12 flex items-center justify-between select-none">
 
             <Link to="/" className="flex items-center gap-3 cursor-pointer">
-                <div className="w-10 h-10 border-2 border-[#FACC15] flex items-center justify-center">
-                    <div className="w-6 h-6 bg-transparent" />
-                </div>
+                {
+                    <img
+                        src = '/public/logo.jpeg'
+                        alt = 'Logo KMSGD Jabodetabek'
+                        className = 'w-10 h-10 md:w-12 md:h-12 object-contain'
+                    />
+                }
                 <span className="text-[#FACC15] font-bold text-lg md:text-xl tracking-wider uppercase">
                     <span className="text-white">KMSGD</span> JABODETABEK
                 </span>

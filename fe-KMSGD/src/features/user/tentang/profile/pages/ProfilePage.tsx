@@ -79,44 +79,33 @@ const ProfilePage = () => {
           <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#ffd700] mb-8">
             <span className="text-white">Hymne</span> &amp; Mars KMSGD
           </h2>
+          
           <div className="grid md:grid-cols-2 gap-6">
+            
             {/* Hymne */}
-            <div className="bg-[#20201f] border border-[#ffd700] p-6 flex flex-col gap-4">
-              <div className="flex justify-between items-center">
-                <h3 className="text-xl font-bold font-['Montserrat'] text-[#e5e2e1]">
-                  Hymne KMSGD Jabodetabek
-                </h3>
-                <span className="text-[#ffd700] text-3xl cursor-pointer hover:opacity-80 transition-opacity">
-                  ▶
-                </span>
-              </div>
-              <div className="w-full h-2 bg-[#353535] rounded-full overflow-hidden">
-                <div className="w-1/3 h-full bg-[#ffd700]" />
-              </div>
-              <div className="flex justify-between text-[#d0c6ab] text-xs font-semibold">
-                <span>01:15</span>
-                <span>03:45</span>
-              </div>
+            <div className="bg-[#20201f] border border-[#ffd700] p-6 flex flex-col justify-center gap-4">
+              <h3 className="text-xl font-bold font-['Montserrat'] text-[#e5e2e1] mb-2">
+                Hymne KMSGD Jabodetabek
+              </h3>
+              {/* Audio Player Bawaan Browser */}
+              <audio controls className="w-full outline-none">
+                <source src="/hymne.mp3" type="audio/mpeg" />
+                Browser Anda tidak mendukung pemutaran audio.
+              </audio>
             </div>
 
             {/* Mars */}
-            <div className="bg-[#20201f] border border-[#ffd700] p-6 flex flex-col gap-4">
-              <div className="flex justify-between items-center">
-                <h3 className="text-xl font-bold font-['Montserrat'] text-[#e5e2e1]">
-                  Mars KMSGD Jabodetabek
-                </h3>
-                <span className="text-[#ffd700] text-3xl cursor-pointer hover:opacity-80 transition-opacity">
-                  ▶
-                </span>
-              </div>
-              <div className="w-full h-2 bg-[#353535] rounded-full overflow-hidden">
-                <div className="w-0 h-full bg-[#ffd700]" />
-              </div>
-              <div className="flex justify-between text-[#d0c6ab] text-xs font-semibold">
-                <span>00:00</span>
-                <span>02:30</span>
-              </div>
+            <div className="bg-[#20201f] border border-[#ffd700] p-6 flex flex-col justify-center gap-4">
+              <h3 className="text-xl font-bold font-['Montserrat'] text-[#e5e2e1] mb-2">
+                Mars KMSGD Jabodetabek
+              </h3>
+              {/* Audio Player Bawaan Browser */}
+              <audio controls className="w-full outline-none">
+                <source src="/mars.mp3" type="audio/mpeg" />
+                Browser Anda tidak mendukung pemutaran audio.
+              </audio>
             </div>
+
           </div>
         </section>
       </UserLayout>
