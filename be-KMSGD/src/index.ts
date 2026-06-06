@@ -1,17 +1,20 @@
 import express from "express";
-import { PrismaClient } from "@prisma/client";
-import { createClient } from "@supabase/supabase-js";
 import dotenv from "dotenv";
+import { connection } from "./database/connection";
 
 dotenv.config();
 
 const app = express();
-const prisma = new PrismaClient();
-const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_KEY!);
-
 app.use(express.json());
 
 const PORT = process.env.PORT ?? 3000;
+const HOST = process.env.HOST;
+
+app.get("/", (req, res) => {
+  res.send("Server Running ");
+});
+
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${HOST}:${PORT}`);
+  connection();
 });
