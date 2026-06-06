@@ -21,7 +21,7 @@ const PengumumanPage = () => {
     } = usePaginatedFilter({
         data: pengumumanList,
         itemsPerPage: ITEMS_PER_PAGE,
-        filterFn: (item, filter) => item.kategori === filter,
+        filterFn: (item, filter) => item.category === filter,
         searchFn: (item, q) =>
             item.title.toLowerCase().includes(q) ||
             item.desc.toLowerCase().includes(q) ||

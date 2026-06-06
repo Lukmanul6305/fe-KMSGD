@@ -6,8 +6,8 @@ interface Props {
 }
 
 export default function EventCard({ event }: Props) {
-    const isSpecial = event.tag === "SPESIAL";
-    const tagColor = isSpecial ? "text-[#ffd700]" : "text-[#22c55e]";
+    const isSpecial = event.category === "SPESIAL";
+    const categoryColor = isSpecial ? "text-[#ffd700]" : "text-[#22c55e]";
 
     return (
         <div className="flex flex-col md:flex-row bg-[#111] border border-[#1f1f1f] overflow-hidden min-h-48 hover:border-[#ffd700]/40 transition-all duration-300 group">
@@ -28,8 +28,8 @@ export default function EventCard({ event }: Props) {
                         {event.date}
                     </span>
                     <span className="text-[#2a2a2a]">|</span>
-                    <span className={`text-[10px] font-bold uppercase tracking-[2px] ${tagColor}`}>
-                        {event.tag}
+                    <span className={`text-[10px] font-bold uppercase tracking-[2px] ${categoryColor}`}>
+                        {event.category}
                     </span>
                 </div>
 

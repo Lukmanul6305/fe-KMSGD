@@ -1,13 +1,13 @@
 export type ActionStyle = "gold" | "outline";
 export type EventType = "dark" | "green";
-export type TagType = "SPESIAL" | "SOSIAL";
+export type CategoryType = "SPESIAL" | "SOSIAL";
 
 export interface Kegiatan {
   id: number;
   date: string;
   startTime: string;
   endTime: string;
-  tag: TagType;
+  category: CategoryType;
   title: string;
   desc: string;
   location: string;

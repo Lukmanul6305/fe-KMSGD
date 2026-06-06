@@ -2,13 +2,14 @@ import type { Kegiatan } from "../types/kegiatan.types";
 
 export const kegiatanFilters: string[] = ["Semua", "Spesial", "Sosial"];
 
+
 export const kegiatanList: Kegiatan[] = [
   {
     id: 1,
     date: "23 May 2024",
     startTime: "08.00",
     endTime: "17.00",
-    tag: "SPESIAL",
+    category: "SPESIAL",
     title: "Simposium Nasional Mahasiswa Jabodetabek 2024",
     desc: "Kami melibatkan mengumpulkan panel mahasiswa se-Jabodetabek dalam pembicaraan diskusi dan selebrasi, meningkatkan lebih-lebih ekulasi akademis.",
     location: "Gedung Graha GPA Jak",
@@ -22,7 +23,7 @@ export const kegiatanList: Kegiatan[] = [
     date: "23 May 2024",
     startTime: "09.00",
     endTime: "15.00",
-    tag: "SPESIAL",
+    category: "SPESIAL",
     title: "Kompetisi Debat Mahasiswa Nasional",
     desc: "Ajang adu gagasan antar mahasiswa se-Jabodetabek dengan tema-tema perbincangan berstandar jelas.",
     location: "Aula Ilmu Perpustakaan Nasional",
@@ -36,7 +37,7 @@ export const kegiatanList: Kegiatan[] = [
     date: "23 May 2024",
     startTime: "07.30",
     endTime: "12.00",
-    tag: "SOSIAL",
+    category: "SOSIAL",
     title: "Bakti Sosial KMSGD Peduli",
     desc: "Kegiatan pengabdian, dana dan penyaluran bantuan untuk panti asuhan di area pinggiran Jakarta.",
     location: "Perkotaan Eltedak",
@@ -50,7 +51,7 @@ export const kegiatanList: Kegiatan[] = [
     date: "23 May 2024",
     startTime: "07.30",
     endTime: "12.00",
-    tag: "SOSIAL",
+    category: "SOSIAL",
     title: "Bakti Sosial KMSGD Peduli",
     desc: "Kegiatan pengabdian, dana dan penyaluran bantuan untuk panti asuhan di area pinggiran Jakarta.",
     location: "Perkotaan Eltedak",
@@ -64,7 +65,7 @@ export const kegiatanList: Kegiatan[] = [
     date: "23 May 2024",
     startTime: "07.30",
     endTime: "12.00",
-    tag: "SOSIAL",
+    category: "SOSIAL",
     title: "Bakti Sosial KMSGD Peduli",
     desc: "Kegiatan pengabdian, dana dan penyaluran bantuan untuk panti asuhan di area pinggiran Jakarta.",
     location: "Perkotaan Eltedak",
@@ -78,7 +79,7 @@ export const kegiatanList: Kegiatan[] = [
     date: "23 May 2024",
     startTime: "07.30",
     endTime: "12.00",
-    tag: "SOSIAL",
+    category: "SOSIAL",
     title: "Bakti Sosial KMSGD Peduli",
     desc: "Kegiatan pengabdian, dana dan penyaluran bantuan untuk panti asuhan di area pinggiran Jakarta.",
     location: "Perkotaan Eltedak",
@@ -92,7 +93,7 @@ export const kegiatanList: Kegiatan[] = [
     date: "23 May 2024",
     startTime: "07.30",
     endTime: "12.00",
-    tag: "SOSIAL",
+    category: "SOSIAL",
     title: "Bakti Sosial KMSGD Peduli",
     desc: "Kegiatan pengabdian, dana dan penyaluran bantuan untuk panti asuhan di area pinggiran Jakarta.",
     location: "Perkotaan Eltedak",
@@ -106,7 +107,7 @@ export const kegiatanList: Kegiatan[] = [
     date: "23 May 2024",
     startTime: "07.30",
     endTime: "12.00",
-    tag: "SOSIAL",
+    category: "SOSIAL",
     title: "Bakti Sosial KMSGD Peduli",
     desc: "Kegiatan pengabdian, dana dan penyaluran bantuan untuk panti asuhan di area pinggiran Jakarta.",
     location: "Perkotaan Eltedak",
@@ -119,7 +120,7 @@ export const kegiatanList: Kegiatan[] = [
 
 export const filterKegiatan = (activeTab: string): Kegiatan[] => {
   if (activeTab === "Semua") return kegiatanList;
-  return kegiatanList.filter((e) => e.tag === activeTab.toUpperCase());
+  return kegiatanList.filter((e) => e.category === activeTab.toUpperCase());
 };
 
 const getDateTime = (date: string): number => {

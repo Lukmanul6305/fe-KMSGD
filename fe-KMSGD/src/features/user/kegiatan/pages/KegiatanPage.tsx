@@ -24,7 +24,7 @@ export default function KegiatanPage() {
     } = usePaginatedFilter<Kegiatan>({
         data: kegiatanList,
         itemsPerPage: ITEMS_PER_PAGE,
-        filterFn: (item, filter) => item.tag === filter.toUpperCase(),
+        filterFn: (item, filter) => item.category === filter.toUpperCase(),
         searchFn: (item, q) =>
             item.title.toLowerCase().includes(q) ||
             item.desc.toLowerCase().includes(q) ||

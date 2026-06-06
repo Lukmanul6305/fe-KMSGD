@@ -1,10 +1,10 @@
-export type KategoriType = "Pengumuman" | "Kegiatan" | "Prestasi";
+export type CategoryType = "Pengumuman" | "Kegiatan" | "Prestasi";
 
 export interface Pengumuman {
   id: number;
   day: number;
   month: string;
-  kategori: KategoriType;
+  category: CategoryType;
   title: string;
   desc: string;
   author: string;

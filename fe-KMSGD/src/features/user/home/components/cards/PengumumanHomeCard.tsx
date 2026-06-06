@@ -25,7 +25,7 @@ export default function PengumumanHomeCard({ item }: Props) {
                 <div>
                     <div className="flex items-center gap-2 mb-3">
                         <span className="bg-[#131313] border border-[#4d4732] text-[#ffd700] text-xs font-semibold px-2.5 py-0.5 rounded">
-                            {item.kategori}
+                            {item.category}
                         </span>
                         <span className="text-[#999077] text-xs">📅 {item.day} {item.month} 2025</span>
                     </div>
