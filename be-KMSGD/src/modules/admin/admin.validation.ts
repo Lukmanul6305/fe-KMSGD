@@ -17,7 +17,7 @@ export const updateAdminSchema = z
       .max(50, "Username maksimal 50 karakter")
       .regex(/^[a-zA-Z0-9_]+$/, "Username hanya boleh huruf, angka, dan underscore")
       .optional(),
-    password: z.string().min(8, "Password minimal 8 karakter").max(100, "Password maksimal 100 karakter").optional(),
+    password: z.string().min(5, "Password minimal 5 karakter").max(100, "Password maksimal 100 karakter").optional(),
   })
   .refine((data) => Object.keys(data).length > 0, {
     message: "Minimal satu field harus diisi",
