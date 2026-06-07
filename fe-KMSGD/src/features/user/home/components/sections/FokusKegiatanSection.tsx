@@ -1,6 +1,7 @@
 import Reveal from "../ui/Reveal";
 import KegiatanCard from "../cards/KegiatanCard";
 import { getLatestKegiatan } from "../../../kegiatan/services/kegiatanService";
+import { Link } from "react-router-dom";
 
 export default function FokusKegiatanSection() {
     const latest = getLatestKegiatan(3);
@@ -14,9 +15,9 @@ export default function FokusKegiatanSection() {
                     </h2>
                     <p className="text-[#d0c6ab] text-base">Pilar utama pergerakan organisasi kami.</p>
                 </div>
-                <button className="text-[#ffd700] text-sm font-semibold hidden md:flex items-center gap-1 hover:underline cursor-pointer">
+                <Link to="/kegiatan" className="text-[#ffd700] text-sm font-semibold hidden md:flex items-center gap-1 hover:underline cursor-pointer">
                     Lihat Semua ↗
-                </button>
+                </Link>
             </Reveal>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

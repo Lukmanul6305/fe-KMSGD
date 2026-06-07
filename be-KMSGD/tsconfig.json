@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    /* Target runtime dan format modul */
+    "target": "ES2022" /* Menggunakan fitur JavaScript modern yang didukung Node.js baru */,
+    "module": "NodeNext" /* Mendukung penanganan modul modern (ESM dan CJS) di Node.js */,
+    "moduleResolution": "NodeNext" /* Strategi pencarian modul yang sesuai dengan standar Node.js */,
+
+    /* Pengaturan Struktur Folder */
+    "rootDir": "./src" /* Folder tempat kode sumber TypeScript berada */,
+    "outDir": "./dist" /* Folder hasil kompilasi file JavaScript */,
+
+    /* Aturan Pemeriksaan Kode (Strictness) */
+    "strict": true /* Mengaktifkan semua pemeriksaan tipe data yang ketat */,
+    "noImplicitAny": true /* Melarang penggunaan tipe data 'any' secara tersirat */,
+    "strictNullChecks": true /* Memastikan variabel tidak bernilai null/undefined tanpa penanganan */,
+
+    /* Interoperabilitas Modul */
+    "esModuleInterop": true /* Mempermudah impor modul CommonJS seperti Express atau Lodash */,
+    "skipLibCheck": true /* Mempercepat kompilasi dengan melewati pemeriksaan file deklarasi (.d.ts) */,
+    "forceConsistentCasingInFileNames": true /* Memastikan konsistensi huruf besar/kecil pada nama file */
+  },
+  "include": ["src/**/*"] /* File yang wajib dikompilasi */,
+  "exclude": ["node_modules", "**/*.spec.ts"] /* Folder dan file yang diabaikan saat kompilasi */
+}

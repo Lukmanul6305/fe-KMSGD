@@ -1,0 +1,296 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// =============================================================
+// AUTH
+// =============================================================
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String   // bcrypt hashed
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("admins")
+}
+
+// =============================================================
+// BERANDA — SAMBUTAN & FOTO DEWAN PENDIRI
+// =============================================================
+
+model Sambutan {
+  id        Int      @id @default(autoincrement())
+  nama      String
+  jabatan   String
+  isi       String
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("sambutan")
+}
+
+model DewanPendiri {
+  id        Int      @id @default(autoincrement())
+  nama      String
+  jabatan   String?  // misal: Pendiri, Ketua Perdana, dst
+  angkatan  String?  // tahun angkatan / periode
+  image     String   // URL foto
+  urutan    Int      @default(0) // untuk mengatur urutan tampil
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("dewan_pendiri")
+}
+
+// =============================================================
+// TENTANG KAMI — SEJARAH, VISI MISI
+// =============================================================
+
+model TentangKami {
+  id        Int      @id @default(autoincrement())
+  sejarah   String   // rich text / markdown
+  visi      String
+  misi      String   // bisa JSON array atau teks berpisah \n
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("tentang_kami")
+}
+
+// =============================================================
+// HYMNE & MARS — upload file audio/pdf
+// =============================================================
+
+model InstrumenOrganisasi {
+  id          Int      @id @default(autoincrement())
+  jenis       InstrumenJenis // HYMNE | MARS
+  judul       String
+  fileUrl     String   // URL file (audio mp3/wav atau PDF notasi)
+  mimeType    String?  // "audio/mpeg", "application/pdf", dll
+  ukuranByte  Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("instrumen_organisasi")
+}
+
+enum InstrumenJenis {
+  HYMNE
+  MARS
+}
+
+// =============================================================
+// STRUKTUR ORGANISASI — AKTIF & DEMISIONER
+// =============================================================
+
+model PeriodeOrganisasi {
+  id         Int             @id @default(autoincrement())
+  periode    String          // "2025/2026"
+  status     StatusPeriode   @default(AKTIF)
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  pengurusInti PengurusInti[]
+  departemen   Departemen[]
+
+  @@map("periode_organisasi")
+}
+
+enum StatusPeriode {
+  AKTIF
+  DEMISIONER
+}
+
+// BPI / Pengurus Inti (Ketua, Wakil, Sekretaris, Bendahara)
+model PengurusInti {
+  id         Int               @id @default(autoincrement())
+  periodeId  Int
+  periode    PeriodeOrganisasi @relation(fields: [periodeId], references: [id], onDelete: Cascade)
+  nama       String
+  jabatan    String            // "Ketua Umum", "Wakil Ketua Umum", dll
+  slogan     String?           // Khusus Ketua Umum
+  image      String?
+  urutan     Int               @default(0)
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+
+  @@map("pengurus_inti")
+}
+
+model Departemen {
+  id              Int               @id @default(autoincrement())
+  periodeId       Int
+  periode         PeriodeOrganisasi @relation(fields: [periodeId], references: [id], onDelete: Cascade)
+  namaDepartemen  String
+  deskripsi       String?
+  urutan          Int               @default(0)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  anggota AnggotaDepartemen[]
+
+  @@map("departemen")
+}
+
+model AnggotaDepartemen {
+  id            Int        @id @default(autoincrement())
+  departemenId  Int
+  departemen    Departemen @relation(fields: [departemenId], references: [id], onDelete: Cascade)
+  nama          String
+  jabatan       String     // "Ketua Divisi", "Anggota"
+  image         String?
+  urutan        Int        @default(0)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@map("anggota_departemen")
+}
+
+// =============================================================
+// KEGIATAN / PROGRAM
+// =============================================================
+
+model Kegiatan {
+  id               Int            @id @default(autoincrement())
+  date             DateTime       // tanggal kegiatan
+  startTime        String         // "08.00"
+  endTime          String?        // "17.00"
+  category         String         // "EDUKASI", "SOSIAL", dll
+  title            String
+  desc             String
+  location         String
+  image            String?        // URL gambar
+  type             String?        // "dark" | "light" (untuk UI card)
+  price            String?        // "Gratis" / nominal
+  registrationLink String?
+  organizer        String?        // Divisi penyelenggara
+  contactPerson    String?
+  isPublished      Boolean        @default(true)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  speakers  KegiatanSpeaker[]
+  galeri    Galeri[]          // foto dokumentasi kegiatan
+
+  @@map("kegiatan")
+}
+
+model KegiatanSpeaker {
+  id         Int      @id @default(autoincrement())
+  kegiatanId Int
+  kegiatan   Kegiatan @relation(fields: [kegiatanId], references: [id], onDelete: Cascade)
+  nama       String
+  urutan     Int      @default(0)
+
+  @@map("kegiatan_speaker")
+}
+
+// =============================================================
+// PENGUMUMAN
+// =============================================================
+
+model Pengumuman {
+  id          Int      @id @default(autoincrement())
+  tanggal     DateTime // tanggal pengumuman
+  category    String   @default("Pengumuman")
+  title       String
+  desc        String   // ringkasan / preview
+  author      String   // "Divisi Kaderisasi (Admin KMSGD)"
+  image       String?
+  isPenting   Boolean  @default(false)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  persyaratan      PengumumanPersyaratan[]
+  berkas           PengumumanBerkas[]
+  timeline         PengumumanTimeline[]
+  linkPendaftaran  String?
+  contactPerson    String?
+
+  @@map("pengumuman")
+}
+
+model PengumumanPersyaratan {
+  id           Int        @id @default(autoincrement())
+  pengumumanId Int
+  pengumuman   Pengumuman @relation(fields: [pengumumanId], references: [id], onDelete: Cascade)
+  isi          String
+  urutan       Int        @default(0)
+
+  @@map("pengumuman_persyaratan")
+}
+
+model PengumumanBerkas {
+  id           Int        @id @default(autoincrement())
+  pengumumanId Int
+  pengumuman   Pengumuman @relation(fields: [pengumumanId], references: [id], onDelete: Cascade)
+  nama         String     // "KTM / KRS", dst
+  urutan       Int        @default(0)
+
+  @@map("pengumuman_berkas")
+}
+
+model PengumumanTimeline {
+  id           Int        @id @default(autoincrement())
+  pengumumanId Int
+  pengumuman   Pengumuman @relation(fields: [pengumumanId], references: [id], onDelete: Cascade)
+  agenda       String
+  tanggal      String     // "10 - 31 Oktober 2025"
+  urutan       Int        @default(0)
+
+  @@map("pengumuman_timeline")
+}
+
+// =============================================================
+// GALERI (foto & video)
+// =============================================================
+
+model Galeri {
+  id         Int         @id @default(autoincrement())
+  judul      String?
+  tipe       GaleriTipe  // FOTO | VIDEO
+  url        String      // URL gambar atau URL YouTube
+  thumbnail  String?     // thumbnail override (untuk video)
+  kegiatanId Int?        // opsional — galeri bisa berdiri sendiri
+  kegiatan   Kegiatan?   @relation(fields: [kegiatanId], references: [id], onDelete: SetNull)
+  isPublished Boolean    @default(true)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@map("galeri")
+}
+
+enum GaleriTipe {
+  FOTO
+  VIDEO
+}
+
+// =============================================================
+// KONTAK
+// =============================================================
+
+model Kontak {
+  id          Int      @id @default(autoincrement())
+  email       String?
+  whatsapp    String?
+  instagram   String?
+  alamat      String?
+  googleMaps  String?  // embed URL Google Maps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("kontak")
+}

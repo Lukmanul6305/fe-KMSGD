@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type { Pengumuman } from "../features/user/pengumuman/types/pengumuman.types";
 
 interface Props {
@@ -44,13 +45,13 @@ export default function PengumumanCard({ item }: Props) {
                     <div className="text-xs text-[#999077] mb-3">
                         Oleh <span className="font-medium text-[#e5e2e1]">{item.author}</span>
                     </div>
-                    <a
-                        href="#"
+                    <Link
+                        to="/pengumuman/detail"
                         className="text-[#ffd700] text-xs font-bold uppercase tracking-wider hover:underline inline-flex items-center gap-1 group/link"
                     >
                         Baca selengkapnya{" "}
                         <span className="transition-transform group-hover/link:translate-x-1">→</span>
-                    </a>
+                    </Link>
                 </div>
             </div>
         </article >

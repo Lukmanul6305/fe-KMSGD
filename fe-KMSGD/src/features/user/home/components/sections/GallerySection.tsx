@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import Reveal from "../ui/Reveal";
 import { homeGalleryPreview } from "../../services/homeService";
+import { Link } from "react-router-dom";
 
 export default function GallerySection() {
     const wrapRef = useRef<HTMLDivElement>(null);
@@ -95,9 +96,9 @@ export default function GallerySection() {
                         </h2>
                         <p className="text-[#d0c6ab] text-base">Momen kebersamaan dan aksi nyata KMSGD.</p>
                     </div>
-                    <button className="text-[#ffd700] text-sm font-semibold hidden md:flex items-center gap-1 hover:underline cursor-pointer">
+                    <Link to="/galeri" className="text-[#ffd700] text-sm font-semibold hidden md:flex items-center gap-1 hover:underline cursor-pointer">
                         Lihat Semua Foto ↗
-                    </button>
+                    </Link>
                 </Reveal>
 
                 {/* Container utama scrollbar */}

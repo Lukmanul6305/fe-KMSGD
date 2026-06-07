@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 interface Props {
     img: string;
     title: string;
@@ -19,7 +21,7 @@ export default function KegiatanCard({ img, title, desc }: Props) {
             <div className="p-6">
                 <h3 className="text-xl font-bold font-['Montserrat'] text-[#e5e2e1] mb-3">{title}</h3>
                 <p className="text-[#d0c6ab] text-sm leading-relaxed mb-6">{desc}</p>
-                <a href="#" className="text-[#ffd700] text-sm font-semibold hover:underline">Pelajari →</a>
+                <Link to="/pengumuman/detail" className="text-[#ffd700] text-sm font-semibold hover:underline">Detail →</Link>
             </div>
         </div>
     );

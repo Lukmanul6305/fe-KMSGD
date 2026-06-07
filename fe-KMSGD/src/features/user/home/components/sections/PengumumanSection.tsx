@@ -1,15 +1,23 @@
 import Reveal from "../ui/Reveal";
 import PengumumanCard from "../../../../../components/PengumumanCard";
 import { pengumumanList } from "../../../pengumuman/services/pengumumanService";
+import { Link } from "react-router-dom";
 
 export default function PengumumanSection() {
     const latest = pengumumanList.slice(0, 3);
 
     return (
         <section className="py-24 px-6 max-w-7xl mx-auto">
-            <Reveal className="flex items-center gap-4 mb-8">
-                <span className="text-[#ffd700] text-3xl">📣</span>
-                <h2 className="text-2xl font-bold font-['Montserrat'] text-[#e5e2e1]">Pengumuman Terbaru</h2>
+            <Reveal className="flex justify-between items-end mb-12 border-b border-[#353535] pb-4 px-6">
+                <div>
+                    <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#ffd700] mb-2">
+                        <span className="text-white">Pengumuman</span>
+                    </h2>
+                    <p className="text-[#d0c6ab] text-base">Momen kebersamaan dan aksi nyata KMSGD.</p>
+                </div>
+                <Link to="/pengumuman" className="text-[#ffd700] text-sm font-semibold hidden md:flex items-center gap-1 hover:underline cursor-pointer">
+                    Lihat Semua Foto ↗
+                </Link>
             </Reveal>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
