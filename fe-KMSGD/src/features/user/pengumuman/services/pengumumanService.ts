@@ -97,3 +97,9 @@ export const filterPengumuman = (activeFilter: string): Pengumuman[] => {
   if (activeFilter === "Semua") return pengumumanList;
   return pengumumanList.filter((p) => p.kategori === activeFilter);
 };
+
+export const CONTENT_HEADER = {
+  judul: "Pengumuman",
+  deskripsi: "Informasi terbaru, edaran resmi, dan kabar penting seputar kegiatan dan keorganisasian KMSGD Jabodetabek.",
+  bgImage: "Gambar",
+};

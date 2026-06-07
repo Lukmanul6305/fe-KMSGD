@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function HeroSection() {
     return (
         <section className="relative min-h-dvh flex items-center px-6 md:px-12 pt-28 pb-16">
@@ -40,9 +42,9 @@ export default function HeroSection() {
                         <button className="w-full md:w-auto bg-[#ffd700] text-[#3a3000] font-bold px-4 py-3 md:px-8 md:py-4 uppercase tracking-wider hover:bg-[#e9c400] transition-colors text-xs md:text-sm cursor-pointer text-center">
                             Gabung Sekarang
                         </button>
-                        <button className="w-full md:w-auto border-2 border-[#FFD700] text-[#FFD700] font-bold px-4 py-3 md:px-8 md:py-4 uppercase tracking-wider hover:bg-[#FFD700] hover:text-[#1A1A1A] transition-colors text-xs md:text-sm cursor-pointer text-center">
+                        <Link to="/profil" className="w-full md:w-auto border-2 border-[#FFD700] text-[#FFD700] font-bold px-4 py-3 md:px-8 md:py-4 uppercase tracking-wider hover:bg-[#FFD700] hover:text-[#1A1A1A] transition-colors text-xs md:text-sm cursor-pointer text-center">
                             Tentang Kami
-                        </button>
+                        </Link>
                     </div>
 
                 </div>

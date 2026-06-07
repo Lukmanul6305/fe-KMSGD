@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Reveal from "../ui/Reveal";
 
 export default function CTASection() {
@@ -19,9 +20,9 @@ export default function CTASection() {
                         <button className="bg-[#1A1A1A] text-[#FFD700] font-bold px-10 py-4 uppercase tracking-wider hover:bg-[#2D2D2D] transition-colors text-sm cursor-pointer">
                             Daftar Sekarang
                         </button>
-                        <button className="border-2 border-[#1A1A1A] text-[#1A1A1A] font-bold px-10 py-4 uppercase tracking-wider hover:bg-[#1A1A1A] hover:text-[#FFD700] transition-colors text-sm cursor-pointer">
+                        <Link to="/kontak" className="border-2 border-[#1A1A1A] text-[#1A1A1A] font-bold px-10 py-4 uppercase tracking-wider hover:bg-[#1A1A1A] hover:text-[#FFD700] transition-colors text-sm cursor-pointer">
                             Hubungi Kami
-                        </button>
+                        </Link>
                     </div>
                 </Reveal>
             </div>

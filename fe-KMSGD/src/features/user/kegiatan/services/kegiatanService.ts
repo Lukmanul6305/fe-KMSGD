@@ -1,5 +1,13 @@
 import type { Kegiatan } from "../types/kegiatan.types";
 
+export const CONTENT_HEADER = {
+  type: "kegiatan",
+  judul: "Kegiatan",
+  judul2: "Kami",
+  deskripsi: "Jelajahi berbagai agenda, seminar, kompetisi, dan kegiatan sosial yang diselenggarakan oleh Keluarga Mahasiswa Sunan Gunung Djati Jabodetabek.",
+  bgImage: "gambar",
+};
+
 export const kegiatanFilters: string[] = ["Semua", "Spesial", "Sosial"];
 
 export const kegiatanList: Kegiatan[] = [

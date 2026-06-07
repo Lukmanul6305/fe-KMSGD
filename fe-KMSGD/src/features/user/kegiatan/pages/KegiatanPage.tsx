@@ -1,11 +1,10 @@
 import { usePaginatedFilter } from "../../../../hooks/usePaginatedFilter";
-import { kegiatanFilters, kegiatanList } from "../services/kegiatanService";
+import { kegiatanFilters, kegiatanList, CONTENT_HEADER } from "../services/kegiatanService";
 import type { Kegiatan } from "../types/kegiatan.types";
 import EventCard from "../components/EventCard";
 import SearchBar from "../../../../components/SearchBar";
 import { Pagination } from "../../../../components/Pagination";
 import Header from "../../../../components/Header";
-import { CONTENT_HEADER } from "../kegiatanData";
 import UserLayout from "../../../../layouts/UserLayout";
 
 const ITEMS_PER_PAGE = 6;

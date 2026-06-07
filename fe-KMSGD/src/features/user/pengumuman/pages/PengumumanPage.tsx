@@ -1,9 +1,10 @@
 import SearchBar from "../../../../components/SearchBar";
-import { pengumumanFilters, pengumumanList } from "../services/pengumumanService";
+import { CONTENT_HEADER, pengumumanFilters, pengumumanList } from "../services/pengumumanService";
 import { Pagination } from "../../../../components/Pagination";
 import PengumumanCard from "../../../../components/PengumumanCard";
 import { usePaginatedFilter } from "../../../../hooks/usePaginatedFilter";
 import UserLayout from "../../../../layouts/UserLayout";
+import Header from "../../../../components/Header";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -31,16 +32,7 @@ const PengumumanPage = () => {
     return (
         <div className="bg-[#131313] text-[#e5e2e1] font-['Inter'] min-h-screen flex flex-col">
             <UserLayout>
-
-                <header className="mb-20">
-                    <h1 className="text-4xl md:text-6xl font-bold font-['Montserrat'] text-[#e5e2e1] mb-4">
-                        Pengumuman
-                    </h1>
-                    <p className="text-[#d0c6ab] text-lg leading-relaxed max-w-2xl">
-                        Informasi terbaru, edaran resmi, dan kabar penting seputar kegiatan
-                        dan keorganisasian KMSGD Jabodetabek.
-                    </p>
-                </header>
+                <Header judul={CONTENT_HEADER.judul} deskripsi={CONTENT_HEADER.deskripsi} />
 
                 <section className="mb-20">
                     <SearchBar
