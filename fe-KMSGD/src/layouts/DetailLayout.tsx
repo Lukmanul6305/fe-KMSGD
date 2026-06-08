@@ -8,7 +8,7 @@ interface DetailLayoutProps {
     bgImage?: string;
 }
 
-export default function DetailLayout({ children, judul, judul2, deskripsi, bgImage = '/bg-default.jpg' }: DetailLayoutProps) {
+export default function DetailLayout({ children, judul, judul2, bgImage = '/bg-default.jpg' }: DetailLayoutProps) {
     return (
         <div className="bg-[#131313] text-[#e5e2e1] font-['Inter'] min-h-screen">
 
@@ -31,7 +31,7 @@ export default function DetailLayout({ children, judul, judul2, deskripsi, bgIma
                         <span className="text-[#ffd700]">{judul2}</span>
                     </h1>
                     <p className="text-[#d0c6ab] text-lg leading-relaxed max-w-2xl">
-                        {deskripsi}
+                        Minggu, 08 Juni 2026 09.00 – 12.00 WIB Aula Gedung A
                     </p>
                 </section>
             </div>

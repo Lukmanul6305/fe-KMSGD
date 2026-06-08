@@ -8,7 +8,7 @@ export const kegiatanController = {
   async getAll(req: Request, res: Response) {
     try {
       const data = await kegiatanService.getAll();
-      response.success(res, data, "Berhasil mengambil data kegiatan");
+      return response.success(res, data, "Berhasil mengambil data kegiatan");
     } catch (error) {
       handleError(res, error);
     }
@@ -17,7 +17,7 @@ export const kegiatanController = {
   async getAllCategories(req: Request, res: Response) {
     try {
       const data = await kegiatanService.getAllCategories();
-      response.success(res, data, "Berhasil mengambil kategori");
+      return response.success(res, data, "Berhasil mengambil kategori");
     } catch (error) {
       handleError(res, error);
     }
@@ -26,7 +26,7 @@ export const kegiatanController = {
   async getByCategory(req: Request, res: Response) {
     try {
       const data = await kegiatanService.getByCategory(req.params.category);
-      response.success(res, data, "Berhasil mengambil kegiatan by kategori");
+      return response.success(res, data, "Berhasil mengambil kegiatan by kategori");
     } catch (error) {
       handleError(res, error);
     }
@@ -35,7 +35,7 @@ export const kegiatanController = {
   async getById(req: Request, res: Response) {
     try {
       const data = await kegiatanService.getById(Number(req.params.id));
-      response.success(res, data, "Berhasil mengambil detail kegiatan");
+      return response.success(res, data, "Berhasil mengambil detail kegiatan");
     } catch (error) {
       handleError(res, error);
     }
@@ -46,7 +46,7 @@ export const kegiatanController = {
       const dto = createKegiatanSchema.parse(req.body);
       const imageBuffer = req.file?.buffer;
       const data = await kegiatanService.create(dto, imageBuffer);
-      response.success(res, data, "Kegiatan berhasil dibuat", 201);
+      return response.success(res, data, "Kegiatan berhasil dibuat", 201);
     } catch (error) {
       handleError(res, error);
     }
@@ -57,7 +57,7 @@ export const kegiatanController = {
       const dto = updateKegiatanSchema.parse(req.body);
       const imageBuffer = req.file?.buffer;
       const data = await kegiatanService.update(Number(req.params.id), dto, imageBuffer);
-      response.success(res, data, "Kegiatan berhasil diupdate");
+      return response.success(res, data, "Kegiatan berhasil diupdate");
     } catch (error) {
       handleError(res, error);
     }
@@ -66,7 +66,7 @@ export const kegiatanController = {
   async delete(req: Request, res: Response) {
     try {
       await kegiatanService.delete(Number(req.params.id));
-      response.success(res, null, "Kegiatan berhasil dihapus");
+      return response.success(res, null, "Kegiatan berhasil dihapus");
     } catch (error) {
       handleError(res, error);
     }

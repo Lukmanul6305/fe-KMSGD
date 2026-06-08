@@ -12,6 +12,9 @@ import KontakPage from "../features/user/kontak/pages/KontakPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import DetailKegiatan from "../features/user/kegiatan/pages/DetailKegiatan";
 import Detailpengumuman from "../features/user/pengumuman/pages/DetailPengumuman";
+import AdminLoginPage from "../features/admin/auth/pages/AdminLoginPage";
+import AdminLayout from "../layouts/AdminLayout";
+import DashboardAdmin from "../features/admin/dashboard/pages/DashboardAdmin";
 
 
 export const router = createBrowserRouter([
@@ -30,6 +33,21 @@ export const router = createBrowserRouter([
             { path: '/galeri', element: <GaleriPage /> },
             { path: '/kontak', element: <KontakPage /> },
             { path: '*', element: <NotFoundPage /> }
+        ]
+    },
+    {
+        path: '/admin/login',
+        element: <AdminLoginPage />
+    },
+    {
+        path: '/admin',
+        element: <AdminLayout />,
+        children: [
+            { index: true, element: <DashboardAdmin /> },
+            { path: 'dashboard', element: <DashboardAdmin /> },
+            { path: 'kegiatan', element: <DashboardAdmin /> },
+            { path: 'pengumuman', element: <DashboardAdmin /> },
+            { path: 'galeri', element: <DashboardAdmin /> }
         ]
     }
 ])

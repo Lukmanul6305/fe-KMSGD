@@ -41,6 +41,8 @@ model Sambutan {
   @@map("sambutan")
 }
 
+
+//hapus
 model DewanPendiri {
   id        Int      @id @default(autoincrement())
   nama      String
@@ -58,6 +60,8 @@ model DewanPendiri {
 // TENTANG KAMI — SEJARAH, VISI MISI
 // =============================================================
 
+
+//hapus
 model TentangKami {
   id        Int      @id @default(autoincrement())
   sejarah   String   // rich text / markdown
@@ -73,6 +77,8 @@ model TentangKami {
 // HYMNE & MARS — upload file audio/pdf
 // =============================================================
 
+
+//hapus
 model InstrumenOrganisasi {
   id          Int      @id @default(autoincrement())
   jenis       InstrumenJenis // HYMNE | MARS
