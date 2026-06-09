@@ -10,9 +10,9 @@ export const galeriController = {
       const page = Number(req.query.page) || 1;
       const limit = Number(req.query.limit) || 12;
       const data = await galeriService.getAll(page, limit);
-      response.success(res, data, "Berhasil mengambil data galeri");
+      return response.success(res, data, "Berhasil mengambil data galeri");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
@@ -22,27 +22,27 @@ export const galeriController = {
       const page = Number(req.query.page) || 1;
       const limit = Number(req.query.limit) || 12;
       const data = await galeriService.getByTipe(tipe, page, limit);
-      response.success(res, data, `Berhasil mengambil galeri ${tipe}`);
+      return response.success(res, data, `Berhasil mengambil galeri ${tipe}`);
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
   async getByKegiatan(req: Request, res: Response) {
     try {
       const data = await galeriService.getByKegiatan(Number(req.params.kegiatanId));
-      response.success(res, data, "Berhasil mengambil galeri kegiatan");
+      return response.success(res, data, "Berhasil mengambil galeri kegiatan");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
   async getById(req: Request, res: Response) {
     try {
       const data = await galeriService.getById(Number(req.params.id));
-      response.success(res, data, "Berhasil mengambil detail galeri");
+      return response.success(res, data, "Berhasil mengambil detail galeri");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
@@ -54,9 +54,9 @@ export const galeriController = {
         thumbnail: (req.files as any)?.thumbnail?.[0]?.buffer,
       };
       const data = await galeriService.create(dto, files);
-      response.success(res, data, "Galeri berhasil dibuat", 201);
+      return response.success(res, data, "Galeri berhasil dibuat", 201);
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
@@ -68,18 +68,18 @@ export const galeriController = {
         thumbnail: (req.files as any)?.thumbnail?.[0]?.buffer,
       };
       const data = await galeriService.update(Number(req.params.id), dto, files);
-      response.success(res, data, "Galeri berhasil diupdate");
+      return response.success(res, data, "Galeri berhasil diupdate");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
   async delete(req: Request, res: Response) {
     try {
       await galeriService.delete(Number(req.params.id));
-      response.success(res, null, "Galeri berhasil dihapus");
+      return response.success(res, null, "Galeri berhasil dihapus");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 };

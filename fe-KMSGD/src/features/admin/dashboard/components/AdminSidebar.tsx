@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { MdDashboard, MdEvent, MdCampaign, MdPhotoLibrary, MdLogout } from "react-icons/md";
+import { logoutAdmin } from "../../service/adminService";
 
 const NAV_ITEMS = [
     { label: "Dashboard", path: "/admin/dashboard", icon: MdDashboard },
@@ -11,9 +12,9 @@ const NAV_ITEMS = [
 const AdminSidebar = () => {
     const navigate = useNavigate();
 
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        navigate("/admin/login");
+    const handleLogout = async () => {
+        await logoutAdmin(); 
+        navigate("/admin/login", { replace: true });
     };
 
     return (
@@ -39,10 +40,9 @@ const AdminSidebar = () => {
                         to={item.path}
                         end={item.path === "/admin/dashboard"}
                         className={({ isActive }) =>
-                            `flex items-center gap-3 px-3 py-2.5 text-sm font-medium tracking-wide transition-colors ${
-                                isActive
-                                    ? "bg-[#FACC15] text-black"
-                                    : "text-neutral-400 hover:text-white hover:bg-neutral-800"
+                            `flex items-center gap-3 px-3 py-2.5 text-sm font-medium tracking-wide transition-colors ${isActive
+                                ? "bg-[#FACC15] text-black"
+                                : "text-neutral-400 hover:text-white hover:bg-neutral-800"
                             }`
                         }
                     >

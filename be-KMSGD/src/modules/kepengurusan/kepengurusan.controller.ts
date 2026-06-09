@@ -9,27 +9,27 @@ export const kepengurusanController = {
   async getAllPeriode(req: Request, res: Response) {
     try {
       const data = await kepengurusanService.getAllPeriode();
-      response.success(res, data, "Berhasil mengambil data periode");
+      return response.success(res, data, "Berhasil mengambil data periode");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
   async getPeriodeAktif(req: Request, res: Response) {
     try {
       const data = await kepengurusanService.getPeriodeAktif();
-      response.success(res, data, "Berhasil mengambil periode aktif");
+      return response.success(res, data, "Berhasil mengambil periode aktif");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
   async getPeriodeById(req: Request, res: Response) {
     try {
       const data = await kepengurusanService.getPeriodeById(Number(req.params.id));
-      response.success(res, data, "Berhasil mengambil detail periode");
+      return response.success(res, data, "Berhasil mengambil detail periode");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
@@ -37,9 +37,9 @@ export const kepengurusanController = {
     try {
       const dto = createPeriodeSchema.parse(req.body);
       const data = await kepengurusanService.createPeriode(dto);
-      response.success(res, data, "Periode berhasil dibuat", 201);
+      return response.success(res, data, "Periode berhasil dibuat", 201);
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
@@ -47,18 +47,18 @@ export const kepengurusanController = {
     try {
       const dto = updatePeriodeSchema.parse(req.body);
       const data = await kepengurusanService.updatePeriode(Number(req.params.id), dto);
-      response.success(res, data, "Periode berhasil diupdate");
+      return response.success(res, data, "Periode berhasil diupdate");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
   async deletePeriode(req: Request, res: Response) {
     try {
       await kepengurusanService.deletePeriode(Number(req.params.id));
-      response.success(res, null, "Periode berhasil dihapus");
+      return response.success(res, null, "Periode berhasil dihapus");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
@@ -67,9 +67,9 @@ export const kepengurusanController = {
     try {
       const dto = createPengurusIntiSchema.parse(req.body);
       const data = await kepengurusanService.createPengurusInti(dto, req.file?.buffer);
-      response.success(res, data, "Pengurus inti berhasil dibuat", 201);
+      return response.success(res, data, "Pengurus inti berhasil dibuat", 201);
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
@@ -77,18 +77,18 @@ export const kepengurusanController = {
     try {
       const dto = updatePengurusIntiSchema.parse(req.body);
       const data = await kepengurusanService.updatePengurusInti(Number(req.params.id), dto, req.file?.buffer);
-      response.success(res, data, "Pengurus inti berhasil diupdate");
+      return response.success(res, data, "Pengurus inti berhasil diupdate");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
   async deletePengurusInti(req: Request, res: Response) {
     try {
       await kepengurusanService.deletePengurusInti(Number(req.params.id));
-      response.success(res, null, "Pengurus inti berhasil dihapus");
+      return response.success(res, null, "Pengurus inti berhasil dihapus");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
@@ -97,9 +97,9 @@ export const kepengurusanController = {
     try {
       const dto = createDepartemenSchema.parse(req.body);
       const data = await kepengurusanService.createDepartemen(dto);
-      response.success(res, data, "Departemen berhasil dibuat", 201);
+      return response.success(res, data, "Departemen berhasil dibuat", 201);
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
@@ -107,18 +107,18 @@ export const kepengurusanController = {
     try {
       const dto = updateDepartemenSchema.parse(req.body);
       const data = await kepengurusanService.updateDepartemen(Number(req.params.id), dto);
-      response.success(res, data, "Departemen berhasil diupdate");
+      return response.success(res, data, "Departemen berhasil diupdate");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
   async deleteDepartemen(req: Request, res: Response) {
     try {
       await kepengurusanService.deleteDepartemen(Number(req.params.id));
-      response.success(res, null, "Departemen berhasil dihapus");
+      return response.success(res, null, "Departemen berhasil dihapus");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
@@ -127,9 +127,9 @@ export const kepengurusanController = {
     try {
       const dto = createAnggotaSchema.parse(req.body);
       const data = await kepengurusanService.createAnggota(dto, req.file?.buffer);
-      response.success(res, data, "Anggota berhasil dibuat", 201);
+      return response.success(res, data, "Anggota berhasil dibuat", 201);
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
@@ -137,18 +137,18 @@ export const kepengurusanController = {
     try {
       const dto = updateAnggotaSchema.parse(req.body);
       const data = await kepengurusanService.updateAnggota(Number(req.params.id), dto, req.file?.buffer);
-      response.success(res, data, "Anggota berhasil diupdate");
+      return response.success(res, data, "Anggota berhasil diupdate");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
   async deleteAnggota(req: Request, res: Response) {
     try {
       await kepengurusanService.deleteAnggota(Number(req.params.id));
-      response.success(res, null, "Anggota berhasil dihapus");
+      return response.success(res, null, "Anggota berhasil dihapus");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 };

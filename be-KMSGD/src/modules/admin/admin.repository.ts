@@ -26,6 +26,7 @@ export const adminRepository = {
     });
   },
 
+
   async update(id: number, data: Prisma.AdminUpdateInput) {
     return prisma.admin.update({
       where: { id },

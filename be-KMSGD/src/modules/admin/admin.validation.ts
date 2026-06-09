@@ -6,7 +6,7 @@ export const createAdminSchema = z.object({
     .min(3, "Username minimal 3 karakter")
     .max(50, "Username maksimal 50 karakter")
     .regex(/^[a-zA-Z0-9_]+$/, "Username hanya boleh huruf, angka, dan underscore"),
-  password: z.string({ error: "Password wajib diisi" }).min(8, "Password minimal 8 karakter").max(100, "Password maksimal 100 karakter"),
+  password: z.string({ error: "Password wajib diisi" }).min(6, "Password minimal 6 karakter").max(100, "Password maksimal 100 karakter"),
 });
 
 export const updateAdminSchema = z

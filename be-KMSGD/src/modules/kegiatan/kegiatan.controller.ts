@@ -10,7 +10,7 @@ export const kegiatanController = {
       const data = await kegiatanService.getAll();
       return response.success(res, data, "Berhasil mengambil data kegiatan");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
@@ -19,7 +19,7 @@ export const kegiatanController = {
       const data = await kegiatanService.getAllCategories();
       return response.success(res, data, "Berhasil mengambil kategori");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
@@ -28,7 +28,7 @@ export const kegiatanController = {
       const data = await kegiatanService.getByCategory(req.params.category);
       return response.success(res, data, "Berhasil mengambil kegiatan by kategori");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
@@ -37,7 +37,7 @@ export const kegiatanController = {
       const data = await kegiatanService.getById(Number(req.params.id));
       return response.success(res, data, "Berhasil mengambil detail kegiatan");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
@@ -48,7 +48,7 @@ export const kegiatanController = {
       const data = await kegiatanService.create(dto, imageBuffer);
       return response.success(res, data, "Kegiatan berhasil dibuat", 201);
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
@@ -59,7 +59,7 @@ export const kegiatanController = {
       const data = await kegiatanService.update(Number(req.params.id), dto, imageBuffer);
       return response.success(res, data, "Kegiatan berhasil diupdate");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 
@@ -68,7 +68,7 @@ export const kegiatanController = {
       await kegiatanService.delete(Number(req.params.id));
       return response.success(res, null, "Kegiatan berhasil dihapus");
     } catch (error) {
-      handleError(res, error);
+      return handleError(res, error);
     }
   },
 };

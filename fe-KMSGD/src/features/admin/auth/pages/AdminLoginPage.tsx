@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginAdmin } from "../../service/adminService";
+import { checkAuth, loginAdmin } from "../../service/adminService";
 
 export default function AdminLoginPage() {
     const navigate = useNavigate();
@@ -8,16 +8,27 @@ export default function AdminLoginPage() {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [checking, setChecking] = useState(true);
 
-    const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    useEffect(() => {
+        checkAuth().then((ok) => {
+            if (ok) navigate("/admin/dashboard", { replace: true });
+            else setChecking(false);
+        });
+    }, [navigate]);
+
+    if (checking) return (
+        <div className="min-h-screen bg-neutral-950 flex items-center justify-center">
+            <span className="text-neutral-400 text-sm">Memuat...</span>
+        </div>
+    );
+
+    const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError("");
         setLoading(true);
-
         try {
-            const data = await loginAdmin(form);
-
-            localStorage.setItem("token", data.data.token);
+            await loginAdmin(form);
             navigate("/admin/dashboard");
         } catch (error: unknown) {
             const message = error instanceof Error ? error.message : "Login gagal";
