@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import AdminSidebar from "../features/admin/dashboard/components/AdminSidebar";
-import { checkAuth } from "../features/admin/service/adminService";
+import { checkAuth } from "../features/admin/service/authService";
 
 const AdminLayout = () => {
     const [authStatus, setAuthStatus] = useState<"loading" | "ok" | "fail">("loading");

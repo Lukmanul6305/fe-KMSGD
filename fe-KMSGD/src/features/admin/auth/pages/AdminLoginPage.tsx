@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { checkAuth, loginAdmin } from "../../service/adminService";
+import { checkAuth, loginAdmin } from "../../service/authService";
 
 export default function AdminLoginPage() {
     const navigate = useNavigate();

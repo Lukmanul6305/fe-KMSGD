@@ -1,6 +1,5 @@
 import { kegiatanRepository } from "./kegiatan.repository";
 import { CreateKegiatanDto, UpdateKegiatanDto } from "./kegiatan.validation";
-import { uploadImage, deleteImage } from "../../utils/uploadImage";
 
 export const kegiatanService = {
   async getAll() {
@@ -22,35 +21,24 @@ export const kegiatanService = {
     return data;
   },
 
-  async create(dto: CreateKegiatanDto, imageBuffer?: Buffer) {
-    let image: string | undefined;
-    if (imageBuffer) image = await uploadImage(imageBuffer, "kegiatan");
-
+  async create(dto: CreateKegiatanDto) {
     const { speakers, ...rest } = dto;
 
     return kegiatanRepository.create({
       ...rest,
       date: new Date(dto.date),
-      ...(image && { image }),
       speakers: { create: speakers },
     });
   },
 
-  async update(id: number, dto: UpdateKegiatanDto, imageBuffer?: Buffer) {
-    const existing = await kegiatanService.getById(id);
-    let image = existing.image;
-
-    if (imageBuffer) {
-      if (existing.image) await deleteImage(existing.image);
-      image = await uploadImage(imageBuffer, "kegiatan");
-    }
+  async update(id: number, dto: UpdateKegiatanDto) {
+    await kegiatanService.getById(id); // validasi exists
 
     const { speakers, ...rest } = dto;
 
     return kegiatanRepository.update(id, {
       ...rest,
       ...(dto.date && { date: new Date(dto.date) }),
-      ...(image && { image }),
       ...(speakers && {
         speakers: { deleteMany: {}, create: speakers },
       }),
@@ -58,8 +46,7 @@ export const kegiatanService = {
   },
 
   async delete(id: number) {
-    const existing = await kegiatanService.getById(id);
-    if (existing.image) await deleteImage(existing.image);
+    await kegiatanService.getById(id);
     return kegiatanRepository.delete(id);
   },
 };

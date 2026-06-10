@@ -42,10 +42,11 @@ export const kegiatanController = {
   },
 
   async create(req: Request, res: Response) {
+    console.log("content-type:", req.headers["content-type"]);
+    console.log("body:", req.body);
     try {
       const dto = createKegiatanSchema.parse(req.body);
-      const imageBuffer = req.file?.buffer;
-      const data = await kegiatanService.create(dto, imageBuffer);
+      const data = await kegiatanService.create(dto);
       return response.success(res, data, "Kegiatan berhasil dibuat", 201);
     } catch (error) {
       return handleError(res, error);
@@ -54,9 +55,8 @@ export const kegiatanController = {
 
   async update(req: Request, res: Response) {
     try {
-      const dto = updateKegiatanSchema.parse(req.body);
-      const imageBuffer = req.file?.buffer;
-      const data = await kegiatanService.update(Number(req.params.id), dto, imageBuffer);
+      const dto = updateKegiatanSchema.parse(req.body); // ← hanya req.body
+      const data = await kegiatanService.update(Number(req.params.id), dto); // ← tanpa imageBuffer
       return response.success(res, data, "Kegiatan berhasil diupdate");
     } catch (error) {
       return handleError(res, error);

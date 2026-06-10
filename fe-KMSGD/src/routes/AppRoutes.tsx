@@ -15,6 +15,7 @@ import Detailpengumuman from "../features/user/pengumuman/pages/DetailPengumuman
 import AdminLoginPage from "../features/admin/auth/pages/AdminLoginPage";
 import AdminLayout from "../layouts/AdminLayout";
 import DashboardAdmin from "../features/admin/dashboard/pages/DashboardAdmin";
+import AdminKegiatan from "../features/admin/kegiatan/page/AdminKegiatan";
 
 
 export const router = createBrowserRouter([
@@ -45,7 +46,7 @@ export const router = createBrowserRouter([
         children: [
             { index: true, element: <DashboardAdmin /> },
             { path: 'dashboard', element: <DashboardAdmin /> },
-            { path: 'kegiatan', element: <DashboardAdmin /> },
+            { path: 'kegiatan', element: <AdminKegiatan /> },
             { path: 'pengumuman', element: <DashboardAdmin /> },
             { path: 'galeri', element: <DashboardAdmin /> }
         ]

@@ -13,6 +13,7 @@ export const createKegiatanSchema = z.object({
   title: z.string({ error: "Judul wajib diisi" }),
   desc: z.string({ error: "Deskripsi wajib diisi" }),
   location: z.string({ error: "Lokasi wajib diisi" }),
+  image: z.string().url("URL gambar tidak valid").optional(),
   type: z.enum(["dark", "light"]).optional(),
   price: z.string().optional(),
   registrationLink: z.string().url("Link tidak valid").optional(),
