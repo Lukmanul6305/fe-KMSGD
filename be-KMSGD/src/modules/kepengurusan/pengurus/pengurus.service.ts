@@ -1,40 +1,13 @@
-import { kepengurusanRepository } from "./kepengurusan.repository";
-import { uploadImage, deleteImage } from "../../utils/uploadImage";
-import { CreatePeriodeDto, UpdatePeriodeDto, CreatePengurusIntiDto, UpdatePengurusIntiDto, CreateDepartemenDto, UpdateDepartemenDto, CreateAnggotaDto, UpdateAnggotaDto } from "./kepengurusan.validation";
+import { deleteImage, uploadImage } from "../../../utils/uploadImage";
+import { kepengurusanRepository } from "./pengurus.repository";
+import { CreateAnggotaDto, CreatePengurusIntiDto, UpdateAnggotaDto, UpdatePengurusIntiDto } from "./pengurus.validation";
 
 export const kepengurusanService = {
-  // Periode
-  async getAllPeriode() {
-    return kepengurusanRepository.findAllPeriode();
-  },
-
-  async getPeriodeAktif() {
-    const data = await kepengurusanRepository.findPeriodeAktif();
-    if (!data) throw new Error("Tidak ada periode aktif");
-    return data;
-  },
-
-  async getPeriodeById(id: number) {
-    const data = await kepengurusanRepository.findPeriodeById(id);
-    if (!data) throw new Error("Periode tidak ditemukan");
-    return data;
-  },
-
-  async createPeriode(dto: CreatePeriodeDto) {
-    return kepengurusanRepository.createPeriode(dto);
-  },
-
-  async updatePeriode(id: number, dto: UpdatePeriodeDto) {
-    await kepengurusanService.getPeriodeById(id);
-    return kepengurusanRepository.updatePeriode(id, dto);
-  },
-
-  async deletePeriode(id: number) {
-    await kepengurusanService.getPeriodeById(id);
-    return kepengurusanRepository.deletePeriode(id);
-  },
-
   // Pengurus Inti
+  async getPengurusIntiByPeriode(periodeId: number) {
+    return kepengurusanRepository.findPengurusIntiByPeriode(periodeId);
+  },
+
   async createPengurusInti(dto: CreatePengurusIntiDto, imageBuffer?: Buffer) {
     let image: string | undefined;
     if (imageBuffer) image = await uploadImage(imageBuffer, "kepengurusan/inti");
@@ -42,7 +15,6 @@ export const kepengurusanService = {
     return kepengurusanRepository.createPengurusInti({
       ...dto,
       ...(image && { image }),
-      periode: { connect: { id: dto.periodeId } },
     });
   },
 
@@ -59,7 +31,6 @@ export const kepengurusanService = {
     return kepengurusanRepository.updatePengurusInti(id, {
       ...dto,
       ...(image && { image }),
-      ...(dto.periodeId && { periode: { connect: { id: dto.periodeId } } }),
     });
   },
 
@@ -70,29 +41,6 @@ export const kepengurusanService = {
     return kepengurusanRepository.deletePengurusInti(id);
   },
 
-  // Departemen
-  async createDepartemen(dto: CreateDepartemenDto) {
-    return kepengurusanRepository.createDepartemen({
-      ...dto,
-      periode: { connect: { id: dto.periodeId } },
-    });
-  },
-
-  async updateDepartemen(id: number, dto: UpdateDepartemenDto) {
-    const existing = await kepengurusanRepository.findDepartemenById(id);
-    if (!existing) throw new Error("Departemen tidak ditemukan");
-    return kepengurusanRepository.updateDepartemen(id, {
-      ...dto,
-      ...(dto.periodeId && { periode: { connect: { id: dto.periodeId } } }),
-    });
-  },
-
-  async deleteDepartemen(id: number) {
-    const existing = await kepengurusanRepository.findDepartemenById(id);
-    if (!existing) throw new Error("Departemen tidak ditemukan");
-    return kepengurusanRepository.deleteDepartemen(id);
-  },
-
   // Anggota
   async createAnggota(dto: CreateAnggotaDto, imageBuffer?: Buffer) {
     let image: string | undefined;
@@ -101,7 +49,6 @@ export const kepengurusanService = {
     return kepengurusanRepository.createAnggota({
       ...dto,
       ...(image && { image }),
-      departemen: { connect: { id: dto.departemenId } },
     });
   },
 
@@ -118,7 +65,6 @@ export const kepengurusanService = {
     return kepengurusanRepository.updateAnggota(id, {
       ...dto,
       ...(image && { image }),
-      ...(dto.departemenId && { departemen: { connect: { id: dto.departemenId } } }),
     });
   },
 

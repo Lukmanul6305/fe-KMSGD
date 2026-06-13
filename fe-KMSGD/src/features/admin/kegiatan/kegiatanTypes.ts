@@ -1,43 +1,53 @@
-export interface Speaker {
+export interface KategoriKegiatan {
   id: number;
   nama: string;
-  urutan: number;
+}
+
+export interface Departemen {
+  id: number;
+  namaDepartemen: string;
 }
 
 export interface Kegiatan {
   id: number;
-  date: string;
+  periodeId: number;
   startTime: string;
-  endTime?: string;
-  category: string;
+  endTime?: string | null;
+  kategoriId: number;
+  kategori: KategoriKegiatan;
   title: string;
   desc: string;
   location: string;
-  image?: string;
-  type?: string;
-  price?: string;
-  registrationLink?: string;
-  organizer?: string;
-  contactPerson?: string;
+  image?: string | null;
+  price: number;
+  registrationLink?: string | null;
+  departemenId?: number | null;
+  departemen?: Departemen | null;
+  organizerCustom?: string | null;
+  contactPerson?: string | null;
   isPublished: boolean;
   createdAt: string;
-  speakers: Speaker[];
+  speakers: string[];
 }
 
-export interface CreateKegiatanPayload {
-  date: string;
+export type CreateKegiatanPayload = {
+  periodeId: number;
   startTime: string;
   endTime?: string;
-  category: string;
+  kategoriId: number;
   title: string;
   desc: string;
   location: string;
-  image?: string;
-  type?: string;
-  price?: string;
+  price?: number;
   registrationLink?: string;
-  organizer?: string;
+  departemenId?: number;
+  organizerCustom?: string;
   contactPerson?: string;
-  isPublished?: boolean;
-  speakers?: Omit<Speaker, "id">[];
-}
+  isPublished: boolean;
+  speakers: string[];
+  file?: File | null;
+};
+
+export type KategoriKegiatanPayload = {
+  nama: string;
+};

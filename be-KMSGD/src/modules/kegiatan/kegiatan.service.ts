@@ -1,3 +1,4 @@
+import { uploadImage, deleteImage } from "../../utils/uploadImage";
 import { kegiatanRepository } from "./kegiatan.repository";
 import { CreateKegiatanDto, UpdateKegiatanDto } from "./kegiatan.validation";
 
@@ -6,13 +7,20 @@ export const kegiatanService = {
     return kegiatanRepository.findAll();
   },
 
-  async getAllCategories() {
-    const data = await kegiatanRepository.findAllCategories();
-    return data.map((k) => k.category);
+  async getAllAdmin() {
+    return kegiatanRepository.findAllAdmin();
   },
 
-  async getByCategory(category: string) {
-    return kegiatanRepository.findByCategory(category);
+  async getAllCategories() {
+    return kegiatanRepository.findAllCategories();
+  },
+
+  async getByCategory(kategoriId: number) {
+    return kegiatanRepository.findByCategory(kategoriId);
+  },
+
+  async getByDepartemen(departemenId: number) {
+    return kegiatanRepository.findByDepartemen(departemenId);
   },
 
   async getById(id: number) {
@@ -21,32 +29,42 @@ export const kegiatanService = {
     return data;
   },
 
-  async create(dto: CreateKegiatanDto) {
-    const { speakers, ...rest } = dto;
+  async create(dto: CreateKegiatanDto, imageBuffer?: Buffer) {
+    const { startTime, endTime, ...rest } = dto;
+
+    let image: string | undefined;
+    if (imageBuffer) image = await uploadImage(imageBuffer, "kegiatan");
 
     return kegiatanRepository.create({
       ...rest,
-      date: new Date(dto.date),
-      speakers: { create: speakers },
+      startTime: new Date(startTime!),
+      ...(endTime && { endTime: new Date(endTime) }),
+      ...(image && { image }),
     });
   },
 
-  async update(id: number, dto: UpdateKegiatanDto) {
-    await kegiatanService.getById(id); // validasi exists
+  async update(id: number, dto: UpdateKegiatanDto, imageBuffer?: Buffer) {
+    const existing = await kegiatanService.getById(id);
 
-    const { speakers, ...rest } = dto;
+    const { startTime, endTime, ...rest } = dto;
+
+    let image = existing.image;
+    if (imageBuffer) {
+      if (existing.image) await deleteImage(existing.image);
+      image = await uploadImage(imageBuffer, "kegiatan");
+    }
 
     return kegiatanRepository.update(id, {
       ...rest,
-      ...(dto.date && { date: new Date(dto.date) }),
-      ...(speakers && {
-        speakers: { deleteMany: {}, create: speakers },
-      }),
+      ...(startTime && { startTime: new Date(startTime) }),
+      ...(endTime && { endTime: new Date(endTime) }),
+      ...(image && { image }),
     });
   },
 
   async delete(id: number) {
-    await kegiatanService.getById(id);
+    const existing = await kegiatanService.getById(id);
+    if (existing.image) await deleteImage(existing.image);
     return kegiatanRepository.delete(id);
   },
 };

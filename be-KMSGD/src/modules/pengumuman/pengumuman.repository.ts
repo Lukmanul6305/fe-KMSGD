@@ -2,9 +2,9 @@ import { prisma } from "../../config/prisma";
 import { Prisma } from "@prisma/client";
 
 const include = {
-  persyaratan: { orderBy: { urutan: "asc" as const } },
-  berkas: { orderBy: { urutan: "asc" as const } },
-  timeline: { orderBy: { urutan: "asc" as const } },
+  persyaratan: { orderBy: { id: "asc" as const } },
+  berkas: { orderBy: { id: "asc" as const } },
+  timeline: { orderBy: { id: "asc" as const } },
 };
 
 export const pengumumanRepository = {

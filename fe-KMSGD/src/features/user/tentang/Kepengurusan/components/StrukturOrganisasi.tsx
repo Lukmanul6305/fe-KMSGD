@@ -1,7 +1,7 @@
 import { useShowMore } from "../../../../../hooks/useShowMore";
 import { profileDivisions, ketua } from "../../services/tentangService";
 import ShowMoreButton from "../../../../../components/ShowMoreButton";
-import StrukturOrganisasiCard from "./strukturOrganisasiCard";
+import StrukturOrganisasiCard from "./StrukturOrganisasiCard";
 
 export default function StrukturOrganisasi() {
     const { visibleItems, showAll, hasMore, toggle } = useShowMore(profileDivisions, 6);

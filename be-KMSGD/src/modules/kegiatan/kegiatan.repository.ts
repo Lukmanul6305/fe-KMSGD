@@ -5,43 +5,54 @@ export const kegiatanRepository = {
   async findAll() {
     return prisma.kegiatan.findMany({
       where: { isPublished: true },
-      orderBy: { date: "desc" },
-      include: { speakers: { orderBy: { urutan: "asc" as const } }, galeri: true },
+      orderBy: { startTime: "desc" },
+      include: { galeri: true, kategori: true, departemen: true },
+    });
+  },
+
+  async findAllAdmin() {
+    return prisma.kegiatan.findMany({
+      orderBy: { startTime: "desc" },
+      include: { galeri: true, kategori: true, departemen: true },
     });
   },
 
   async findAllCategories() {
+    return prisma.kategoriKegiatan.findMany({ orderBy: { nama: "asc" } });
+  },
+
+  async findByCategory(kategoriId: number) {
     return prisma.kegiatan.findMany({
-      where: { isPublished: true },
-      select: { category: true },
-      distinct: ["category"],
+      where: { kategoriId, isPublished: true },
+      orderBy: { startTime: "desc" },
+      include: { galeri: true, kategori: true, departemen: true },
     });
   },
 
-  async findByCategory(category: string) {
+  async findByDepartemen(departemenId: number) {
     return prisma.kegiatan.findMany({
-      where: { category, isPublished: true },
-      orderBy: { date: "desc" },
-      include: { speakers: true, galeri: true },
+      where: { departemenId, isPublished: true },
+      orderBy: { startTime: "desc" },
+      include: { galeri: true, kategori: true, departemen: true },
     });
   },
 
   async findById(id: number) {
     return prisma.kegiatan.findUnique({
       where: { id },
-      include: { speakers: true, galeri: true },
+      include: { galeri: true, kategori: true, departemen: true },
     });
   },
 
-  async create(data: Prisma.KegiatanCreateInput) {
+  async create(data: Prisma.KegiatanUncheckedCreateInput) {
     return prisma.kegiatan.create({ data });
   },
 
-  async update(id: number, data: Prisma.KegiatanUpdateInput) {
+  async update(id: number, data: Prisma.KegiatanUncheckedUpdateInput) {
     return prisma.kegiatan.update({ where: { id }, data });
   },
 
   async delete(id: number) {
     return prisma.kegiatan.delete({ where: { id } });
-  }
+  },
 };

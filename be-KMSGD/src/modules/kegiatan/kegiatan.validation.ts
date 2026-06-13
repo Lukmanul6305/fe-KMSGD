@@ -1,26 +1,31 @@
 import { z } from "zod";
 
-const speakerSchema = z.object({
-  nama: z.string({ error: "Nama speaker wajib diisi" }),
-  urutan: z.number().default(0),
-});
-
 export const createKegiatanSchema = z.object({
-  date: z.string({ error: "Tanggal wajib diisi" }),
-  startTime: z.string({ error: "Jam mulai wajib diisi" }),
-  endTime: z.string().optional(),
-  category: z.string({ error: "Kategori wajib diisi" }),
-  title: z.string({ error: "Judul wajib diisi" }),
-  desc: z.string({ error: "Deskripsi wajib diisi" }),
-  location: z.string({ error: "Lokasi wajib diisi" }),
-  image: z.string().url("URL gambar tidak valid").optional(),
-  type: z.enum(["dark", "light"]).optional(),
-  price: z.string().optional(),
-  registrationLink: z.string().url("Link tidak valid").optional(),
-  organizer: z.string().optional(),
-  contactPerson: z.string().optional(),
-  isPublished: z.boolean().default(true),
-  speakers: z.array(speakerSchema).default([]),
+  periodeId: z.coerce.number({ error: "periodeId wajib diisi" }),
+  kategoriId: z.coerce.number({ error: "kategoriId wajib diisi" }),
+  startTime: z.string({ error: "Waktu mulai wajib diisi" }),
+  endTime: z.string().optional().nullable(),
+  title: z.string({ error: "Judul wajib diisi" }).min(1),
+  desc: z.string({ error: "Deskripsi wajib diisi" }).min(1),
+  location: z.string({ error: "Lokasi wajib diisi" }).min(1),
+  price: z.coerce.number().optional().default(0),
+  registrationLink: z.string().url("Link registrasi harus berupa URL").optional().nullable(),
+  departemenId: z.coerce.number().optional().nullable(),
+  organizerCustom: z.string().optional().nullable(),
+  contactPerson: z.string().optional().nullable(),
+  isPenting: z
+    .union([z.boolean(), z.string()])
+    .transform((v) => (typeof v === "string" ? v === "true" : v))
+    .optional(),
+  isPublished: z
+    .union([z.boolean(), z.string()])
+    .transform((v) => (typeof v === "string" ? v === "true" : v))
+    .optional(),
+  speakers: z
+    .union([z.array(z.string()), z.string()])
+    .transform((v) => (typeof v === "string" ? JSON.parse(v) : v))
+    .optional()
+    .nullable(),
 });
 
 export const updateKegiatanSchema = createKegiatanSchema.partial();

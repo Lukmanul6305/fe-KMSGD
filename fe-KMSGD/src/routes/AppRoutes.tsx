@@ -16,7 +16,13 @@ import AdminLoginPage from "../features/admin/auth/pages/AdminLoginPage";
 import AdminLayout from "../layouts/AdminLayout";
 import DashboardAdmin from "../features/admin/dashboard/pages/DashboardAdmin";
 import AdminKegiatan from "../features/admin/kegiatan/page/AdminKegiatan";
-
+import Kepengurusan from "../features/admin/kepengurusan/Kepengurusan";
+import KegiatanForm from "../features/admin/kegiatan/page/KegiatanForm";
+import PeriodePage from "../features/admin/kepengurusan/priode/PeriodePage";
+import DepartemenAdminPage from "../features/admin/kepengurusan/departemen/DepartemenPage";
+import PengurusPage from "../features/admin/kepengurusan/pengurus/PengurusPage";
+import KegiatanEditForm from "../features/admin/kegiatan/page/KegiatanEditForm";
+import { Navigate } from "react-router-dom";
 
 export const router = createBrowserRouter([
     {
@@ -46,7 +52,28 @@ export const router = createBrowserRouter([
         children: [
             { index: true, element: <DashboardAdmin /> },
             { path: 'dashboard', element: <DashboardAdmin /> },
-            { path: 'kegiatan', element: <AdminKegiatan /> },
+            {
+                path: 'kegiatan',
+                element: <AdminKegiatan />
+            },
+            {
+                path: 'kegiatan/tambah',
+                element: <KegiatanForm />
+            },
+            {
+                path: 'kegiatan/edit/:id',
+                element: <KegiatanEditForm />
+            },
+            {
+                path: 'kepengurusan',
+                element: <Kepengurusan />,
+                children: [
+                    { index: true, element: <Navigate to="periode" replace /> },
+                    { path: 'periode', element: <PeriodePage /> },
+                    { path: 'departemen', element: <DepartemenAdminPage /> },
+                    { path: 'pengurus', element: <PengurusPage /> }
+                ]
+            },
             { path: 'pengumuman', element: <DashboardAdmin /> },
             { path: 'galeri', element: <DashboardAdmin /> }
         ]

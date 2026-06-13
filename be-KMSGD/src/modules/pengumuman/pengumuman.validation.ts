@@ -2,18 +2,15 @@ import { z } from "zod";
 
 const persyaratanSchema = z.object({
   isi: z.string({ error: "Isi persyaratan wajib diisi" }),
-  urutan: z.number().default(0),
 });
 
 const berkasSchema = z.object({
   nama: z.string({ error: "Nama berkas wajib diisi" }),
-  urutan: z.number().default(0),
 });
 
 const timelineSchema = z.object({
   agenda: z.string({ error: "Agenda wajib diisi" }),
   tanggal: z.string({ error: "Tanggal wajib diisi" }),
-  urutan: z.number().default(0),
 });
 
 export const createPengumumanSchema = z.object({

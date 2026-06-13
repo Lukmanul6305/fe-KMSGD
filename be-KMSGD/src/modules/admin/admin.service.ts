@@ -24,7 +24,7 @@ export const adminService = {
   },
 
   async update(id: number, dto: UpdateAdminDto) {
-    await adminService.getById(id); // pastikan admin ada
+    await adminService.getById(id);
 
     if (dto.username) {
       const existing = await adminRepository.findByUsername(dto.username);

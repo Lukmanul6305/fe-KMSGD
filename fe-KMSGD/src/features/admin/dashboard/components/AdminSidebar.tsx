@@ -1,9 +1,10 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { MdDashboard, MdEvent, MdCampaign, MdPhotoLibrary, MdLogout } from "react-icons/md";
+import { MdDashboard, MdGroups, MdEvent, MdCampaign, MdPhotoLibrary, MdLogout } from "react-icons/md";
 import { logoutAdmin } from "../../service/authService";
 
 const NAV_ITEMS = [
     { label: "Dashboard", path: "/admin/dashboard", icon: MdDashboard },
+    { label: "Kepengurusan", path: "/admin/kepengurusan", icon: MdGroups },
     { label: "Kegiatan", path: "/admin/kegiatan", icon: MdEvent },
     { label: "Pengumuman", path: "/admin/pengumuman", icon: MdCampaign },
     { label: "Galeri", path: "/admin/galeri", icon: MdPhotoLibrary },

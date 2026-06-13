@@ -37,7 +37,7 @@ model RefreshToken {
 }
 
 // =============================================================
-// BERANDA — SAMBUTAN & FOTO DEWAN PENDIRI
+// BERANDA — SAMBUTAN
 // =============================================================
 
 model Sambutan {
@@ -52,75 +52,20 @@ model Sambutan {
   @@map("sambutan")
 }
 
-
-//hapus
-model DewanPendiri {
-  id        Int      @id @default(autoincrement())
-  nama      String
-  jabatan   String?  // misal: Pendiri, Ketua Perdana, dst
-  angkatan  String?  // tahun angkatan / periode
-  image     String   // URL foto
-  urutan    Int      @default(0) // untuk mengatur urutan tampil
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("dewan_pendiri")
-}
-
-// =============================================================
-// TENTANG KAMI — SEJARAH, VISI MISI
-// =============================================================
-
-
-//hapus
-model TentangKami {
-  id        Int      @id @default(autoincrement())
-  sejarah   String   // rich text / markdown
-  visi      String
-  misi      String   // bisa JSON array atau teks berpisah \n
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("tentang_kami")
-}
-
-// =============================================================
-// HYMNE & MARS — upload file audio/pdf
-// =============================================================
-
-
-//hapus
-model InstrumenOrganisasi {
-  id          Int      @id @default(autoincrement())
-  jenis       InstrumenJenis // HYMNE | MARS
-  judul       String
-  fileUrl     String   // URL file (audio mp3/wav atau PDF notasi)
-  mimeType    String?  // "audio/mpeg", "application/pdf", dll
-  ukuranByte  Int?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@map("instrumen_organisasi")
-}
-
-enum InstrumenJenis {
-  HYMNE
-  MARS
-}
-
 // =============================================================
 // STRUKTUR ORGANISASI — AKTIF & DEMISIONER
 // =============================================================
 
 model PeriodeOrganisasi {
   id         Int             @id @default(autoincrement())
-  periode    String          // "2025/2026"
+  periode    String
   status     StatusPeriode   @default(AKTIF)
   createdAt  DateTime        @default(now())
   updatedAt  DateTime        @updatedAt
 
   pengurusInti PengurusInti[]
   departemen   Departemen[]
+  kegiatan     Kegiatan[]
 
   @@map("periode_organisasi")
 }
@@ -139,7 +84,6 @@ model PengurusInti {
   jabatan    String            // "Ketua Umum", "Wakil Ketua Umum", dll
   slogan     String?           // Khusus Ketua Umum
   image      String?
-  urutan     Int               @default(0)
   createdAt  DateTime          @default(now())
   updatedAt  DateTime          @updatedAt
 
@@ -152,11 +96,11 @@ model Departemen {
   periode         PeriodeOrganisasi @relation(fields: [periodeId], references: [id], onDelete: Cascade)
   namaDepartemen  String
   deskripsi       String?
-  urutan          Int               @default(0)
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
 
-  anggota AnggotaDepartemen[]
+  anggota  AnggotaDepartemen[]
+  kegiatan Kegiatan[]
 
   @@map("departemen")
 }
@@ -168,7 +112,6 @@ model AnggotaDepartemen {
   nama          String
   jabatan       String     // "Ketua Divisi", "Anggota"
   image         String?
-  urutan        Int        @default(0)
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
 
@@ -180,38 +123,43 @@ model AnggotaDepartemen {
 // =============================================================
 
 model Kegiatan {
-  id               Int            @id @default(autoincrement())
-  date             DateTime       // tanggal kegiatan
-  startTime        String         // "08.00"
-  endTime          String?        // "17.00"
-  category         String         // "EDUKASI", "SOSIAL", dll
+  id               Int                @id @default(autoincrement())
+  periodeId        Int
+  periode          PeriodeOrganisasi  @relation(fields: [periodeId], references: [id], onDelete: Cascade)
+  startTime        DateTime
+  endTime          DateTime?
+  kategoriId       Int
+  kategori         KategoriKegiatan   @relation(fields: [kategoriId], references: [id], onDelete: Restrict)
   title            String
   desc             String
   location         String
-  image            String?        // URL gambar
-  type             String?        // "dark" | "light" (untuk UI card)
-  price            String?        // "Gratis" / nominal
+  image            String?
+  price            Int                @default(0)
   registrationLink String?
-  organizer        String?        // Divisi penyelenggara
+  departemenId     Int?
+  departemen       Departemen?        @relation(fields: [departemenId], references: [id], onDelete: SetNull)
+  organizerCustom  String?
   contactPerson    String?
-  isPublished      Boolean        @default(true)
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
+  speakers         String[]
+  isPenting        Boolean            @default(false)
+  isPublished      Boolean            @default(true)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
 
-  speakers  KegiatanSpeaker[]
-  galeri    Galeri[]          // foto dokumentasi kegiatan
+  galeri           Galeri[]
 
   @@map("kegiatan")
 }
 
-model KegiatanSpeaker {
-  id         Int      @id @default(autoincrement())
-  kegiatanId Int
-  kegiatan   Kegiatan @relation(fields: [kegiatanId], references: [id], onDelete: Cascade)
-  nama       String
-  urutan     Int      @default(0)
+model KategoriKegiatan {
+  id         Int        @id @default(autoincrement())
+  nama       String     @unique 
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 
-  @@map("kegiatan_speaker")
+  kegiatan   Kegiatan[]
+
+  @@map("kategori_kegiatan")
 }
 
 // =============================================================
@@ -245,7 +193,6 @@ model PengumumanPersyaratan {
   pengumumanId Int
   pengumuman   Pengumuman @relation(fields: [pengumumanId], references: [id], onDelete: Cascade)
   isi          String
-  urutan       Int        @default(0)
 
   @@map("pengumuman_persyaratan")
 }
@@ -255,7 +202,6 @@ model PengumumanBerkas {
   pengumumanId Int
   pengumuman   Pengumuman @relation(fields: [pengumumanId], references: [id], onDelete: Cascade)
   nama         String     // "KTM / KRS", dst
-  urutan       Int        @default(0)
 
   @@map("pengumuman_berkas")
 }
@@ -266,7 +212,6 @@ model PengumumanTimeline {
   pengumuman   Pengumuman @relation(fields: [pengumumanId], references: [id], onDelete: Cascade)
   agenda       String
   tanggal      String     // "10 - 31 Oktober 2025"
-  urutan       Int        @default(0)
 
   @@map("pengumuman_timeline")
 }

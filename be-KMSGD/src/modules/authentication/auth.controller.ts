@@ -22,7 +22,7 @@ export const login = async (req: Request, res: Response) => {
       return res.status(401).json({ message: "Username atau password salah" });
     }
 
-    const accessToken = jwt.sign({ id: admin.id, username: admin.username }, JWT_SECRET, { expiresIn: "15m" });
+    const accessToken = jwt.sign({ id: admin.id, username: admin.username }, JWT_SECRET, { expiresIn: "1d" });
 
     const refreshToken = jwt.sign({ id: admin.id, username: admin.username }, REFRESH_SECRET, { expiresIn: "7d" });
 
@@ -39,7 +39,7 @@ export const login = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction ? "none" : "lax",
-      maxAge: 15 * 60 * 1000, // 15 menit
+      maxAge: 24 * 60 * 60 * 1000, // 1 hari
     });
 
     res.cookie("refreshToken", refreshToken, {
@@ -81,13 +81,13 @@ export const refresh = async (req: Request, res: Response) => {
       return res.status(401).json({ message: "Refresh token expired" });
     }
 
-    const accessToken = jwt.sign({ id: payload.id, username: payload.username }, JWT_SECRET, { expiresIn: "15m" });
+    const accessToken = jwt.sign({ id: payload.id, username: payload.username }, JWT_SECRET, { expiresIn: "1d" });
 
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction ? "none" : "lax",
-      maxAge: 15 * 60 * 1000,
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     return res.status(200).json({ message: "Token diperbarui" });
