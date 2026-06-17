@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { MdDashboard, MdGroups, MdEvent, MdCampaign, MdPhotoLibrary, MdLogout } from "react-icons/md";
-import { logoutAdmin } from "../../service/authService";
+import { useAuthStore } from "@/store/authStore";
 
 const NAV_ITEMS = [
     { label: "Dashboard", path: "/admin/dashboard", icon: MdDashboard },
@@ -12,9 +12,10 @@ const NAV_ITEMS = [
 
 const AdminSidebar = () => {
     const navigate = useNavigate();
+    const logout = useAuthStore((s) => s.logout);
 
     const handleLogout = async () => {
-        await logoutAdmin();
+        await logout();
         navigate("/admin/login", { replace: true });
     };
 

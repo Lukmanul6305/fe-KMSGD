@@ -68,7 +68,7 @@ export const Navbar: React.FC = () => {
             <div className="px-6 py-4 md:px-12 flex items-center justify-between">
 
                 {/* Logo & Judul */}
-                <Link to="/" onClick={closeMenus} className="flex items-center gap-3 cursor-pointer">
+                <Link to="/" onClick={closeMenus} className="flex items-center gap-3 cursor-pointer font-['Montserrat']">
                     <img
                         src='/logo.jpeg'
                         alt='Logo KMSGD Jabodetabek'
@@ -83,7 +83,7 @@ export const Navbar: React.FC = () => {
                 <div className="flex items-center gap-4 md:gap-8">
 
                     {/* MENU DESKTOP */}
-                    <div className="hidden md:flex items-center gap-8">
+                    <div className="hidden md:flex items-center gap-8 font-['Montserrat']">
                         {menuItems.map((item) => {
                             const isActive = item.path
                                 ? location.pathname === item.path

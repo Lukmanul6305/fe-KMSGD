@@ -38,7 +38,7 @@ const KegiatanTableRow = ({ kegiatan: k, index, onDeleteClick }: Props) => {
             </td>
 
             <td className="py-6 px-3 max-w-48">
-                <div className="font-semibold text-[#f5e27a] mb-0.5 overflow-hidden text-ellipsis whitespace-nowrap">
+                <div className="font-semibold text-[#ffd700] mb-0.5 overflow-hidden text-ellipsis whitespace-nowrap">
                     {k.title}
                 </div>
                 {k.organizerCustom && (
@@ -47,7 +47,7 @@ const KegiatanTableRow = ({ kegiatan: k, index, onDeleteClick }: Props) => {
             </td>
 
             <td className="py-6 px-3">
-                <span className="bg-[#1a1500] border border-[#b8982a] text-[#f5e27a] py-0.5 px-2.5 text-xs tracking-wider whitespace-nowrap">
+                <span className="bg-[#1a1500] border border-[#b8982a] text-[#ffd700] py-0.5 px-2.5 text-xs tracking-wider whitespace-nowrap">
                     {k.kategori.nama}
                 </span>
             </td>

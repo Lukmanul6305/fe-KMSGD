@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import HomePage from "../features/user/home/pages/HomePage";
 import RootLayout from "../layouts/RootLayout";
 import ProfilePage from "../features/user/tentang/profile/pages/ProfilePage";
@@ -22,7 +22,10 @@ import PeriodePage from "../features/admin/kepengurusan/priode/PeriodePage";
 import DepartemenAdminPage from "../features/admin/kepengurusan/departemen/DepartemenPage";
 import PengurusPage from "../features/admin/kepengurusan/pengurus/PengurusPage";
 import KegiatanEditForm from "../features/admin/kegiatan/page/KegiatanEditForm";
-import { Navigate } from "react-router-dom";
+import AdminPengumuman from "../features/admin/pengumuman/page/AdminPengumuman";
+import ProtectedRoute from "../components/ProtectedRoute";
+import PengumumanForm from "@/features/admin/pengumuman/page/pengumumanForm";
+import AdminGaleri from "@/features/admin/galeri/page/AdminGaleri";
 
 export const router = createBrowserRouter([
     {
@@ -47,35 +50,33 @@ export const router = createBrowserRouter([
         element: <AdminLoginPage />
     },
     {
-        path: '/admin',
-        element: <AdminLayout />,
+        element: <ProtectedRoute />,
         children: [
-            { index: true, element: <DashboardAdmin /> },
-            { path: 'dashboard', element: <DashboardAdmin /> },
             {
-                path: 'kegiatan',
-                element: <AdminKegiatan />
-            },
-            {
-                path: 'kegiatan/tambah',
-                element: <KegiatanForm />
-            },
-            {
-                path: 'kegiatan/edit/:id',
-                element: <KegiatanEditForm />
-            },
-            {
-                path: 'kepengurusan',
-                element: <Kepengurusan />,
+                path: '/admin',
+                element: <AdminLayout />,
                 children: [
-                    { index: true, element: <Navigate to="periode" replace /> },
-                    { path: 'periode', element: <PeriodePage /> },
-                    { path: 'departemen', element: <DepartemenAdminPage /> },
-                    { path: 'pengurus', element: <PengurusPage /> }
+                    { index: true, element: <DashboardAdmin /> },
+                    { path: 'dashboard', element: <DashboardAdmin /> },
+                    { path: 'kegiatan', element: <AdminKegiatan /> },
+                    { path: 'kegiatan/tambah', element: <KegiatanForm /> },
+                    { path: 'kegiatan/edit/:id', element: <KegiatanEditForm /> },
+                    {
+                        path: 'kepengurusan',
+                        element: <Kepengurusan />,
+                        children: [
+                            { index: true, element: <Navigate to="periode" replace /> },
+                            { path: 'periode', element: <PeriodePage /> },
+                            { path: 'departemen', element: <DepartemenAdminPage /> },
+                            { path: 'pengurus', element: <PengurusPage /> }
+                        ]
+                    },
+                    { path: 'pengumuman', element: <AdminPengumuman /> },
+                    { path: 'pengumuman/tambah', element: <PengumumanForm /> },
+                    // { path: 'pengumuman/edit/:id', element: <KegiatanEditForm /> },
+                    { path: 'galeri', element: <AdminGaleri /> }
                 ]
-            },
-            { path: 'pengumuman', element: <DashboardAdmin /> },
-            { path: 'galeri', element: <DashboardAdmin /> }
+            }
         ]
     }
-])
+]);

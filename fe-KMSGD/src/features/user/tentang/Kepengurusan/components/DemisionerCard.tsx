@@ -1,21 +1,24 @@
-import { ChevronDown, User } from "lucide-react";
+import { ChevronDown, GraduationCap } from "lucide-react";
 import MemberCard from "../../components/MemberCard";
-import { useShowMore } from "../../../../../hooks/useShowMore";
 
 interface Member {
     jabatan: string;
     nama: string;
+    image?: string | null;
 }
 
 interface Props {
     periode: string;
+    namaDepartemen: string;
     anggota: Member[];
     isOpen: boolean;
     onToggle: () => void;
 }
 
-export default function DemisionerCard({ periode, anggota, isOpen, onToggle }: Props) {
-    const { visibleItems, showAll, hasMore, toggle: toggleMembers } = useShowMore(anggota, 10);
+export default function DemisionerCard({ periode, namaDepartemen, anggota, isOpen, onToggle }: Props) {
+    const ketua = anggota.find((a) => a.jabatan?.toLowerCase().includes("ketua") && !a.jabatan?.toLowerCase().includes("wakil")) || { nama: "-", jabatan: "Ketua Departemen" };
+    const wakil = anggota.find((a) => a.jabatan?.toLowerCase().includes("wakil")) || { nama: "-", jabatan: "Wakil Ketua Departemen" };
+    const staff = anggota.filter((a) => a !== ketua && a !== wakil);
 
     return (
         <div
@@ -32,7 +35,7 @@ export default function DemisionerCard({ periode, anggota, isOpen, onToggle }: P
                         className={`w-14 h-14 flex items-center justify-center border transition-all ${isOpen ? "bg-[#ffd700] border-[#ffd700]" : "bg-[#151515] border-[#2a2a2a]"
                             }`}
                     >
-                        <User size={22} className={isOpen ? "text-black" : "text-[#ffd700]"} />
+                        <GraduationCap size={22} className={isOpen ? "text-black" : "text-[#ffd700]"} />
                     </div>
                     <div>
                         <h3
@@ -42,7 +45,7 @@ export default function DemisionerCard({ periode, anggota, isOpen, onToggle }: P
                             {periode}
                         </h3>
                         <p className="text-[#777] text-sm mt-1">
-                            Kabinet Harmoni Sinergi • {anggota.length} Anggota
+                            {namaDepartemen} • {anggota.length} Anggota
                         </p>
                     </div>
                 </div>
@@ -60,32 +63,15 @@ export default function DemisionerCard({ periode, anggota, isOpen, onToggle }: P
                 className={`overflow-hidden transition-all duration-500 ${isOpen ? "max-h-500 opacity-100 px-6 pb-6" : "max-h-0 opacity-0"
                     }`}
             >
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-                    {visibleItems.map(({ jabatan, nama }, idx) => (
-                        <MemberCard
-                            key={idx}
-                            member={{ nama, jabatan }}
-                            variant="demisioner"
-                        />
+                <div className="mb-8 mt-8 flex flex-col md:flex-row gap-4">
+                    <MemberCard member={ketua} variant="ketua" />
+                    <MemberCard member={wakil} variant="ketua" />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-5">
+                    {staff.map((s, idx) => (
+                        <MemberCard key={idx} member={s} variant="anggota" />
                     ))}
                 </div>
-
-                {hasMore && (
-                    <div className="flex justify-center mt-6">
-                        <button
-                            onClick={toggleMembers}
-                            className="text-xs text-[#b0b0b0] hover:text-[#ffd700] transition flex items-center gap-2"
-                        >
-                            {showAll ? "Lihat Lebih Sedikit" : "Lihat Selengkapnya"}
-                            <span
-                                className={`transition-transform duration-300 ${showAll ? "rotate-180" : ""
-                                    }`}
-                            >
-                                <ChevronDown size={14} />
-                            </span>
-                        </button>
-                    </div>
-                )}
             </div>
         </div>
     );

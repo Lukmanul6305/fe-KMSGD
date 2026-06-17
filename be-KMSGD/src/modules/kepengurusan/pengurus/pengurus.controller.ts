@@ -77,4 +77,13 @@ export const pengurusController = {
       return handleError(res, error);
     }
   },
+  async getAnggotaByDepartemen(req: Request, res: Response) {
+    try {
+      const departemenId = req.query.departemenId ? Number(req.query.departemenId) : undefined;
+      const data = await kepengurusanService.getAnggotaByDepartemen(departemenId);
+      return response.success(res, data, "Berhasil mengambil data anggota");
+    } catch (error) {
+      return handleError(res, error);
+    }
+  }
 };

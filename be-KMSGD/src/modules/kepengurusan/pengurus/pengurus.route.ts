@@ -15,5 +15,6 @@ pengurusRouter.delete("/inti/:id", verifyToken, pengurusController.deletePenguru
 pengurusRouter.post("/anggota", verifyToken, upload.single("image"), pengurusController.createAnggota);
 pengurusRouter.put("/anggota/:id", verifyToken, upload.single("image"), pengurusController.updateAnggota);
 pengurusRouter.delete("/anggota/:id", verifyToken, pengurusController.deleteAnggota);
+pengurusRouter.get("/anggota", pengurusController.getAnggotaByDepartemen);
 
 export default pengurusRouter;

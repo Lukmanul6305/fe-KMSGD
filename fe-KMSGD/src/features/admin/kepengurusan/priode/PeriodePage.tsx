@@ -6,7 +6,7 @@ import {
     updatePeriode,
     deletePeriode
 } from "../../service/kepengurusanService";
-import type { PeriodeOrganisasi, CreatePeriodeDto, UpdatePeriodeDto } from "../../service/kepengurusanTypes";
+import type { PeriodeOrganisasi, CreatePeriodeDto, UpdatePeriodeDto } from "../kepengurusanTypes";
 
 const PeriodePage = () => {
     const [periodes, setPeriodes] = useState<PeriodeOrganisasi[]>([]);
@@ -92,7 +92,7 @@ const PeriodePage = () => {
     return (
         <div className="w-full">
             <div className="flex justify-between items-center mb-6">
-                <div className="flex items-center gap-3 text-yellow-400">
+                <div className="flex items-center gap-3 text-[#ffd700]">
                     <FaCalendarAlt className="text-xl" />
                     <h2 className="text-xl font-bold">Periode Organisasi</h2>
                 </div>
@@ -127,7 +127,7 @@ const PeriodePage = () => {
                                 <div className="col-span-6 text-white font-medium">{item.periode}</div>
                                 <div className="col-span-3">
                                     <span className={`inline-block px-3 py-1 text-xs font-bold border ${item.status === 'AKTIF'
-                                        ? 'border-yellow-400/30 text-yellow-400 bg-yellow-400/10'
+                                        ? 'border-yellow-400/30 text-[#ffd700] bg-yellow-400/10'
                                         : 'border-neutral-500/30 text-neutral-400 bg-neutral-500/10'
                                         }`}>
                                         {item.status}

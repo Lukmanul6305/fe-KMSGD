@@ -1,47 +1,29 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { checkAuth, loginAdmin } from "../../service/authService";
+import { useAuthStore } from "@/store/authStore";
 
 export default function AdminLoginPage() {
     const navigate = useNavigate();
+    const { login, status, error: storeError, clearError } = useAuthStore();
     const [form, setForm] = useState({ username: "", password: "" });
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [checking, setChecking] = useState(true);
 
-    useEffect(() => {
-        checkAuth().then((ok) => {
-            if (ok) navigate("/admin/dashboard", { replace: true });
-            else setChecking(false);
-        });
-    }, [navigate]);
-
-    if (checking) return (
-        <div className="min-h-screen bg-neutral-950 flex items-center justify-center">
-            <span className="text-neutral-400 text-sm">Memuat...</span>
-        </div>
-    );
+    const loading = status === "loading";
 
     const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setError("");
-        setLoading(true);
+        clearError();
         try {
-            await loginAdmin(form);
+            await login(form.username, form.password);
             navigate("/admin/dashboard");
-        } catch (error: unknown) {
-            const message = error instanceof Error ? error.message : "Login gagal";
-            setError(message);
-        } finally {
-            setLoading(false);
+        } catch {
+            // error sudah ditangani di store
         }
     };
 
     return (
         <div className="min-h-screen bg-neutral-950 flex items-center justify-center px-4">
             <div className="w-full max-w-sm">
-                {/* Logo / Brand */}
                 <div className="text-center mb-8">
                     <div className="inline-flex items-center justify-center w-12 h-12 bg-amber-500 mb-4">
                         <span className="text-black font-bold text-lg">K</span>
@@ -50,14 +32,13 @@ export default function AdminLoginPage() {
                     <p className="text-neutral-500 text-xs mt-1 tracking-widest uppercase">Admin Panel</p>
                 </div>
 
-                {/* Card */}
                 <div className="border border-neutral-800 border-t-[3px] border-t-amber-500 bg-neutral-900 p-6">
                     <h2 className="text-white font-semibold text-sm mb-5 tracking-wide">Masuk ke Dashboard</h2>
 
-                    {error && (
+                    {storeError && (
                         <div className="flex items-center gap-2 bg-red-950 border border-red-800 text-red-300 text-xs px-3 py-2.5 mb-4">
                             <i className="ti ti-alert-circle text-sm" />
-                            {error}
+                            {storeError}
                         </div>
                     )}
 
@@ -80,26 +61,22 @@ export default function AdminLoginPage() {
                             <label className="text-[10px] font-bold tracking-widest uppercase text-neutral-400">
                                 Password
                             </label>
-                            {/* 1. Tambahkan wrapper relative agar posisi ikon bisa diatur dengan absolute */}
                             <div className="relative flex items-center">
                                 <input
-                                    // 2. Tipe dinamis berdasarkan state showPassword
                                     type={showPassword ? "text" : "password"}
                                     required
                                     value={form.password}
                                     onChange={(e) => setForm({ ...form, password: e.target.value })}
                                     placeholder="••••••••"
-                                    // 3. Ditambahkan 'w-full' dan 'pr-10' agar teks tidak menabrak ikon di kanan
                                     className="w-full bg-neutral-950 border border-neutral-700 text-white text-sm pl-3 pr-10 py-2.5 outline-none focus:border-amber-500 transition-colors placeholder:text-neutral-600"
                                 />
 
                                 <button
-                                    type="button" // Wajib type="button" agar tidak men-trigger submit form
+                                    type="button"
                                     onClick={() => setShowPassword(!showPassword)}
                                     className="absolute right-3 text-neutral-400 hover:text-white transition-colors focus:outline-none"
                                 >
                                     {showPassword ? (
-                                        // Ikon Mata Dicoret (Sembunyikan)
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 17.772 17.772M15.212 15.212a3.001 3.001 0 1 1-4.242-4.242M9.88 9.88l4.24 4.24" />
                                         </svg>

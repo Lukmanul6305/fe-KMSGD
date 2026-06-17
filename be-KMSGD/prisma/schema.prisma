@@ -168,42 +168,25 @@ model KategoriKegiatan {
 
 model Pengumuman {
   id          Int      @id @default(autoincrement())
-  tanggal     DateTime // tanggal pengumuman
-  category    String   @default("Pengumuman")
+  tanggal     DateTime
+  kategoriId  Int
+  kategori    KategoriPengumuman @relation(fields: [kategoriId], references: [id], onDelete: Restrict)
   title       String
-  desc        String   // ringkasan / preview
-  author      String   // "Divisi Kaderisasi (Admin KMSGD)"
+  desc        String
+  author      String
   image       String?
   isPenting   Boolean  @default(false)
   isPublished Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  persyaratan      PengumumanPersyaratan[]
-  berkas           PengumumanBerkas[]
-  timeline         PengumumanTimeline[]
-  linkPendaftaran  String?
-  contactPerson    String?
+  persyaratan String[]
+  berkas      String[]
+  timeline    PengumumanTimeline[]
+  linkPendaftaran String?
+  contactPerson   String?
 
   @@map("pengumuman")
-}
-
-model PengumumanPersyaratan {
-  id           Int        @id @default(autoincrement())
-  pengumumanId Int
-  pengumuman   Pengumuman @relation(fields: [pengumumanId], references: [id], onDelete: Cascade)
-  isi          String
-
-  @@map("pengumuman_persyaratan")
-}
-
-model PengumumanBerkas {
-  id           Int        @id @default(autoincrement())
-  pengumumanId Int
-  pengumuman   Pengumuman @relation(fields: [pengumumanId], references: [id], onDelete: Cascade)
-  nama         String     // "KTM / KRS", dst
-
-  @@map("pengumuman_berkas")
 }
 
 model PengumumanTimeline {
@@ -214,6 +197,17 @@ model PengumumanTimeline {
   tanggal      String     // "10 - 31 Oktober 2025"
 
   @@map("pengumuman_timeline")
+}
+
+model KategoriPengumuman {
+  id         Int        @id @default(autoincrement())
+  nama       String     @unique 
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  pengumuman   Pengumuman[]
+
+  @@map("kategori_pengumuman")
 }
 
 // =============================================================

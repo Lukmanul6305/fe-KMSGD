@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { getKegiatanAdmin, deleteKegiatan } from "../../service/kegiatanService";
 import type { Kegiatan } from "../kegiatanTypes";
 import AdminKategoriKegiatan from "./AdminKategoriKegiatan";
@@ -6,6 +6,8 @@ import AdminKategoriKegiatan from "./AdminKategoriKegiatan";
 import KegiatanTable from "../components/adminKegiatan/KegiatanTable";
 import Pagination from "../components/adminKegiatan/Pagination";
 import ConfirmDeleteModal from "../components/adminKegiatan/ConfirmDeleteModal";
+import Tabs from "@/components/Tabs";
+import type { TabItem } from "@/components/Tabs";
 
 type TabType = "kegiatan" | "kategori";
 
@@ -20,28 +22,24 @@ const AdminKegiatan = () => {
     const [perPage, setPerPage] = useState(10);
     const [activeTab, setActiveTab] = useState<TabType>("kegiatan");
 
-    const fetchData = useCallback(async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const result = await getKegiatanAdmin();
-            setData(result);
-        } catch {
-            setError("Gagal memuat data kegiatan.");
-        } finally {
-            setLoading(false);
-        }
+    useEffect(() => {
+        let cancelled = false;
+
+        (async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const result = await getKegiatanAdmin();
+                if (!cancelled) setData(result);
+            } catch {
+                if (!cancelled) setError("Gagal memuat data kegiatan.");
+            } finally {
+                if (!cancelled) setLoading(false);
+            }
+        })();
+
+        return () => { cancelled = true; };
     }, []);
-
-    useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        fetchData();
-    }, [fetchData]);
-
-    useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setPage(1);
-    }, [search, perPage]);
 
     const handleDelete = async () => {
         if (!deleteId) return;
@@ -65,36 +63,32 @@ const AdminKegiatan = () => {
     );
 
     const totalPages = Math.ceil(filtered.length / perPage);
+
+    const handleSearchChange = (value: string) => {
+        setSearch(value);
+        setPage(1);
+    };
+
+    const handlePerPageChange = (value: number) => {
+        setPerPage(value);
+        setPage(1);
+    };
+
     const paginated = filtered.slice((page - 1) * perPage, page * perPage);
 
-    const tabs: { key: TabType; label: string }[] = [
+    const tabs: TabItem<TabType>[] = [
         { key: "kegiatan", label: "KEGIATAN" },
         { key: "kategori", label: "KATEGORI" },
     ];
 
     return (
-        <section className="font-sans text-[#f5e27a]">
-            {/* Header */}
+        <section className="font-sans text-[#ffd700]">
             <div className="mb-8 border-b border-[#b8982a] pb-4">
-                <h1 className="text-[1.75rem] font-bold text-[#f5e27a] m-0">Manajemen Kegiatan</h1>
-                <p className="text-[#a89040] mt-1 m-0 text-[0.9rem]">Kelola data kegiatan, kategori, dan speaker</p>
+                <h1 className="text-[1.75rem] font-bold text-[#ffd700] m-0">Manajemen Kegiatan</h1>
+                <p className="text-neutral-400 mt-1 m-0 text-[0.9rem]">Kelola data kegiatan, kategori, dan speaker</p>
             </div>
 
-            {/* Tabs */}
-            <div className="flex gap-1 border-b border-[#2a2a2a] mb-6">
-                {tabs.map((tab) => (
-                    <button
-                        key={tab.key}
-                        onClick={() => setActiveTab(tab.key)}
-                        className={`px-6 py-3 font-bold text-sm tracking-wider transition-colors cursor-pointer ${activeTab === tab.key
-                            ? "bg-[#1a1500] border-b-2 border-[#b8982a] text-[#f5e27a]"
-                            : "bg-transparent border-b-2 border-transparent text-zinc-500 hover:text-[#b8982a]"
-                            }`}
-                    >
-                        {tab.label}
-                    </button>
-                ))}
-            </div>
+            <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
 
             {activeTab === "kategori" ? (
                 <AdminKategoriKegiatan />
@@ -105,12 +99,12 @@ const AdminKegiatan = () => {
                             type="text"
                             placeholder="Cari judul, kategori, departemen, lokasi..."
                             value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            className="bg-[#1a1a1a] border border-[#b8982a] text-[#f5e27a] py-2 px-3.5 text-sm outline-none w-80 focus:ring-1 focus:ring-[#b8982a]"
+                            onChange={(e) => handleSearchChange(e.target.value)}
+                            className="bg-[#1a1a1a] border border-[#ffd700] text-[#ffd700] py-2 px-3.5 text-sm outline-none w-80 focus:ring-1 focus:ring-[#ffd700]"
                         />
                         <a
                             href="/admin/kegiatan/tambah"
-                            className="bg-[#b8982a] text-[#0a0a0a] py-2 px-5 font-bold text-sm no-underline tracking-wider hover:bg-[#b8982a]/90 transition-colors"
+                            className="bg-[#ffd700] text-[#0a0a0a] py-2 px-5 font-bold text-sm no-underline tracking-wider hover:bg-[#b8982a]/90 transition-colors"
                         >
                             + Tambah Kegiatan
                         </a>
@@ -137,7 +131,7 @@ const AdminKegiatan = () => {
                             perPage={perPage}
                             totalItems={filtered.length}
                             onPageChange={setPage}
-                            onPerPageChange={setPerPage}
+                            onPerPageChange={handlePerPageChange}
                         />
                     )}
 
@@ -147,9 +141,8 @@ const AdminKegiatan = () => {
                         onConfirm={handleDelete}
                     />
                 </>
-            )
-            }
-        </section >
+            )}
+        </section>
     );
 };
 

@@ -34,6 +34,10 @@ export const galeriService = {
       thumbnail = await uploadImage(files.thumbnail, "galeri/thumbnail");
     }
 
+    if (!url) {
+      throw new Error(dto.tipe === "FOTO" ? "Gambar wajib diupload untuk tipe FOTO" : "Link video wajib diisi untuk tipe VIDEO");
+    }
+
     return galeriRepository.create({
       ...dto,
       url,

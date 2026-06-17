@@ -1,3 +1,4 @@
+import { prisma } from "../../../config/prisma";
 import { deleteImage, uploadImage } from "../../../utils/uploadImage";
 import { kepengurusanRepository } from "./pengurus.repository";
 import { CreateAnggotaDto, CreatePengurusIntiDto, UpdateAnggotaDto, UpdatePengurusIntiDto } from "./pengurus.validation";
@@ -73,5 +74,12 @@ export const kepengurusanService = {
     if (!existing) throw new Error("Anggota tidak ditemukan");
     if (existing.image) await deleteImage(existing.image);
     return kepengurusanRepository.deleteAnggota(id);
+  },
+  async getAnggotaByDepartemen(departemenId?: number) {
+    return prisma.anggotaDepartemen.findMany({
+      where: departemenId ? { departemenId } : undefined,
+      include: { departemen: { select: { namaDepartemen: true } } },
+      orderBy: { createdAt: "asc" },
+    });
   },
 };

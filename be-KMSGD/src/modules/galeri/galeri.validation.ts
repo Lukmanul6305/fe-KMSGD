@@ -2,11 +2,16 @@ import { z } from "zod";
 
 export const createGaleriSchema = z.object({
   judul: z.string().optional(),
-  tipe: z.enum(["FOTO", "VIDEO"], { error: "Tipe harus FOTO atau VIDEO" }),
-  url: z.string({ error: "URL wajib diisi" }),
+
+  tipe: z.enum(["FOTO", "VIDEO"]),
+
+  url: z.string().optional(),
+
   thumbnail: z.string().optional(),
-  kegiatanId: z.number().optional(),
-  isPublished: z.boolean().default(true),
+
+  kegiatanId: z.coerce.number().optional(),
+
+  isPublished: z.coerce.boolean().default(true),
 });
 
 export const updateGaleriSchema = createGaleriSchema.partial();

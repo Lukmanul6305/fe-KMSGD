@@ -53,6 +53,7 @@ export const galeriController = {
         image: (req.files as any)?.image?.[0]?.buffer,
         thumbnail: (req.files as any)?.thumbnail?.[0]?.buffer,
       };
+
       const data = await galeriService.create(dto, files);
       return response.success(res, data, "Galeri berhasil dibuat", 201);
     } catch (error) {

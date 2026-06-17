@@ -56,7 +56,6 @@ axiosAdmin.interceptors.response.use(
       return axiosAdmin(originalRequest);
     } catch (refreshError) {
       processQueue(refreshError);
-      window.location.href = "/admin/login";
       return Promise.reject(refreshError);
     } finally {
       isRefreshing = false;

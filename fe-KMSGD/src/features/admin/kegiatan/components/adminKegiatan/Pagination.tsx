@@ -22,7 +22,7 @@ const Pagination = ({ page, totalPages, perPage, totalItems, onPageChange, onPer
         `px-2.5 py-1 text-xs border transition-colors ${disabled
             ? "border-zinc-800 text-zinc-600 opacity-40 cursor-not-allowed"
             : active
-                ? "bg-[#1a1500] border-[#b8982a] text-[#f5e27a] cursor-pointer"
+                ? "bg-[#1a1500] border-[#b8982a] text-[#ffd700] cursor-pointer"
                 : "bg-transparent border-[#2a2a2a] text-zinc-400 hover:bg-zinc-800 cursor-pointer"
         }`;
 

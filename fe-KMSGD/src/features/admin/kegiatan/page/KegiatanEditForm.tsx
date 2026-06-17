@@ -152,16 +152,16 @@ const KegiatanEditForm = () => {
     };
 
     if (fetching) {
-        return <div className="p-8 text-yellow-300">Memuat data...</div>;
+        return <div className="p-8 text-[#ffd700]">Memuat data...</div>;
     }
 
     return (
-        <section className="p-8 font-sans text-yellow-300 max-w-3xl">
+        <section className="p-8 font-sans text-[#ffd700] max-w-3xl">
             <div className="mb-8 pb-4 border-b border-yellow-700">
-                <button onClick={() => navigate("/admin/kegiatan")} className="bg-transparent border-none text-yellow-600 text-xs tracking-widest hover:text-yellow-400 transition-colors cursor-pointer p-0">
+                <button onClick={() => navigate("/admin/kegiatan")} className="bg-transparent border-none text-yellow-600 text-xs tracking-widest hover:text-[#ffd700] transition-colors cursor-pointer p-0">
                     ← Kembali
                 </button>
-                <h1 className="text-3xl font-bold text-yellow-300 mt-2 mb-1">Edit Kegiatan</h1>
+                <h1 className="text-3xl font-bold text-[#ffd700] mt-2 mb-1">Edit Kegiatan</h1>
                 <p className="text-yellow-600 text-sm">Perbarui informasi kegiatan</p>
             </div>
 
@@ -210,7 +210,7 @@ const KegiatanEditForm = () => {
                 <div>
                     <label className="block text-yellow-600 text-xs font-bold tracking-widest uppercase mb-2">Kategori *</label>
                     <select name="kategoriId" value={form.kategoriId} onChange={handleChange} required
-                        className="w-full bg-neutral-900 border border-neutral-800 text-yellow-300 px-3 py-2 text-sm outline-none focus:border-yellow-700">
+                        className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700">
                         <option value="">Pilih kategori</option>
                         {kategoriList.map((k) => (
                             <option key={k.id} value={k.id}>{k.nama}</option>
@@ -223,12 +223,12 @@ const KegiatanEditForm = () => {
                     <div>
                         <label className="block text-yellow-600 text-xs font-bold tracking-widest uppercase mb-2">Jam Mulai *</label>
                         <input type="datetime-local" name="startTime" value={form.startTime} onChange={handleChange} required
-                            className="w-full bg-neutral-900 border border-neutral-800 text-yellow-300 px-3 py-2 text-sm outline-none focus:border-yellow-700" />
+                            className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700" />
                     </div>
                     <div>
                         <label className="block text-yellow-600 text-xs font-bold tracking-widest uppercase mb-2">Jam Selesai</label>
                         <input type="datetime-local" name="endTime" value={form.endTime} onChange={handleChange}
-                            className="w-full bg-neutral-900 border border-neutral-800 text-yellow-300 px-3 py-2 text-sm outline-none focus:border-yellow-700" />
+                            className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700" />
                     </div>
                 </div>
 
@@ -236,21 +236,21 @@ const KegiatanEditForm = () => {
                 <div>
                     <label className="block text-yellow-600 text-xs font-bold tracking-widest uppercase mb-2">Judul *</label>
                     <input type="text" name="title" value={form.title} onChange={handleChange} placeholder="Judul kegiatan" required
-                        className="w-full bg-neutral-900 border border-neutral-800 text-yellow-300 px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700" />
+                        className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700" />
                 </div>
 
                 {/* Deskripsi */}
                 <div>
                     <label className="block text-yellow-600 text-xs font-bold tracking-widest uppercase mb-2">Deskripsi *</label>
                     <textarea name="desc" value={form.desc} onChange={handleChange} placeholder="Deskripsi kegiatan..." required rows={4}
-                        className="w-full bg-neutral-900 border border-neutral-800 text-yellow-300 px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700 resize-y" />
+                        className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700 resize-y" />
                 </div>
 
                 {/* Lokasi */}
                 <div>
                     <label className="block text-yellow-600 text-xs font-bold tracking-widest uppercase mb-2">Lokasi *</label>
                     <input type="text" name="location" value={form.location} onChange={handleChange} placeholder="Nama tempat / alamat" required
-                        className="w-full bg-neutral-900 border border-neutral-800 text-yellow-300 px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700" />
+                        className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700" />
                 </div>
 
                 {/* Harga + Link Registrasi */}
@@ -260,12 +260,12 @@ const KegiatanEditForm = () => {
                             Harga (Rp) <span className="text-neutral-600 normal-case font-normal">— 0 = Gratis</span>
                         </label>
                         <input type="number" name="price" value={form.price} onChange={handleChange} placeholder="0" min={0}
-                            className="w-full bg-neutral-900 border border-neutral-800 text-yellow-300 px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700" />
+                            className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700" />
                     </div>
                     <div>
                         <label className="block text-yellow-600 text-xs font-bold tracking-widest uppercase mb-2">Link Registrasi</label>
                         <input type="url" name="registrationLink" value={form.registrationLink} onChange={handleChange} placeholder="https://..."
-                            className="w-full bg-neutral-900 border border-neutral-800 text-yellow-300 px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700" />
+                            className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700" />
                     </div>
                 </div>
 
@@ -276,7 +276,7 @@ const KegiatanEditForm = () => {
                             Departemen <span className="text-neutral-600 normal-case font-normal">— periode aktif</span>
                         </label>
                         <select name="departemenId" value={form.departemenId} onChange={handleChange}
-                            className="w-full bg-neutral-900 border border-neutral-800 text-yellow-300 px-3 py-2 text-sm outline-none focus:border-yellow-700">
+                            className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700">
                             <option value="">— Tidak ada / Umum —</option>
                             {departemenList.map((d) => (
                                 <option key={d.id} value={d.id}>{d.namaDepartemen}</option>
@@ -286,7 +286,7 @@ const KegiatanEditForm = () => {
                     <div>
                         <label className="block text-yellow-600 text-xs font-bold tracking-widest uppercase mb-2">Contact Person</label>
                         <input type="text" name="contactPerson" value={form.contactPerson} onChange={handleChange} placeholder="081234567890"
-                            className="w-full bg-neutral-900 border border-neutral-800 text-yellow-300 px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700" />
+                            className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700" />
                     </div>
                 </div>
 
@@ -296,7 +296,7 @@ const KegiatanEditForm = () => {
                         Penyelenggara Custom <span className="text-neutral-600 normal-case font-normal">— jika bukan departemen internal</span>
                     </label>
                     <input type="text" name="organizerCustom" value={form.organizerCustom} onChange={handleChange} placeholder="Nama penyelenggara lain"
-                        className="w-full bg-neutral-900 border border-neutral-800 text-yellow-300 px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700" />
+                        className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700" />
                 </div>
 
                 {/* Status */}
@@ -305,7 +305,7 @@ const KegiatanEditForm = () => {
                     <select
                         value={form.isPublished ? "true" : "false"}
                         onChange={(e) => setForm((prev) => ({ ...prev, isPublished: e.target.value === "true" }))}
-                        className="w-full bg-neutral-900 border border-neutral-800 text-yellow-300 px-3 py-2 text-sm outline-none focus:border-yellow-700"
+                        className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700"
                     >
                         <option value="true">Publik</option>
                         <option value="false">Draft</option>
@@ -322,17 +322,17 @@ const KegiatanEditForm = () => {
                             onChange={(e) => setSpeakerInput(e.target.value)}
                             onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addSpeaker(); } }}
                             placeholder="Nama speaker"
-                            className="flex-1 bg-neutral-900 border border-neutral-800 text-yellow-300 px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700"
+                            className="flex-1 bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700"
                         />
                         <button type="button" onClick={addSpeaker}
-                            className="px-4 py-2 text-sm border border-yellow-700 text-yellow-400 hover:bg-yellow-700 hover:text-black transition-colors cursor-pointer">
+                            className="px-4 py-2 text-sm border border-yellow-700 text-[#ffd700] hover:bg-yellow-700 hover:text-black transition-colors cursor-pointer">
                             Tambah
                         </button>
                     </div>
                     {speakers.length > 0 && (
                         <div className="flex flex-wrap gap-2">
                             {speakers.map((s, i) => (
-                                <span key={i} className="flex items-center gap-1.5 px-3 py-1 text-xs bg-neutral-900 border border-neutral-700 text-yellow-300">
+                                <span key={i} className="flex items-center gap-1.5 px-3 py-1 text-xs bg-neutral-900 border border-neutral-700 text-[#ffd700]">
                                     {s}
                                     <button type="button" onClick={() => removeSpeaker(i)} className="text-red-400 hover:text-red-300 cursor-pointer">×</button>
                                 </span>

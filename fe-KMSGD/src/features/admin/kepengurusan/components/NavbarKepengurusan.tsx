@@ -1,31 +1,29 @@
 import { NavLink } from "react-router-dom";
 
 const navItems = [
-    { label: "Periode", path: "/admin/kepengurusan/periode" },
-    { label: "Departemen", path: "/admin/kepengurusan/departemen" },
-    { label: "BPI & Anggota", path: "/admin/kepengurusan/pengurus" },
+    { label: "PRIODE", path: "/admin/kepengurusan/periode" },
+    { label: "DEPARTEMEN", path: "/admin/kepengurusan/departemen" },
+    { label: "BPI", path: "/admin/kepengurusan/pengurus" },
 ];
 
 const NavbarKepengurusan = () => {
     return (
-        <nav className="border-b border-neutral-800">
-            <div className="flex gap-6">
-                {navItems.map((item) => (
-                    <NavLink
-                        key={item.path}
-                        to={item.path}
-                        className={({ isActive }) =>
-                            `py-3 px-1 text-sm font-medium border-b-2 transition-colors ${isActive
-                                ? "border-yellow-400 text-yellow-400"
-                                : "border-transparent text-zinc-400 hover:text-zinc-200"
-                            }`
-                        }
-                    >
-                        {item.label}
-                    </NavLink>
-                ))}
-            </div>
-        </nav>
+        <div className="flex gap-1 border-b border-[#2a2a2a] mb-6">
+            {navItems.map((item) => (
+                <NavLink
+                    key={item.path}
+                    to={item.path}
+                    className={({ isActive }) =>
+                        `flex items-center gap-2 px-6 py-3 font-bold text-sm tracking-wider transition-colors cursor-pointer border-b-2 ${isActive
+                            ? "bg-[#1a1500] border-[#b8982a] text-[#ffd700]"
+                            : "border-transparent text-zinc-500 hover:text-[#b8982a]"
+                        }`
+                    }
+                >
+                    {item.label}
+                </NavLink>
+            ))}
+        </div>
     );
 };
 

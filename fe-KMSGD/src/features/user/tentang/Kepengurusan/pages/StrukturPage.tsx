@@ -1,7 +1,7 @@
 import Header from "../../../../../components/Header";
 import UserLayout from "../../../../../layouts/UserLayout";
 import { CONTENT_HEADER } from "../../TentangData";
-import StrukturOrganisasi from "../components/StrukturOrganisasi";
+import StrukturOrganisasi from "../components/StrukturOrganisasiList";
 
 const StrukturPage = () => {
   return (

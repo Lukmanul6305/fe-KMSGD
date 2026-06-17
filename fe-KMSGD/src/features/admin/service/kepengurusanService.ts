@@ -1,10 +1,5 @@
 import axiosAdmin from "./axiosAdmin";
-import type { 
-  PeriodeOrganisasi, CreatePeriodeDto, UpdatePeriodeDto,
-  Departemen, CreateDepartemenDto, UpdateDepartemenDto,
-  PengurusInti,
-  AnggotaDepartemen
-} from "./kepengurusanTypes";
+import type { PeriodeOrganisasi, CreatePeriodeDto, UpdatePeriodeDto, Departemen, CreateDepartemenDto, UpdateDepartemenDto, PengurusInti, AnggotaDepartemen } from "../kepengurusan/kepengurusanTypes";
 
 const BASE_URL = "/kepengurusan";
 
@@ -63,14 +58,14 @@ export async function getPengurusIntiByPeriode(periodeId: number): Promise<Pengu
 
 export async function createPengurusInti(payload: FormData): Promise<PengurusInti> {
   const res = await axiosAdmin.post<{ data: PengurusInti }>(`${BASE_URL}/inti`, payload, {
-    headers: { "Content-Type": "multipart/form-data" }
+    headers: { "Content-Type": "multipart/form-data" },
   });
   return res.data.data;
 }
 
 export async function updatePengurusInti(id: number, payload: FormData): Promise<PengurusInti> {
   const res = await axiosAdmin.put<{ data: PengurusInti }>(`${BASE_URL}/inti/${id}`, payload, {
-    headers: { "Content-Type": "multipart/form-data" }
+    headers: { "Content-Type": "multipart/form-data" },
   });
   return res.data.data;
 }
@@ -82,14 +77,14 @@ export async function deletePengurusInti(id: number): Promise<void> {
 // --- ANGGOTA DEPARTEMEN ---
 export async function createAnggota(payload: FormData): Promise<AnggotaDepartemen> {
   const res = await axiosAdmin.post<{ data: AnggotaDepartemen }>(`${BASE_URL}/anggota`, payload, {
-    headers: { "Content-Type": "multipart/form-data" }
+    headers: { "Content-Type": "multipart/form-data" },
   });
   return res.data.data;
 }
 
 export async function updateAnggota(id: number, payload: FormData): Promise<AnggotaDepartemen> {
   const res = await axiosAdmin.put<{ data: AnggotaDepartemen }>(`${BASE_URL}/anggota/${id}`, payload, {
-    headers: { "Content-Type": "multipart/form-data" }
+    headers: { "Content-Type": "multipart/form-data" },
   });
   return res.data.data;
 }
@@ -97,4 +92,3 @@ export async function updateAnggota(id: number, payload: FormData): Promise<Angg
 export async function deleteAnggota(id: number): Promise<void> {
   await axiosAdmin.delete(`${BASE_URL}/anggota/${id}`);
 }
-

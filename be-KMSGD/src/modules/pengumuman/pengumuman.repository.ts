@@ -2,8 +2,7 @@ import { prisma } from "../../config/prisma";
 import { Prisma } from "@prisma/client";
 
 const include = {
-  persyaratan: { orderBy: { id: "asc" as const } },
-  berkas: { orderBy: { id: "asc" as const } },
+  kategori: true,
   timeline: { orderBy: { id: "asc" as const } },
 };
 
@@ -28,11 +27,11 @@ export const pengumumanRepository = {
     return prisma.pengumuman.findUnique({ where: { id }, include });
   },
 
-  async create(data: Prisma.PengumumanCreateInput) {
+  async create(data: Prisma.PengumumanUncheckedCreateInput) {
     return prisma.pengumuman.create({ data, include });
   },
 
-  async update(id: number, data: Prisma.PengumumanUpdateInput) {
+  async update(id: number, data: Prisma.PengumumanUncheckedUpdateInput) {
     return prisma.pengumuman.update({ where: { id }, data, include });
   },
 

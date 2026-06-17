@@ -3,7 +3,6 @@ import UserLayout from "../../../../../layouts/UserLayout";
 import { CONTENT_HEADER } from "../../TentangData";
 import DepartemenList from "../components/DepartemenList";
 
-
 const DepartemenPage = () => {
   return (
     <UserLayout>

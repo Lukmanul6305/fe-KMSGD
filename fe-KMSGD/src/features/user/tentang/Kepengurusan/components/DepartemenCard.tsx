@@ -1,4 +1,3 @@
-// components/DepartemenCard.tsx
 import { ChevronDown, ChevronUp, GraduationCap } from "lucide-react";
 import MemberCard from "../../components/MemberCard";
 import type { Department } from "../../types/tentang.types";
@@ -13,14 +12,16 @@ export default function DepartemenCard({ dept, isOpen, onToggle }: Props) {
     return (
         <div className="bg-[#111] border border-[#1f1f1f] overflow-hidden">
 
-            {/* HEADER */}
             <button
                 onClick={onToggle}
                 className="w-full flex items-center justify-between p-6 text-left hover:bg-[#151515] transition"
             >
                 <div className="flex items-center gap-5">
-                    <div className="w-14 h-14 bg-[#1b1b1b] border border-[#ffd700]/20 flex items-center justify-center">
-                        <GraduationCap className="text-[#ffd700]" size={22} />
+                    <div
+                        className={`w-14 h-14 flex items-center justify-center border transition-all ${isOpen ? "bg-[#ffd700] border-[#ffd700]" : "bg-[#1b1b1b] border-[#ffd700]/20"
+                            }`}
+                    >
+                        <GraduationCap size={22} className={isOpen ? "text-black" : "text-[#ffd700]"} />
                     </div>
                     <div>
                         <h3 className="text-white font-semibold text-lg">{dept.nama}</h3>

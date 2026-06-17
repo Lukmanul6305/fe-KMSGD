@@ -21,14 +21,12 @@ export const pengumumanService = {
     let image: string | undefined;
     if (imageBuffer) image = await uploadImage(imageBuffer, "pengumuman");
 
-    const { persyaratan, berkas, timeline, ...rest } = dto;
+    const { timeline, ...rest } = dto;
 
     return pengumumanRepository.create({
       ...rest,
       tanggal: new Date(dto.tanggal),
       ...(image && { image }),
-      persyaratan: { create: persyaratan },
-      berkas: { create: berkas },
       timeline: { create: timeline },
     });
   },
@@ -42,19 +40,12 @@ export const pengumumanService = {
       image = await uploadImage(imageBuffer, "pengumuman");
     }
 
-    const { persyaratan, berkas, timeline, ...rest } = dto;
+    const { timeline, ...rest } = dto;
 
     return pengumumanRepository.update(id, {
       ...rest,
       ...(dto.tanggal && { tanggal: new Date(dto.tanggal) }),
       ...(image && { image }),
-      // hapus lama, buat baru — paling simpel untuk nested list
-      ...(persyaratan && {
-        persyaratan: { deleteMany: {}, create: persyaratan },
-      }),
-      ...(berkas && {
-        berkas: { deleteMany: {}, create: berkas },
-      }),
       ...(timeline && {
         timeline: { deleteMany: {}, create: timeline },
       }),

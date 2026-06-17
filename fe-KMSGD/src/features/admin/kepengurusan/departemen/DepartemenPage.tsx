@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { FaSitemap, FaPlus, FaPen, FaChevronDown, FaChevronUp, FaTimes, FaTrash } from "react-icons/fa";
 import {
+    getPeriode,
     getPeriodeAktif,
     getDepartemenByPeriode,
     createDepartemen,
@@ -13,12 +14,14 @@ import type {
     Departemen,
     CreateDepartemenDto,
     UpdateDepartemenDto,
-    CreateAnggotaDto
-} from "../../service/kepengurusanTypes";
+    CreateAnggotaDto,
+    PeriodeOrganisasi
+} from "../kepengurusanTypes";
 
 const DepartemenPage = () => {
     const [departemenList, setDepartemenList] = useState<Departemen[]>([]);
-    const [periodeAktifId, setPeriodeAktifId] = useState<number | null>(null);
+    const [periodes, setPeriodes] = useState<PeriodeOrganisasi[]>([]);
+    const [viewPeriodeId, setViewPeriodeId] = useState<number | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [expandedDept, setExpandedDept] = useState<number | null>(null);
 
@@ -43,23 +46,46 @@ const DepartemenPage = () => {
     const [isUploading, setIsUploading] = useState(false);
 
     useEffect(() => {
-        fetchData();
+        fetchInitialData();
     }, []);
 
-    async function fetchData() {
-        setIsLoading(true);
+    useEffect(() => {
+        if (viewPeriodeId) {
+            fetchDepartemenData(viewPeriodeId);
+        }
+    }, [viewPeriodeId]);
+
+    async function fetchInitialData() {
         try {
+            const allPeriods = await getPeriode();
+            setPeriodes(allPeriods);
+
             const periodeAktif = await getPeriodeAktif();
             if (periodeAktif) {
-                setPeriodeAktifId(periodeAktif.id);
-                const depts = await getDepartemenByPeriode(periodeAktif.id);
-                setDepartemenList(depts);
+                setViewPeriodeId(periodeAktif.id);
+            } else if (allPeriods.length > 0) {
+                setViewPeriodeId(allPeriods[0].id);
             }
+        } catch (error) {
+            console.error("Failed to fetch initial data:", error);
+        }
+    }
+
+    async function fetchDepartemenData(periodeId: number) {
+        setIsLoading(true);
+        try {
+            const depts = await getDepartemenByPeriode(periodeId);
+            setDepartemenList(depts);
         } catch (error) {
             console.error("Failed to fetch departemen data:", error);
         } finally {
             setIsLoading(false);
         }
+    };
+
+    // To refetch current view when data changes
+    const refetchCurrentView = () => {
+        if (viewPeriodeId) fetchDepartemenData(viewPeriodeId);
     };
 
     const toggleDept = (id: number) => {
@@ -68,8 +94,8 @@ const DepartemenPage = () => {
 
     // --- DEPARTEMEN HANDLERS ---
     const handleOpenDeptModal = (dept?: Departemen) => {
-        if (!periodeAktifId) {
-            alert("Tidak ada periode aktif.");
+        if (periodes.length === 0) {
+            alert("Belum ada data periode.");
             return;
         }
         if (dept) {
@@ -84,7 +110,7 @@ const DepartemenPage = () => {
             setIsEditDept(false);
             setEditDeptId(null);
             setDeptForm({
-                periodeId: periodeAktifId,
+                periodeId: viewPeriodeId || periodes[0]?.id || 0,
                 namaDepartemen: "",
                 deskripsi: ""
             });
@@ -101,7 +127,7 @@ const DepartemenPage = () => {
                 await createDepartemen(deptForm);
             }
             setIsDeptModalOpen(false);
-            fetchData();
+            refetchCurrentView();
         } catch (error) {
             console.error(error);
             alert("Gagal menyimpan departemen");
@@ -112,7 +138,7 @@ const DepartemenPage = () => {
         if (confirm("Hapus departemen ini beserta seluruh anggotanya?")) {
             try {
                 await deleteDepartemen(id);
-                fetchData();
+                refetchCurrentView();
             } catch (error) {
                 console.error(error);
             }
@@ -144,7 +170,7 @@ const DepartemenPage = () => {
 
             await createAnggota(formDataPayload);
             setIsAnggotaModalOpen(false);
-            fetchData();
+            refetchCurrentView();
         } catch (error) {
             console.error(error);
             alert("Gagal menambahkan anggota");
@@ -157,7 +183,7 @@ const DepartemenPage = () => {
         if (confirm("Hapus anggota ini?")) {
             try {
                 await deleteAnggota(id);
-                fetchData();
+                refetchCurrentView();
             } catch (error) {
                 console.error(error);
             }
@@ -167,17 +193,28 @@ const DepartemenPage = () => {
     return (
         <div className="w-full">
             <div className="flex justify-between items-center mb-6">
-                <div className="flex items-center gap-3 text-yellow-400">
+                <div className="flex items-center gap-3 text-[#ffd700]">
                     <FaSitemap className="text-xl" />
                     <h2 className="text-xl font-bold">Departemen</h2>
                 </div>
-                <button
-                    onClick={() => handleOpenDeptModal()}
-                    className="flex items-center gap-2 border border-yellow-400 text-yellow-400 px-4 py-2 font-semibold hover:bg-yellow-400 hover:text-black transition-colors"
-                >
-                    <FaPlus />
-                    Tambah Dept
-                </button>
+                <div className="flex items-center gap-4">
+                    <select
+                        value={viewPeriodeId || ""}
+                        onChange={(e) => setViewPeriodeId(Number(e.target.value))}
+                        className="bg-neutral-800 border border-neutral-700 text-white px-3 py-2 focus:outline-none focus:border-yellow-400"
+                    >
+                        {periodes.map(p => (
+                            <option key={p.id} value={p.id}>{p.periode} ({p.status})</option>
+                        ))}
+                    </select>
+                    <button
+                        onClick={() => handleOpenDeptModal()}
+                        className="flex items-center gap-2 border border-yellow-400 text-[#ffd700] px-4 py-2 font-semibold hover:bg-yellow-400 hover:text-black transition-colors"
+                    >
+                        <FaPlus />
+                        Tambah Dept
+                    </button>
+                </div>
             </div>
 
             <div className="flex flex-col gap-4">
@@ -185,7 +222,7 @@ const DepartemenPage = () => {
                     <div className="text-neutral-400 text-center py-8">Loading...</div>
                 ) : departemenList.length === 0 ? (
                     <div className="text-neutral-400 text-center py-8 border border-neutral-800">
-                        Belum ada departemen untuk periode aktif ini.
+                        Belum ada departemen untuk periode yang dipilih.
                     </div>
                 ) : (
                     departemenList.map((dept) => (
@@ -196,7 +233,7 @@ const DepartemenPage = () => {
                                     className="flex items-center gap-4 cursor-pointer flex-1"
                                     onClick={() => toggleDept(dept.id)}
                                 >
-                                    <div className="w-10 h-10 bg-yellow-400/10 text-yellow-400 flex items-center justify-center shrink-0">
+                                    <div className="w-10 h-10 bg-yellow-400/10 text-[#ffd700] flex items-center justify-center shrink-0">
                                         <FaSitemap />
                                     </div>
                                     <div>
@@ -228,7 +265,7 @@ const DepartemenPage = () => {
                                         <h4 className="text-neutral-400 text-sm font-medium">Daftar Anggota Departemen</h4>
                                         <button
                                             onClick={() => handleOpenAnggotaModal(dept.id)}
-                                            className="flex items-center gap-1 text-yellow-400 text-sm font-semibold hover:text-yellow-300"
+                                            className="flex items-center gap-1 text-[#ffd700] text-sm font-semibold hover:text-[#ffd700]"
                                         >
                                             <FaPlus className="text-xs" />
                                             Tambah Anggota
@@ -243,7 +280,7 @@ const DepartemenPage = () => {
                                                         {anggota.image ? (
                                                             <img src={anggota.image} alt={anggota.nama} className="w-10 h-10 object-cover" />
                                                         ) : (
-                                                            <div className="w-10 h-10 bg-neutral-700 text-yellow-400 font-bold flex items-center justify-center text-sm">
+                                                            <div className="w-10 h-10 bg-neutral-700 text-[#ffd700] font-bold flex items-center justify-center text-sm">
                                                                 {anggota.nama.substring(0, 2).toUpperCase()}
                                                             </div>
                                                         )}
@@ -251,7 +288,7 @@ const DepartemenPage = () => {
                                                             <p className="text-white font-medium text-sm">
                                                                 {anggota.nama}
                                                                 {anggota.jabatan.toLowerCase() !== 'anggota' && (
-                                                                    <span className="text-yellow-400 text-xs ml-1">({anggota.jabatan})</span>
+                                                                    <span className="text-[#ffd700] text-xs ml-1">({anggota.jabatan})</span>
                                                                 )}
                                                             </p>
                                                         </div>
@@ -280,6 +317,20 @@ const DepartemenPage = () => {
                             {isEditDept ? "Edit Departemen" : "Tambah Departemen"}
                         </h3>
                         <form onSubmit={submitDept} className="flex flex-col gap-4">
+                            <div>
+                                <label className="block text-sm text-neutral-400 mb-1">Periode</label>
+                                <select
+                                    required
+                                    value={deptForm.periodeId || ""}
+                                    onChange={(e) => setDeptForm({ ...deptForm, periodeId: Number(e.target.value) })}
+                                    className="w-full bg-neutral-800 border border-neutral-700 px-3 py-2 text-white focus:outline-none focus:border-yellow-400"
+                                >
+                                    <option value="" disabled>Pilih Periode</option>
+                                    {periodes.map(p => (
+                                        <option key={p.id} value={p.id}>{p.periode} - {p.status}</option>
+                                    ))}
+                                </select>
+                            </div>
                             <div>
                                 <label className="block text-sm text-neutral-400 mb-1">Nama Departemen</label>
                                 <input

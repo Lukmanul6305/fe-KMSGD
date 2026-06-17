@@ -27,6 +27,7 @@ const AdminKategoriKegiatan = () => {
         }
     }, []);
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     useEffect(() => { fetchData(); }, [fetchData]);
 
     const handleOpenForm = (kategori?: KategoriKegiatan) => {
@@ -79,10 +80,10 @@ const AdminKategoriKegiatan = () => {
         <div className="mt-6">
             {/* Toolbar */}
             <div className="flex justify-between items-center mb-5">
-                <h2 className="text-[#f5e27a] m-0 text-xl font-bold">Daftar Kategori</h2>
+                <h2 className="text-[#ffd700] m-0 text-xl font-bold">Daftar Kategori</h2>
                 <button
                     onClick={() => handleOpenForm()}
-                    className="bg-[#b8982a] text-[#0a0a0a] py-2 px-5 font-bold text-sm tracking-wider hover:bg-[#b8982a]/90 transition-colors cursor-pointer"
+                    className="bg-[#ffd700] text-[#0a0a0a] py-2 px-5 font-bold text-sm tracking-wider hover:bg-[#b8982a]/90 transition-colors cursor-pointer"
                 >
                     + Tambah Kategori
                 </button>
@@ -103,10 +104,10 @@ const AdminKategoriKegiatan = () => {
                             <th className="text-left py-5 px-3 text-[#b8982a] font-bold text-xs tracking-[0.08em] uppercase whitespace-nowrap w-16">
                                 #
                             </th>
-                            <th className="text-left py-5 px-3 text-[#b8982a] font-bold text-xs tracking-[0.08em] uppercase whitespace-nowrap">
+                            <th className="text-left py-5 px-3 text-[#ffd700] font-bold text-xs tracking-[0.08em] uppercase whitespace-nowrap">
                                 Nama Kategori
                             </th>
-                            <th className="text-left py-5 px-3 text-[#b8982a] font-bold text-xs tracking-[0.08em] uppercase whitespace-nowrap w-40">
+                            <th className="text-left py-5 px-3 text-[#ffd700] font-bold text-xs tracking-[0.08em] uppercase whitespace-nowrap w-40">
                                 Aksi
                             </th>
                         </tr>
@@ -114,7 +115,7 @@ const AdminKategoriKegiatan = () => {
                     <tbody>
                         {loading ? (
                             <tr>
-                                <td colSpan={3} className="p-12 text-center text-[#a89040]">
+                                <td colSpan={3} className="p-12 text-center text-[#ffd700]">
                                     Memuat data...
                                 </td>
                             </tr>
@@ -133,14 +134,14 @@ const AdminKategoriKegiatan = () => {
                                     <td className="py-4 px-3 text-zinc-500 tabular-nums">
                                         {i + 1}
                                     </td>
-                                    <td className="py-4 px-3 text-[#f5e27a]">
+                                    <td className="py-4 px-3 text-[#ffd700]">
                                         {k.nama}
                                     </td>
                                     <td className="py-4 px-3">
                                         <div className="flex gap-2">
                                             <button
                                                 onClick={() => handleOpenForm(k)}
-                                                className="bg-transparent border border-[#b8982a] text-[#b8982a] py-1 px-3 text-xs cursor-pointer tracking-[0.04em] hover:bg-[#b8982a]/10 transition-colors"
+                                                className="bg-transparent border border-[#ffd700] text-[#ffd700] py-1 px-3 text-xs cursor-pointer tracking-[0.04em] hover:bg-[#b8982a]/10 transition-colors"
                                             >
                                                 Edit
                                             </button>
@@ -163,7 +164,7 @@ const AdminKategoriKegiatan = () => {
             {isFormOpen && (
                 <div className="fixed inset-0 bg-black/75 flex items-center justify-center z-50">
                     <div className="bg-[#0f0f0f] border border-[#b8982a] p-8 w-90">
-                        <h3 className="text-[#f5e27a] m-0 mb-4 text-base font-bold">
+                        <h3 className="text-[#ffd700] m-0 mb-4 text-base font-bold">
                             {editId ? "Edit Kategori" : "Tambah Kategori"}
                         </h3>
                         <form onSubmit={handleSubmit}>
@@ -177,7 +178,7 @@ const AdminKategoriKegiatan = () => {
                                     onChange={(e) => setFormNama(e.target.value)}
                                     required
                                     placeholder="Contoh: Seminar"
-                                    className="w-full bg-[#1a1a1a] border border-[#b8982a] text-[#f5e27a] px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-[#b8982a]"
+                                    className="w-full bg-[#1a1a1a] border border-[#b8982a] text-[#ffd700] px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-[#b8982a]"
                                 />
                             </div>
                             <div className="flex gap-3 justify-end">
@@ -204,7 +205,7 @@ const AdminKategoriKegiatan = () => {
             {confirmDelete && (
                 <div className="fixed inset-0 bg-black/75 flex items-center justify-center z-50">
                     <div className="bg-[#0f0f0f] border border-[#b8982a] p-8 w-90">
-                        <h3 className="text-[#f5e27a] m-0 mb-3 text-base font-bold">
+                        <h3 className="text-[#ffd700] m-0 mb-3 text-base font-bold">
                             Hapus Kategori
                         </h3>
                         <p className="text-[#a89040] text-sm m-0 mb-6">

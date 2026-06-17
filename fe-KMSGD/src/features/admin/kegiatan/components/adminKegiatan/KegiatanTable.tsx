@@ -16,9 +16,9 @@ const KegiatanTable = ({ data, loading, page, perPage, onDeleteClick }: Props) =
         <div className="overflow-x-auto">
             <table className="w-full border-collapse text-sm">
                 <thead>
-                    <tr className="border-b-2 border-[#b8982a]">
+                    <tr className="border-b-2 border-[#ffd700]">
                         {COLUMNS.map((h) => (
-                            <th key={h} className="text-left py-5 px-3 text-[#b8982a] font-bold text-xs tracking-[0.08em] uppercase whitespace-nowrap">
+                            <th key={h} className="text-left py-5 px-3 text-[#ffd700] font-bold text-xs tracking-[0.08em] uppercase whitespace-nowrap">
                                 {h}
                             </th>
                         ))}
@@ -27,7 +27,7 @@ const KegiatanTable = ({ data, loading, page, perPage, onDeleteClick }: Props) =
                 <tbody>
                     {loading ? (
                         <tr>
-                            <td colSpan={COLUMNS.length} className="p-24 text-center text-[#a89040]">
+                            <td colSpan={COLUMNS.length} className="p-24 text-center text-[#ffd700]">
                                 Memuat data...
                             </td>
                         </tr>
