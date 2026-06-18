@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { MdDashboard, MdGroups, MdEvent, MdCampaign, MdPhotoLibrary, MdLogout } from "react-icons/md";
+import { MdDashboard, MdGroups, MdEvent, MdCampaign, MdPhotoLibrary, MdLogout, MdWallpaper } from "react-icons/md";
 import { useAuthStore } from "@/store/authStore";
 
 const NAV_ITEMS = [
@@ -8,6 +8,7 @@ const NAV_ITEMS = [
     { label: "Kegiatan", path: "/admin/kegiatan", icon: MdEvent },
     { label: "Pengumuman", path: "/admin/pengumuman", icon: MdCampaign },
     { label: "Galeri", path: "/admin/galeri", icon: MdPhotoLibrary },
+    { label: "Home Bg", path: "/admin/home-background", icon: MdWallpaper },
 ];
 
 const AdminSidebar = () => {

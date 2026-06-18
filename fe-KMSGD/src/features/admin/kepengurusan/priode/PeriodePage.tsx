@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FaCalendarAlt, FaPlus, FaPen, FaTrash } from "react-icons/fa";
+import { FaCalendarAlt, FaPlus } from "react-icons/fa";
 import {
     getPeriode,
     createPeriode,
@@ -7,6 +7,7 @@ import {
     deletePeriode
 } from "../../service/kepengurusanService";
 import type { PeriodeOrganisasi, CreatePeriodeDto, UpdatePeriodeDto } from "../kepengurusanTypes";
+import Table, { type Column } from "@/components/TableAdmin";
 
 const PeriodePage = () => {
     const [periodes, setPeriodes] = useState<PeriodeOrganisasi[]>([]);
@@ -89,6 +90,49 @@ const PeriodePage = () => {
         }
     };
 
+    const columns: Column<PeriodeOrganisasi>[] = [
+        {
+            header: "ID",
+            cellClassName: "text-zinc-500 tabular-nums w-16",
+            render: (item) => `#${item.id}`,
+        },
+        {
+            header: "Nama Periode",
+            cellClassName: "text-[#ffd700] font-medium",
+            render: (item) => item.periode,
+        },
+        {
+            header: "Status",
+            render: (item) => (
+                <span className={`inline-block px-3 py-1 text-xs font-bold border ${item.status === 'AKTIF'
+                    ? 'border-[#b8982a] text-[#ffd700] bg-[#1a1500]'
+                    : 'border-[#444] text-zinc-400 bg-[#1a1a1a]'
+                    }`}>
+                    {item.status}
+                </span>
+            ),
+        },
+        {
+            header: "Aksi",
+            render: (item) => (
+                <div className="flex gap-2">
+                    <button
+                        onClick={() => handleOpenModal(item)}
+                        className="bg-transparent border border-[#b8982a] text-[#b8982a] py-1 px-3 text-xs cursor-pointer tracking-[0.04em] hover:bg-[#b8982a]/10 transition-colors"
+                    >
+                        Edit
+                    </button>
+                    <button
+                        onClick={() => handleDelete(item.id)}
+                        className="bg-transparent border border-[#7a1a1a] text-[#f09595] py-1 px-3 text-xs cursor-pointer tracking-[0.04em] hover:bg-[#7a1a1a]/10 transition-colors"
+                    >
+                        Hapus
+                    </button>
+                </div>
+            ),
+        },
+    ];
+
     return (
         <div className="w-full">
             <div className="flex justify-between items-center mb-6">
@@ -105,53 +149,13 @@ const PeriodePage = () => {
                 </button>
             </div>
 
-            <div className="border border-neutral-800 bg-neutral-900/50">
-                {/* Table Header */}
-                <div className="grid grid-cols-12 gap-4 p-4 border-b border-neutral-800 text-sm font-medium text-neutral-400">
-                    <div className="col-span-2">ID</div>
-                    <div className="col-span-6">Nama Periode</div>
-                    <div className="col-span-3">Status</div>
-                    <div className="col-span-1 text-center">Aksi</div>
-                </div>
-
-                {/* Table Body */}
-                <div className="divide-y divide-neutral-800">
-                    {isLoading ? (
-                        <div className="p-4 text-center text-neutral-400">Loading...</div>
-                    ) : periodes.length === 0 ? (
-                        <div className="p-4 text-center text-neutral-400">Belum ada data periode.</div>
-                    ) : (
-                        periodes.map((item) => (
-                            <div key={item.id} className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-neutral-800/50 transition-colors">
-                                <div className="col-span-2 text-neutral-400 text-sm">#{item.id}</div>
-                                <div className="col-span-6 text-white font-medium">{item.periode}</div>
-                                <div className="col-span-3">
-                                    <span className={`inline-block px-3 py-1 text-xs font-bold border ${item.status === 'AKTIF'
-                                        ? 'border-yellow-400/30 text-[#ffd700] bg-yellow-400/10'
-                                        : 'border-neutral-500/30 text-neutral-400 bg-neutral-500/10'
-                                        }`}>
-                                        {item.status}
-                                    </span>
-                                </div>
-                                <div className="col-span-1 flex justify-center gap-3">
-                                    <button
-                                        onClick={() => handleOpenModal(item)}
-                                        className="text-neutral-400 hover:text-white transition-colors"
-                                    >
-                                        <FaPen className="text-sm" />
-                                    </button>
-                                    <button
-                                        onClick={() => handleDelete(item.id)}
-                                        className="text-neutral-400 hover:text-red-500 transition-colors"
-                                    >
-                                        <FaTrash className="text-sm" />
-                                    </button>
-                                </div>
-                            </div>
-                        ))
-                    )}
-                </div>
-            </div>
+            <Table
+                data={periodes}
+                columns={columns}
+                loading={isLoading}
+                rowKey={(p) => p.id}
+                emptyMessage="Belum ada data periode."
+            />
 
             {/* Modal Form */}
             {isModalOpen && (

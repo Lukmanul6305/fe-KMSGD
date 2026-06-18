@@ -32,6 +32,15 @@ export const pengumumanController = {
     }
   },
 
+  async getByIdAdmin(req: Request, res: Response) {
+    try {
+      const data = await pengumumanService.getByIdAdmin(Number(req.params.id));
+      return response.success(res, data, "Berhasil mengambil detail pengumuman (admin)");
+    } catch (error) {
+      return handleError(res, error);
+    }
+  },
+
   async create(req: Request, res: Response) {
     try {
       const dto = createPengumumanSchema.parse(req.body);

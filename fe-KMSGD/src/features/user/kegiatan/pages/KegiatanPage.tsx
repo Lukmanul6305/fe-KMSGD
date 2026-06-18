@@ -1,5 +1,7 @@
+import { useCallback, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { usePaginatedFilter } from "../../../../hooks/usePaginatedFilter";
-import { kegiatanFilters, kegiatanList, CONTENT_HEADER } from "../services/kegiatanService";
+import { CONTENT_HEADER, getKegiatan, getKegiatanFilters } from "../services/kegiatanService";
 import type { Kegiatan } from "../types/kegiatan.types";
 import EventCard from "../components/EventCard";
 import SearchBar from "../../../../components/SearchBar";
@@ -8,8 +10,28 @@ import Header from "../../../../components/Header";
 import UserLayout from "../../../../layouts/UserLayout";
 
 const ITEMS_PER_PAGE = 6;
+const EMPTY_KEGIATAN: Kegiatan[] = [];
 
 export default function KegiatanPage() {
+    const kegiatanQuery = useQuery({
+        queryKey: ["kegiatan-list"],
+        queryFn: ({ signal }) => getKegiatan(signal),
+        staleTime: 5 * 60 * 1000,
+    });
+    const kegiatanList = kegiatanQuery.data ?? EMPTY_KEGIATAN;
+    const kegiatanFilters = useMemo(() => getKegiatanFilters(kegiatanList), [kegiatanList]);
+    const filterKegiatan = useCallback(
+        (item: Kegiatan, filter: string) => item.category === filter.toUpperCase(),
+        []
+    );
+    const searchKegiatan = useCallback(
+        (item: Kegiatan, q: string) =>
+            item.title.toLowerCase().includes(q) ||
+            item.desc.toLowerCase().includes(q) ||
+            item.location.toLowerCase().includes(q),
+        []
+    );
+
     const {
         paginatedList,
         filteredList,
@@ -23,11 +45,8 @@ export default function KegiatanPage() {
     } = usePaginatedFilter<Kegiatan>({
         data: kegiatanList,
         itemsPerPage: ITEMS_PER_PAGE,
-        filterFn: (item, filter) => item.category === filter.toUpperCase(),
-        searchFn: (item, q) =>
-            item.title.toLowerCase().includes(q) ||
-            item.desc.toLowerCase().includes(q) ||
-            item.location.toLowerCase().includes(q),
+        filterFn: filterKegiatan,
+        searchFn: searchKegiatan,
     });
 
     return (
@@ -41,7 +60,16 @@ export default function KegiatanPage() {
                 placeholder="Cari kegiatan..."
             />
 
-            {paginatedList.length > 0 ? (
+            {kegiatanQuery.isLoading ? (
+                <div className="flex flex-col items-center justify-center py-24 text-center">
+                    <p className="text-[#999077] text-lg mb-2">Memuat kegiatan...</p>
+                </div>
+            ) : kegiatanQuery.isError ? (
+                <div className="flex flex-col items-center justify-center py-24 text-center">
+                    <p className="text-[#999077] text-lg mb-2">Gagal memuat data kegiatan.</p>
+                    <p className="text-[#555] text-sm">Silakan coba beberapa saat lagi.</p>
+                </div>
+            ) : paginatedList.length > 0 ? (
                 <div className="grid grid-cols-1 gap-6">
                     {paginatedList.map((ev) => (
                         <EventCard key={ev.id} event={ev} />

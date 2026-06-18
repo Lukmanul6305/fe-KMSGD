@@ -18,6 +18,8 @@ export default function EventCard({ event }: Props) {
                     src={event.image}
                     alt={event.title}
                     className="w-full h-48 md:h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                    decoding="async"
                 />
             </div>
 
@@ -67,7 +69,7 @@ export default function EventCard({ event }: Props) {
                         </div>
                     </div>
 
-                    <ActionButton label={event.action} />
+                    <ActionButton label={event.action} to={`/kegiatan/detail/${event.id}`} />
                 </div>
             </div>
         </div>

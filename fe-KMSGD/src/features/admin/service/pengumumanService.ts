@@ -16,7 +16,7 @@ export async function getPengumumanPenting(): Promise<Pengumuman[]> {
 }
 
 export async function getPengumumanById(id: number): Promise<Pengumuman> {
-  const res = await axiosAdmin.get<{ data: Pengumuman }>(`${BASE}/${id}`);
+  const res = await axiosAdmin.get<{ data: Pengumuman }>(`${BASE}/admin/${id}`);
   return res.data.data;
 }
 

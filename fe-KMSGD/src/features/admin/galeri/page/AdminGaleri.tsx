@@ -83,17 +83,12 @@ const AdminGaleri = () => {
                 </div>
             )}
 
-            {loading ? (
-                <div className="p-24 text-center text-[#a89040]">Memuat data...</div>
-            ) : data.length === 0 ? (
-                <div className="p-24 text-center text-zinc-500">Belum ada galeri.</div>
-            ) : (
-                <GaleriTable
-                    data={data}
-                    onEditClick={handleOpenForm}
-                    onDeleteClick={(id) => { setDeleteId(id); setConfirmDelete(true); }}
-                />
-            )}
+            <GaleriTable
+                data={data}
+                loading={loading}
+                onEditClick={handleOpenForm}
+                onDeleteClick={(id) => { setDeleteId(id); setConfirmDelete(true); }}
+            />
 
             <GaleriFormModal
                 open={formOpen}

@@ -113,7 +113,7 @@ export default function DemisionerList() {
                                     <div className="mb-14">
                                         <h4 className="text-xl font-semibold text-white mb-8 text-center">Badan Pengurus Inti</h4>
                                         {ketua && (
-                                            <div className="flex justify-center mb-10">
+                                            <div className="flex justify-center mb-8 md:mb-10">
                                                 <StrukturOrganisasiCard
                                                     isKetua
                                                     jabatan={ketua.jabatan}
@@ -123,7 +123,7 @@ export default function DemisionerList() {
                                                 />
                                             </div>
                                         )}
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 justify-items-center">
+                                        <div className="grid grid-cols-3 gap-2.5 sm:gap-4 md:gap-6 lg:gap-8 justify-items-center">
                                             {lain.map((p, idx) => (
                                                 <StrukturOrganisasiCard
                                                     key={idx}

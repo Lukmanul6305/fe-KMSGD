@@ -1,14 +1,37 @@
+import { useCallback, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import SearchBar from "../../../../components/SearchBar";
-import { CONTENT_HEADER, pengumumanFilters, pengumumanList } from "../services/pengumumanService";
+import { CONTENT_HEADER, getPengumuman, getPengumumanFilters } from "../services/pengumumanService";
 import { Pagination } from "../../../../components/Pagination";
 import PengumumanCard from "../../../../components/PengumumanCard";
 import { usePaginatedFilter } from "../../../../hooks/usePaginatedFilter";
 import UserLayout from "../../../../layouts/UserLayout";
 import Header from "../../../../components/Header";
+import type { Pengumuman } from "../types/pengumuman.types";
 
 const ITEMS_PER_PAGE = 6;
+const EMPTY_PENGUMUMAN: Pengumuman[] = [];
 
 const PengumumanPage = () => {
+    const pengumumanQuery = useQuery({
+        queryKey: ["pengumuman-list"],
+        queryFn: ({ signal }) => getPengumuman(signal),
+        staleTime: 5 * 60 * 1000,
+    });
+    const pengumumanList = pengumumanQuery.data ?? EMPTY_PENGUMUMAN;
+    const pengumumanFilters = useMemo(() => getPengumumanFilters(pengumumanList), [pengumumanList]);
+    const filterPengumuman = useCallback(
+        (item: Pengumuman, filter: string) => item.category === filter,
+        []
+    );
+    const searchPengumuman = useCallback(
+        (item: Pengumuman, q: string) =>
+            item.title.toLowerCase().includes(q) ||
+            item.desc.toLowerCase().includes(q) ||
+            item.author.toLowerCase().includes(q),
+        []
+    );
+
     const {
         paginatedList,
         filteredList,
@@ -22,11 +45,8 @@ const PengumumanPage = () => {
     } = usePaginatedFilter({
         data: pengumumanList,
         itemsPerPage: ITEMS_PER_PAGE,
-        filterFn: (item, filter) => item.category === filter,
-        searchFn: (item, q) =>
-            item.title.toLowerCase().includes(q) ||
-            item.desc.toLowerCase().includes(q) ||
-            item.author.toLowerCase().includes(q),
+        filterFn: filterPengumuman,
+        searchFn: searchPengumuman,
     });
 
     return (
@@ -43,7 +63,16 @@ const PengumumanPage = () => {
                         placeholder="Cari berita atau pengumuman..."
                     />
 
-                    {paginatedList.length > 0 ? (
+                    {pengumumanQuery.isLoading ? (
+                        <div className="flex flex-col items-center justify-center py-24 text-center">
+                            <p className="text-[#999077] text-lg mb-2">Memuat pengumuman...</p>
+                        </div>
+                    ) : pengumumanQuery.isError ? (
+                        <div className="flex flex-col items-center justify-center py-24 text-center">
+                            <p className="text-[#999077] text-lg mb-2">Gagal memuat data pengumuman.</p>
+                            <p className="text-[#555] text-sm">Silakan coba beberapa saat lagi.</p>
+                        </div>
+                    ) : paginatedList.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {paginatedList.map((item) => (
                                 <PengumumanCard key={`${item.id}-${item.title}`} item={item} />

@@ -24,6 +24,12 @@ export const kegiatanService = {
   },
 
   async getById(id: number) {
+    const data = await kegiatanRepository.findPublishedById(id);
+    if (!data) throw new Error("Kegiatan tidak ditemukan");
+    return data;
+  },
+
+  async getByIdAdmin(id: number) {
     const data = await kegiatanRepository.findById(id);
     if (!data) throw new Error("Kegiatan tidak ditemukan");
     return data;
@@ -44,7 +50,7 @@ export const kegiatanService = {
   },
 
   async update(id: number, dto: UpdateKegiatanDto, imageBuffer?: Buffer) {
-    const existing = await kegiatanService.getById(id);
+    const existing = await kegiatanService.getByIdAdmin(id);
 
     const { startTime, endTime, ...rest } = dto;
 
@@ -63,7 +69,7 @@ export const kegiatanService = {
   },
 
   async delete(id: number) {
-    const existing = await kegiatanService.getById(id);
+    const existing = await kegiatanService.getByIdAdmin(id);
     if (existing.image) await deleteImage(existing.image);
     return kegiatanRepository.delete(id);
   },

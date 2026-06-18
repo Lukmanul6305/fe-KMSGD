@@ -11,10 +11,11 @@ router.get("/", kegiatanController.getAll);
 router.get("/categories", kegiatanController.getAllCategories);
 router.get("/category/:category", kegiatanController.getByCategory);
 router.get("/departemen/:departemenId", kegiatanController.getByDepartemen);
-router.get("/:id", kegiatanController.getById);
 
 // Protected (admin only)
 router.get("/admin/all", verifyToken, kegiatanController.getAllAdmin);
+router.get("/admin/:id", verifyToken, kegiatanController.getByIdAdmin);
+router.get("/:id", kegiatanController.getById);
 router.post("/", verifyToken, upload.single("image"), kegiatanController.create);
 router.put("/:id", verifyToken, upload.single("image"), kegiatanController.update);
 router.delete("/:id", verifyToken, kegiatanController.delete);

@@ -11,30 +11,30 @@ interface Props {
 export default function StrukturOrganisasiCard({ jabatan, nama, image, isKetua = false, quote }: Props) {
     if (isKetua) {
         return (
-            <div className="w-fit bg-[#111] border border-[#ffd700] p-8 text-center shadow-[0_0_25px_rgba(255,215,0,0.15)] hover:scale-105 transition duration-300">
-                <div className="w-64 h-64 mx-auto bg-linear-to-b from-[#3a3200] to-[#1a1a1a] flex items-center justify-center border border-[#ffd700]/40 mb-5 overflow-hidden">
+            <div className="w-full max-w-64 sm:max-w-72 bg-[#111] border border-[#ffd700] p-4 sm:p-5 text-center shadow-[0_0_20px_rgba(255,215,0,0.12)] hover:-translate-y-1 transition duration-300">
+                <div className="w-36 h-36 sm:w-44 sm:h-44 mx-auto bg-linear-to-b from-[#3a3200] to-[#1a1a1a] flex items-center justify-center border border-[#ffd700]/40 mb-4 overflow-hidden">
                     {image
-                        ? <img src={image} alt={nama} className="w-full h-full object-cover" loading="lazy" />
+                        ? <img src={image} alt={nama} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                         : <User className="text-[#ffd700]" size={34} />
                     }
                 </div>
-                <p className="text-[10px] tracking-[3px] uppercase text-[#ffd700] mb-2">{jabatan}</p>
-                <h3 className="text-white font-semibold text-lg">{nama}</h3>
-                {quote && <p className="text-gray-500 italic text-xs mt-3">"{quote}"</p>}
+                <p className="text-[9px] sm:text-[10px] tracking-[2px] uppercase text-[#ffd700] mb-2 line-clamp-2">{jabatan}</p>
+                <h3 className="text-white font-semibold text-sm sm:text-base leading-snug">{nama}</h3>
+                {quote && <p className="text-gray-500 italic text-xs mt-3 line-clamp-2">"{quote}"</p>}
             </div>
         );
     }
 
     return (
-        <div className="bg-[#111] p-8 text-center border border-[#1f1f1f] hover:border-[#ffd700]/40 hover:-translate-y-2 transition duration-300">
-            <div className="w-64 h-64 mx-auto bg-linear-to-b from-[#3a3200] to-[#1a1a1a] flex items-center justify-center mb-5 overflow-hidden">
+        <div className="w-full bg-[#111] p-3 sm:p-5 text-center border border-[#1f1f1f] hover:border-[#ffd700]/40 hover:-translate-y-1 transition duration-300">
+            <div className="w-full aspect-square max-w-28 sm:max-w-36 mx-auto bg-linear-to-b from-[#3a3200] to-[#1a1a1a] flex items-center justify-center mb-3 sm:mb-4 overflow-hidden">
                 {image
-                    ? <img src={image} alt={nama} className="w-full h-full object-cover" loading="lazy" />
+                    ? <img src={image} alt={nama} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                     : <User className="text-[#d4af37]" size={28} />
                 }
             </div>
-            <p className="text-[10px] tracking-[3px] uppercase text-[#ffd700] mb-2">{jabatan}</p>
-            <h3 className="text-white font-semibold">{nama}</h3>
+            <p className="text-[8px] sm:text-[10px] tracking-[1.5px] sm:tracking-[2px] uppercase text-[#ffd700] mb-1.5 line-clamp-2">{jabatan}</p>
+            <h3 className="text-white font-semibold text-xs sm:text-sm leading-snug line-clamp-2">{nama}</h3>
         </div>
     );
 }

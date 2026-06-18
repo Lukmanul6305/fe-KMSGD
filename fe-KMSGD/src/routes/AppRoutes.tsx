@@ -26,6 +26,7 @@ import AdminPengumuman from "../features/admin/pengumuman/page/AdminPengumuman";
 import ProtectedRoute from "../components/ProtectedRoute";
 import PengumumanForm from "@/features/admin/pengumuman/page/pengumumanForm";
 import AdminGaleri from "@/features/admin/galeri/page/AdminGaleri";
+import AdminHomeBackground from "@/features/admin/homeBackground/AdminHomeBackground";
 
 export const router = createBrowserRouter([
     {
@@ -38,8 +39,10 @@ export const router = createBrowserRouter([
             { path: '/kepengurusan/demisoner', element: <DemisonerPage /> },
             { path: '/kegiatan', element: <KegiatanPage /> },
             { path: '/kegiatan/detail', element: <DetailKegiatan /> },
+            { path: '/kegiatan/detail/:id', element: <DetailKegiatan /> },
             { path: '/pengumuman', element: <PengumumanPage /> },
             { path: '/pengumuman/detail', element: <Detailpengumuman /> },
+            { path: '/pengumuman/detail/:id', element: <Detailpengumuman /> },
             { path: '/galeri', element: <GaleriPage /> },
             { path: '/kontak', element: <KontakPage /> },
             { path: '*', element: <NotFoundPage /> }
@@ -74,7 +77,8 @@ export const router = createBrowserRouter([
                     { path: 'pengumuman', element: <AdminPengumuman /> },
                     { path: 'pengumuman/tambah', element: <PengumumanForm /> },
                     // { path: 'pengumuman/edit/:id', element: <KegiatanEditForm /> },
-                    { path: 'galeri', element: <AdminGaleri /> }
+                    { path: 'galeri', element: <AdminGaleri /> },
+                    { path: 'home-background', element: <AdminHomeBackground /> }
                 ]
             }
         ]

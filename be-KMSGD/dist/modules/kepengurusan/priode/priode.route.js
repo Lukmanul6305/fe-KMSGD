@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const priode_controller_1 = require("./priode.controller");
+const auth_middleware_1 = require("../../../middlewares/auth.middleware");
+const priode = (0, express_1.Router)();
+priode.get("/periode", priode_controller_1.priodeController.getAllPeriode);
+priode.get("/periode/aktif", priode_controller_1.priodeController.getPeriodeAktif);
+priode.get("/periode/:id", priode_controller_1.priodeController.getPeriodeById);
+priode.post("/periode", auth_middleware_1.verifyToken, priode_controller_1.priodeController.createPeriode);
+priode.put("/periode/:id", auth_middleware_1.verifyToken, priode_controller_1.priodeController.updatePeriode);
+priode.delete("/periode/:id", auth_middleware_1.verifyToken, priode_controller_1.priodeController.deletePeriode);
+exports.default = priode;

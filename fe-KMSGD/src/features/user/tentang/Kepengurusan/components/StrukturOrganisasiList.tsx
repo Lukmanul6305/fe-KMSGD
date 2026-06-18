@@ -33,7 +33,7 @@ export default function StrukturOrganisasiList() {
     const { visibleItems, showAll, hasMore, toggle } = useShowMore(semuaAnggotaLain, 6);
 
     return (
-        <section className="bg-[#131313] text-[#e5e2e1] font-['Inter'] min-h-screen py-20 px-15 border-t border-[#2a2a2a]">
+        <section className="bg-[#131313] text-[#e5e2e1] font-['Inter'] min-h-screen py-16 md:py-20 px-4 sm:px-6 md:px-15 border-t border-[#2a2a2a]">
             <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#ffd700] mb-12 text-center">
                 <span className="text-white">Struktur</span> Kepengurusan Aktif
             </h2>
@@ -45,7 +45,7 @@ export default function StrukturOrganisasiList() {
                 <div className="max-w-6xl mx-auto">
                     {/* Ketua */}
                     {ketua && (
-                        <div className="flex justify-center mb-14">
+                        <div className="flex justify-center mb-10 md:mb-12">
                             <StrukturOrganisasiCard
                                 isKetua
                                 jabatan={ketua.jabatan}
@@ -57,7 +57,7 @@ export default function StrukturOrganisasiList() {
                     )}
 
                     {/* Semua Anggota (BPI & Departemen) */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-3 gap-2.5 sm:gap-4 md:gap-6 lg:gap-8">
                         {visibleItems.map((item) => (
                             <StrukturOrganisasiCard
                                 key={item.id}

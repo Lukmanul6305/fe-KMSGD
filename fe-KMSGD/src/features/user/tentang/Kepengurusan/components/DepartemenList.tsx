@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getDepartemenAktif } from "../services/kepengurusan";
 import type { Department } from "../../types/tentang.types";
+import type { AnggotaDepartemen } from "../types/kepengurusanTypes";
 import DepartemenCard from "./DepartemenCard";
 import ShowMoreButton from "../../../../../components/ShowMoreButton";
 import { useShowMore } from "@/hooks/useShowMore";
@@ -14,15 +15,17 @@ export default function DepartemenList() {
         getDepartemenAktif()
             .then((data) => {
                 const mapped: Department[] = data.map((d) => {
-                    const ketua = d.anggota.find((a) => a.jabatan?.toLowerCase().includes("ketua") && !a.jabatan?.toLowerCase().includes("wakil")) || { id: -1, nama: "-", jabatan: "Ketua Departemen" };
-                    const wakil = d.anggota.find((a) => a.jabatan?.toLowerCase().includes("wakil")) || { id: -2, nama: "-", jabatan: "Wakil Ketua Departemen" };
-                    const staff = d.anggota.filter((a) => a.id !== (ketua as any).id && a.id !== (wakil as any).id);
+                    const ketuaFallback: AnggotaDepartemen = { id: -1, departemenId: d.id, nama: "-", jabatan: "Ketua Departemen" };
+                    const wakilFallback: AnggotaDepartemen = { id: -2, departemenId: d.id, nama: "-", jabatan: "Wakil Ketua Departemen" };
+                    const ketua = d.anggota.find((a) => a.jabatan?.toLowerCase().includes("ketua") && !a.jabatan?.toLowerCase().includes("wakil")) || ketuaFallback;
+                    const wakil = d.anggota.find((a) => a.jabatan?.toLowerCase().includes("wakil")) || wakilFallback;
+                    const staff = d.anggota.filter((a) => a.id !== ketua.id && a.id !== wakil.id);
                     
                     return {
                         nama: d.namaDepartemen,
                         desc: d.deskripsi || "",
-                        ketua: { nama: ketua.nama, jabatan: ketua.jabatan, image: (ketua as any).image },
-                        wakil: { nama: wakil.nama, jabatan: wakil.jabatan, image: (wakil as any).image },
+                        ketua: { nama: ketua.nama, jabatan: ketua.jabatan, image: ketua.image },
+                        wakil: { nama: wakil.nama, jabatan: wakil.jabatan, image: wakil.image },
                         staff: staff.map(s => ({ nama: s.nama, jabatan: s.jabatan, image: s.image }))
                     };
                 });

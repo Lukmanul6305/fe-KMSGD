@@ -1,10 +1,26 @@
+import { useEffect, useState } from "react";
 import Reveal from "../ui/Reveal";
 import PengumumanCard from "../../../../../components/PengumumanCard";
-import { pengumumanList } from "../../../pengumuman/services/pengumumanService";
+import { getLatestPengumuman } from "../../../pengumuman/services/pengumumanService";
 import { Link } from "react-router-dom";
+import type { Pengumuman } from "../../../pengumuman/types/pengumuman.types";
 
 export default function PengumumanSection() {
-    const latest = pengumumanList.slice(0, 3);
+    const [latest, setLatest] = useState<Pengumuman[]>([]);
+
+    useEffect(() => {
+        const controller = new AbortController();
+
+        getLatestPengumuman(3, controller.signal)
+            .then(setLatest)
+            .catch((err) => {
+                if (!controller.signal.aborted) {
+                    console.error("Gagal memuat pengumuman terbaru", err);
+                }
+            });
+
+        return () => controller.abort();
+    }, []);
 
     return (
         <section className="py-24 px-6 max-w-7xl mx-auto">

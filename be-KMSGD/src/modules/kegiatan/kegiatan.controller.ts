@@ -60,6 +60,15 @@ export const kegiatanController = {
     }
   },
 
+  async getByIdAdmin(req: Request, res: Response) {
+    try {
+      const data = await kegiatanService.getByIdAdmin(Number(req.params.id));
+      return response.success(res, data, "Berhasil mengambil detail kegiatan (admin)");
+    } catch (error) {
+      return handleError(res, error);
+    }
+  },
+
   async create(req: Request, res: Response) {
     try {
       const dto = createKegiatanSchema.parse(req.body);

@@ -18,7 +18,7 @@ export async function getKegiatanAdmin(): Promise<Kegiatan[]> {
 }
 
 export async function getKegiatanById(id: number): Promise<Kegiatan> {
-  const res = await axiosAdmin.get<{ data: Kegiatan }>(`${BASE}/${id}`);
+  const res = await axiosAdmin.get<{ data: Kegiatan }>(`${BASE}/admin/${id}`);
   return res.data.data;
 }
 

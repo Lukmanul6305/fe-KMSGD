@@ -1,10 +1,26 @@
+import { useEffect, useState } from "react";
 import Reveal from "../ui/Reveal";
 import KegiatanCard from "../cards/KegiatanCard";
 import { getLatestKegiatan } from "../../../kegiatan/services/kegiatanService";
 import { Link } from "react-router-dom";
+import type { Kegiatan } from "../../../kegiatan/types/kegiatan.types";
 
 export default function FokusKegiatanSection() {
-    const latest = getLatestKegiatan(3);
+    const [latest, setLatest] = useState<Kegiatan[]>([]);
+
+    useEffect(() => {
+        const controller = new AbortController();
+
+        getLatestKegiatan(3, controller.signal)
+            .then(setLatest)
+            .catch((err) => {
+                if (!controller.signal.aborted) {
+                    console.error("Gagal memuat fokus kegiatan", err);
+                }
+            });
+
+        return () => controller.abort();
+    }, []);
 
     return (
         <section className="py-24 px-6 max-w-7xl mx-auto">

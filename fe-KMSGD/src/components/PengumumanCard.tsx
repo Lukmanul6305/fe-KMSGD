@@ -13,6 +13,8 @@ export default function PengumumanCard({ item }: Props) {
                     src={item.image}
                     alt={item.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                    decoding="async"
                 />
                 {item.isPenting && (
                     <span className="absolute top-3 left-3 bg-[#e67e22] text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 shadow">
@@ -28,7 +30,7 @@ export default function PengumumanCard({ item }: Props) {
                             {item.category}
                         </span>
                         <span className="text-[#999077] text-xs">
-                            📅 {item.day} {item.month} 2025
+                            &#128197; {item.day} {item.month} {item.year}
                         </span>
                     </div>
 
@@ -46,11 +48,11 @@ export default function PengumumanCard({ item }: Props) {
                         Oleh <span className="font-medium text-[#e5e2e1]">{item.author}</span>
                     </div>
                     <Link
-                        to="/pengumuman/detail"
+                        to={`/pengumuman/detail/${item.id}`}
                         className="text-[#ffd700] text-xs font-bold uppercase tracking-wider hover:underline inline-flex items-center gap-1 group/link"
                     >
                         Baca selengkapnya{" "}
-                        <span className="transition-transform group-hover/link:translate-x-1">→</span>
+                        <span className="transition-transform group-hover/link:translate-x-1">&rarr;</span>
                     </Link>
                 </div>
             </div>

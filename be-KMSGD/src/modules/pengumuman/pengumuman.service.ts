@@ -12,6 +12,12 @@ export const pengumumanService = {
   },
 
   async getById(id: number) {
+    const data = await pengumumanRepository.findPublishedById(id);
+    if (!data) throw new Error("Pengumuman tidak ditemukan");
+    return data;
+  },
+
+  async getByIdAdmin(id: number) {
     const data = await pengumumanRepository.findById(id);
     if (!data) throw new Error("Pengumuman tidak ditemukan");
     return data;
@@ -32,7 +38,7 @@ export const pengumumanService = {
   },
 
   async update(id: number, dto: UpdatePengumumanDto, imageBuffer?: Buffer) {
-    const existing = await pengumumanService.getById(id);
+    const existing = await pengumumanService.getByIdAdmin(id);
     let image = existing.image;
 
     if (imageBuffer) {
@@ -53,7 +59,7 @@ export const pengumumanService = {
   },
 
   async delete(id: number) {
-    const existing = await pengumumanService.getById(id);
+    const existing = await pengumumanService.getByIdAdmin(id);
     if (existing.image) await deleteImage(existing.image);
     return pengumumanRepository.delete(id);
   },

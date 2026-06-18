@@ -11,36 +11,45 @@ interface Props {
 }
 
 const GaleriFormModal = ({ open, editing, onClose, onSubmit }: Props) => {
-    const [judul, setJudul] = useState("");
-    const [kegiatanId, setKegiatanId] = useState("");
-    const [isPublished, setIsPublished] = useState(true);
+    if (!open) return null;
+
+    return (
+        <GaleriFormModalContent
+            key={editing?.id ?? "create"}
+            editing={editing}
+            onClose={onClose}
+            onSubmit={onSubmit}
+        />
+    );
+};
+
+type ContentProps = Omit<Props, "open">;
+
+const GaleriFormModalContent = ({ editing, onClose, onSubmit }: ContentProps) => {
+    const [judul, setJudul] = useState(editing?.judul ?? "");
+    const [kegiatanId, setKegiatanId] = useState(editing?.kegiatanId ? String(editing.kegiatanId) : "");
+    const [isPublished, setIsPublished] = useState(editing?.isPublished ?? true);
     const [file, setFile] = useState<File | null>(null);
-    const [preview, setPreview] = useState<string | null>(null);
+    const [preview, setPreview] = useState<string | null>(editing?.url ?? null);
     const [kegiatanList, setKegiatanList] = useState<Kegiatan[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!open) return;
+        let isMounted = true;
 
-        getKegiatanAdmin().then(setKegiatanList).catch(() => setKegiatanList([]));
+        getKegiatanAdmin()
+            .then((items) => {
+                if (isMounted) setKegiatanList(items);
+            })
+            .catch(() => {
+                if (isMounted) setKegiatanList([]);
+            });
 
-        if (editing) {
-            setJudul(editing.judul ?? "");
-            setKegiatanId(editing.kegiatanId ? String(editing.kegiatanId) : "");
-            setIsPublished(editing.isPublished);
-            setPreview(editing.url);
-        } else {
-            setJudul("");
-            setKegiatanId("");
-            setIsPublished(true);
-            setPreview(null);
-        }
-        setFile(null);
-        setError(null);
-    }, [open, editing]);
-
-    if (!open) return null;
+        return () => {
+            isMounted = false;
+        };
+    }, []);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const f = e.target.files?.[0];

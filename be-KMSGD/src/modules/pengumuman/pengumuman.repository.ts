@@ -27,6 +27,13 @@ export const pengumumanRepository = {
     return prisma.pengumuman.findUnique({ where: { id }, include });
   },
 
+  async findPublishedById(id: number) {
+    return prisma.pengumuman.findFirst({
+      where: { id, isPublished: true },
+      include,
+    });
+  },
+
   async create(data: Prisma.PengumumanUncheckedCreateInput) {
     return prisma.pengumuman.create({ data, include });
   },

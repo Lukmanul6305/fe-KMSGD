@@ -15,10 +15,10 @@ export default function MemberCard({
 
     if (variant === "ketua") {
         return (
-            <div className={`inline-flex items-center gap-4 bg-[#151515] border border-[#ffd700]/20 px-5 py-4 ${className}`}>
-                <div className="w-14 h-14 bg-[#222] shrink-0 flex items-center justify-center overflow-hidden">
+            <div className={`inline-flex items-center gap-3 sm:gap-4 bg-[#151515] border border-[#ffd700]/20 px-3 sm:px-5 py-3 sm:py-4 ${className}`}>
+                <div className="w-11 h-11 sm:w-14 sm:h-14 bg-[#222] shrink-0 flex items-center justify-center overflow-hidden">
                     {member.image ? (
-                        <img src={member.image} alt={member.nama} className="w-full h-full object-cover" loading="lazy" />
+                        <img src={member.image} alt={member.nama} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                     ) : (
                         <User className="text-[#ffd700]" size={24} />
                     )}
@@ -58,19 +58,19 @@ export default function MemberCard({
     }
 
     return (
-        <div className={`bg-[#151515] border flex items-center border-[#1f1f1f] p-5 hover:border-[#ffd700]/30 transition ${className}`}>
-            <div className="w-12 h-12 bg-[#222] shrink-0 flex items-center justify-center overflow-hidden">
+        <div className={`bg-[#151515] border flex items-center border-[#1f1f1f] p-3 sm:p-5 hover:border-[#ffd700]/30 transition ${className}`}>
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#222] shrink-0 flex items-center justify-center overflow-hidden">
                 {member.image ? (
-                    <img src={member.image} alt={member.nama} className="w-full h-full object-cover" loading="lazy" />
+                    <img src={member.image} alt={member.nama} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                 ) : (
                     <User className="text-gray-400" size={20} />
                 )}
             </div>
-            <div className="ml-5 min-w-0">
-                <h4 className="text-white font-medium truncate">
+            <div className="ml-3 sm:ml-5 min-w-0">
+                <h4 className="text-white font-medium text-sm sm:text-base truncate">
                     {member.nama}
                 </h4>
-                <p className="text-xs text-gray-500 mt-1 uppercase tracking-[1px] truncate">
+                <p className="text-[10px] sm:text-xs text-gray-500 mt-1 uppercase tracking-[1px] truncate">
                     {member.jabatan}
                 </p>
             </div>

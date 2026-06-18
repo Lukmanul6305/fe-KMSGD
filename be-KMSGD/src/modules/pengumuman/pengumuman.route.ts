@@ -7,8 +7,9 @@ const router = Router();
 
 router.get("/", pengumumanController.getAll);
 router.get("/penting", pengumumanController.getPenting);
-router.get("/:id", pengumumanController.getById);
 
+router.get("/admin/:id", verifyToken, pengumumanController.getByIdAdmin);
+router.get("/:id", pengumumanController.getById);
 router.post("/", verifyToken, upload.single("image"), pengumumanController.create);
 router.put("/:id", verifyToken, upload.single("image"), pengumumanController.update);
 router.delete("/:id", verifyToken, pengumumanController.delete);

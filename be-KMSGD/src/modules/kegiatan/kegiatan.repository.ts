@@ -44,6 +44,13 @@ export const kegiatanRepository = {
     });
   },
 
+  async findPublishedById(id: number) {
+    return prisma.kegiatan.findFirst({
+      where: { id, isPublished: true },
+      include: { galeri: true, kategori: true, departemen: true },
+    });
+  },
+
   async create(data: Prisma.KegiatanUncheckedCreateInput) {
     return prisma.kegiatan.create({ data });
   },

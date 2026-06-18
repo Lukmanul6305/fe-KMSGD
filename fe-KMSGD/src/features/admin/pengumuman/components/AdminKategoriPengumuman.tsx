@@ -1,6 +1,7 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { getKategoriPengumuman, createKategoriPengumuman, updateKategoriPengumuman, deleteKategoriPengumuman } from "../../service/pengumumanService";
 import type { KategoriPengumuman } from "../pengumumanTypes";
+import Table, { type Column } from "@/components/TableAdmin";
 
 const AdminKategoriPengumuman = () => {
     const [data, setData] = useState<KategoriPengumuman[]>([]);
@@ -78,6 +79,39 @@ const AdminKategoriPengumuman = () => {
         }
     };
 
+    const columns = useMemo<Column<KategoriPengumuman>[]>(() => [
+        {
+            header: "#",
+            cellClassName: "text-zinc-500 tabular-nums w-16",
+            render: (_, globalIndex) => globalIndex,
+        },
+        {
+            header: "Nama Kategori",
+            cellClassName: "text-[#ffd700]",
+            render: (k) => k.nama,
+        },
+        {
+            header: "Aksi",
+            cellClassName: "w-40",
+            render: (k) => (
+                <div className="flex gap-2">
+                    <button
+                        onClick={() => handleOpenForm(k)}
+                        className="bg-transparent border border-[#b8982a] text-[#b8982a] py-1 px-3 text-xs cursor-pointer tracking-[0.04em] hover:bg-[#b8982a]/10 transition-colors"
+                    >
+                        Edit
+                    </button>
+                    <button
+                        onClick={() => { setDeleteId(k.id); setConfirmDelete(true); }}
+                        className="bg-transparent border border-[#7a1a1a] text-[#f09595] py-1 px-3 text-xs cursor-pointer tracking-[0.04em] hover:bg-[#7a1a1a]/10 transition-colors"
+                    >
+                        Hapus
+                    </button>
+                </div>
+            ),
+        },
+    ], []);
+
     return (
         <div className="mt-6">
             <div className="flex justify-between items-center mb-5">
@@ -96,37 +130,13 @@ const AdminKategoriPengumuman = () => {
                 </div>
             )}
 
-            <div className="overflow-x-auto">
-                <table className="w-full border-collapse text-sm">
-                    <thead>
-                        <tr className="border-b-2 border-[#b8982a]">
-                            <th className="text-left py-5 px-3 text-[#ffd700] font-bold text-xs tracking-[0.08em] uppercase whitespace-nowrap w-16">#</th>
-                            <th className="text-left py-5 px-3 text-[#ffd700] font-bold text-xs tracking-[0.08em] uppercase whitespace-nowrap">Nama Kategori</th>
-                            <th className="text-left py-5 px-3 text-[#ffd700] font-bold text-xs tracking-[0.08em] uppercase whitespace-nowrap w-40">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {loading ? (
-                            <tr><td colSpan={3} className="p-12 text-center text-[#ffd700]">Memuat data...</td></tr>
-                        ) : data.length === 0 ? (
-                            <tr><td colSpan={3} className="p-12 text-center text-zinc-500">Tidak ada kategori ditemukan.</td></tr>
-                        ) : (
-                            data.map((k, i) => (
-                                <tr key={k.id} className="border-b border-[#2a2a2a] bg-transparent hover:bg-[#111] transition-colors duration-150">
-                                    <td className="py-4 px-3 text-zinc-500 tabular-nums">{i + 1}</td>
-                                    <td className="py-4 px-3 text-[#ffd700]">{k.nama}</td>
-                                    <td className="py-4 px-3">
-                                        <div className="flex gap-2">
-                                            <button onClick={() => handleOpenForm(k)} className="bg-transparent border border-[#ffd700] text-[#ffd700] py-1 px-3 text-xs cursor-pointer tracking-[0.04em] hover:bg-[#b8982a]/10 transition-colors">Edit</button>
-                                            <button onClick={() => { setDeleteId(k.id); setConfirmDelete(true); }} className="bg-transparent border border-[#ffd700] text-[#ffd700] py-1 px-3 text-xs cursor-pointer tracking-[0.04em] hover:bg-[#7a1a1a]/10 transition-colors">Hapus</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))
-                        )}
-                    </tbody>
-                </table>
-            </div>
+            <Table
+                data={data}
+                columns={columns}
+                loading={loading}
+                rowKey={(k) => k.id}
+                emptyMessage="Tidak ada kategori ditemukan."
+            />
 
             {isFormOpen && (
                 <div className="fixed inset-0 bg-black/75 flex items-center justify-center z-50">

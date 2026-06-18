@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FaStar, FaUserPlus, FaPen, FaTrash } from "react-icons/fa";
+import { FaStar, FaUserPlus } from "react-icons/fa";
 import {
     getPeriode,
     getPeriodeAktif,
@@ -13,6 +13,7 @@ import type {
     CreatePengurusIntiDto,
     PeriodeOrganisasi
 } from "../kepengurusanTypes";
+import Table, { type Column } from "@/components/TableAdmin";
 
 const PengurusPage = () => {
     const [pengurusList, setPengurusList] = useState<PengurusInti[]>([]);
@@ -147,6 +148,71 @@ const PengurusPage = () => {
         }
     };
 
+    const columns: Column<PengurusInti>[] = [
+        {
+            header: "Foto",
+            render: (pengurus) => {
+                const isKetua = pengurus.jabatan.toLowerCase().includes("ketua");
+                return (
+                    <div className={`w-12 h-12 overflow-hidden border-2 ${isKetua ? "border-[#ffd700]" : "border-[#2a2a2a]"}`}>
+                        {pengurus.image ? (
+                            <img src={pengurus.image} alt={pengurus.nama} className="w-full h-full object-cover" />
+                        ) : (
+                            <div className="w-full h-full bg-[#1a1a1a] flex items-center justify-center text-[#ffd700] font-bold text-sm">
+                                {pengurus.nama.substring(0, 2).toUpperCase()}
+                            </div>
+                        )}
+                    </div>
+                );
+            },
+        },
+        {
+            header: "Nama",
+            cellClassName: "text-white font-semibold",
+            render: (pengurus) => pengurus.nama,
+        },
+        {
+            header: "Jabatan",
+            render: (pengurus) => {
+                const isKetua = pengurus.jabatan.toLowerCase().includes("ketua");
+                return (
+                    <span className={`text-sm font-medium ${isKetua ? "text-[#ffd700]" : "text-neutral-400"}`}>
+                        {pengurus.jabatan}
+                    </span>
+                );
+            },
+        },
+        {
+            header: "Slogan",
+            headerClassName: "hidden md:table-cell",
+            cellClassName: "hidden md:table-cell",
+            render: (pengurus) => pengurus.slogan ? (
+                <span className="text-xs text-neutral-400 italic">"{pengurus.slogan}"</span>
+            ) : (
+                <span className="text-neutral-700">—</span>
+            ),
+        },
+        {
+            header: "Aksi",
+            render: (pengurus) => (
+                <div className="flex gap-2">
+                    <button
+                        onClick={() => handleOpenModal(pengurus)}
+                        className="bg-transparent border border-[#b8982a] text-[#b8982a] py-1 px-3 text-xs cursor-pointer tracking-[0.04em] hover:bg-[#b8982a]/10 transition-colors"
+                    >
+                        Edit
+                    </button>
+                    <button
+                        onClick={() => handleDelete(pengurus.id)}
+                        className="bg-transparent border border-[#7a1a1a] text-[#f09595] py-1 px-3 text-xs cursor-pointer tracking-[0.04em] hover:bg-[#7a1a1a]/10 transition-colors"
+                    >
+                        Hapus
+                    </button>
+                </div>
+            ),
+        },
+    ];
+
     return (
         <div className="w-full">
             {/* Header */}
@@ -178,82 +244,13 @@ const PengurusPage = () => {
             </div>
 
             {/* Table */}
-            <div className="border border-neutral-800 overflow-x-auto">
-                <table className="w-full text-sm">
-                    <thead>
-                        <tr className="border-b border-neutral-800 bg-neutral-900">
-                            <th className="text-left text-neutral-400 font-bold tracking-widest uppercase text-xs py-3 px-4 w-16">Foto</th>
-                            <th className="text-left text-neutral-400 font-bold tracking-widest uppercase text-xs py-3 px-4">Nama</th>
-                            <th className="text-left text-neutral-400 font-bold tracking-widest uppercase text-xs py-3 px-4">Jabatan</th>
-                            <th className="text-left text-neutral-400 font-bold tracking-widest uppercase text-xs py-3 px-4 hidden md:table-cell">Slogan</th>
-                            <th className="text-right text-neutral-400 font-bold tracking-widest uppercase text-xs py-3 px-4 w-24">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {isLoading ? (
-                            <tr>
-                                <td colSpan={5} className="text-center text-neutral-400 py-10">Loading...</td>
-                            </tr>
-                        ) : pengurusList.length === 0 ? (
-                            <tr>
-                                <td colSpan={5} className="text-center text-neutral-500 py-10">
-                                    Belum ada pengurus BPI untuk periode yang dipilih.
-                                </td>
-                            </tr>
-                        ) : (
-                            pengurusList.map((pengurus) => {
-                                const isKetua = pengurus.jabatan.toLowerCase().includes("ketua");
-                                return (
-                                    <tr key={pengurus.id} className="border-b border-neutral-800 last:border-b-0 hover:bg-neutral-900/50 transition-colors">
-                                        <td className="py-2 px-4">
-                                            <div className={`w-12 h-12 overflow-hidden border-2 ${isKetua ? "border-yellow-400" : "border-neutral-700"}`}>
-                                                {pengurus.image ? (
-                                                    <img src={pengurus.image} alt={pengurus.nama} className="w-full h-full object-cover" />
-                                                ) : (
-                                                    <div className="w-full h-full bg-neutral-700 flex items-center justify-center text-[#ffd700] font-bold text-sm">
-                                                        {pengurus.nama.substring(0, 2).toUpperCase()}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </td>
-                                        <td className="py-2 px-4 text-white font-semibold">
-                                            {pengurus.nama}
-                                        </td>
-                                        <td className="py-2 px-4">
-                                            <span className={`text-sm font-medium ${isKetua ? "text-[#ffd700]" : "text-neutral-400"}`}>
-                                                {pengurus.jabatan}
-                                            </span>
-                                        </td>
-                                        <td className="py-2 px-4 hidden md:table-cell">
-                                            {pengurus.slogan ? (
-                                                <span className="text-xs text-neutral-400 italic">"{pengurus.slogan}"</span>
-                                            ) : (
-                                                <span className="text-neutral-700">—</span>
-                                            )}
-                                        </td>
-                                        <td className="py-2 px-4">
-                                            <div className="flex gap-2 justify-end">
-                                                <button
-                                                    onClick={() => handleOpenModal(pengurus)}
-                                                    className="p-2 border border-neutral-700 text-neutral-400 hover:text-white hover:border-neutral-500 transition-colors"
-                                                >
-                                                    <FaPen className="text-xs" />
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDelete(pengurus.id)}
-                                                    className="p-2 border border-neutral-700 text-neutral-400 hover:text-red-400 hover:border-red-900 transition-colors"
-                                                >
-                                                    <FaTrash className="text-xs" />
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                );
-                            })
-                        )}
-                    </tbody>
-                </table>
-            </div>
+            <Table
+                data={pengurusList}
+                columns={columns}
+                loading={isLoading}
+                rowKey={(p) => p.id}
+                emptyMessage="Belum ada pengurus BPI untuk periode yang dipilih."
+            />
 
             {/* Modal — tidak diubah */}
             {isModalOpen && (

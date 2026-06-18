@@ -10,6 +10,7 @@ import departemenRouter from "../modules/kepengurusan/departemen/departemen.rout
 import pengumumanRouter from "../modules/pengumuman/pengumuman.route";
 import authRouter from "../modules/authentication/auth.route";
 import sambutanRouter from "../modules/sambutan/sambutan.route";
+import homeBackgroundRouter from "../modules/homeBackground/homeBackground.route";
 
 const globalRouter = Router();
 
@@ -25,5 +26,6 @@ globalRouter.use("/kepengurusan", priodeRouter);
 globalRouter.use("/kepengurusan", pengurusRouter);
 globalRouter.use("/kepengurusan", departemenRouter);
 globalRouter.use("/pengumuman", pengumumanRouter);
+globalRouter.use("/home-background", homeBackgroundRouter);
 
 export default globalRouter;
