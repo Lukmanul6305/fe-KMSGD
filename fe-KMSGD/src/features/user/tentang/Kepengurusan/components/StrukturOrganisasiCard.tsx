@@ -12,7 +12,7 @@ export default function StrukturOrganisasiCard({ jabatan, nama, image, isKetua =
     if (isKetua) {
         return (
             <div className="w-full max-w-64 sm:max-w-72 bg-[#111] border border-[#ffd700] p-4 sm:p-5 text-center shadow-[0_0_20px_rgba(255,215,0,0.12)] hover:-translate-y-1 transition duration-300">
-                <div className="w-36 h-36 sm:w-44 sm:h-44 mx-auto bg-linear-to-b from-[#3a3200] to-[#1a1a1a] flex items-center justify-center border border-[#ffd700]/40 mb-4 overflow-hidden">
+                <div className="w-40 h-40 sm:w-48 sm:h-48 mx-auto bg-linear-to-b from-[#3a3200] to-[#1a1a1a] flex items-center justify-center border border-[#ffd700]/40 mb-4 overflow-hidden">
                     {image
                         ? <img src={image} alt={nama} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                         : <User className="text-[#ffd700]" size={34} />
@@ -27,7 +27,7 @@ export default function StrukturOrganisasiCard({ jabatan, nama, image, isKetua =
 
     return (
         <div className="w-full bg-[#111] p-3 sm:p-5 text-center border border-[#1f1f1f] hover:border-[#ffd700]/40 hover:-translate-y-1 transition duration-300">
-            <div className="w-full aspect-square max-w-28 sm:max-w-36 mx-auto bg-linear-to-b from-[#3a3200] to-[#1a1a1a] flex items-center justify-center mb-3 sm:mb-4 overflow-hidden">
+            <div className="w-full aspect-square max-w-32 sm:max-w-40 mx-auto bg-linear-to-b from-[#3a3200] to-[#1a1a1a] flex items-center justify-center mb-3 sm:mb-4 overflow-hidden">
                 {image
                     ? <img src={image} alt={nama} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                     : <User className="text-[#d4af37]" size={28} />

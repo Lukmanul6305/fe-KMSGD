@@ -14,7 +14,7 @@ const GaleriTable = ({ data, loading, onEditClick, onDeleteClick }: Props) => {
         {
             header: "Foto",
             render: (g) => (
-                <div className="w-14 h-14 bg-[#1a1a1a] overflow-hidden border border-[#2a2a2a]">
+                <div className="w-54 bg-[#1a1a1a] overflow-hidden border border-[#2a2a2a]">
                     <img
                         src={g.tipe === "VIDEO" ? (g.thumbnail ?? "") : g.url}
                         alt={g.judul ?? "Galeri"}

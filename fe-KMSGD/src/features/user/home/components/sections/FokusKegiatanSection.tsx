@@ -36,7 +36,7 @@ export default function FokusKegiatanSection() {
                 </Link>
             </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                 {latest.map(({ id, image, title, desc }, i) => (
                     <Reveal key={id} delay={i * 120}>
                         <KegiatanCard img={image} title={title} desc={desc} />

@@ -83,7 +83,6 @@ const DepartemenPage = () => {
         }
     };
 
-    // To refetch current view when data changes
     const refetchCurrentView = () => {
         if (viewPeriodeId) fetchDepartemenData(viewPeriodeId);
     };
@@ -192,24 +191,27 @@ const DepartemenPage = () => {
 
     return (
         <div className="w-full">
-            <div className="flex justify-between items-center mb-6">
+            {/* Header / Kontrol Atas */}
+            <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
                 <div className="flex items-center gap-3 text-[#ffd700]">
                     <FaSitemap className="text-xl" />
                     <h2 className="text-xl font-bold">Departemen</h2>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 md:gap-4 w-full md:w-auto">
                     <select
                         value={viewPeriodeId || ""}
                         onChange={(e) => setViewPeriodeId(Number(e.target.value))}
-                        className="bg-neutral-800 border border-neutral-700 text-white px-3 py-2 focus:outline-none focus:border-yellow-400"
+                        className="bg-neutral-800 border border-neutral-700 text-white text-sm px-3 py-2 focus:outline-none focus:border-yellow-400 w-full sm:w-auto"
                     >
                         {periodes.map(p => (
-                            <option key={p.id} value={p.id}>{p.periode} ({p.status})</option>
+                            <option key={p.id} value={p.id} className="text-[8px] bg-neutral-800">
+                                {p.periode} ({p.status})
+                            </option>
                         ))}
                     </select>
                     <button
                         onClick={() => handleOpenDeptModal()}
-                        className="flex items-center gap-2 border border-yellow-400 text-[#ffd700] px-4 py-2 font-semibold hover:bg-yellow-400 hover:text-black transition-colors"
+                        className="flex justify-center items-center gap-2 border border-yellow-400 text-[#ffd700] px-4 py-2 font-semibold hover:bg-yellow-400 hover:text-black transition-colors w-full sm:w-auto"
                     >
                         <FaPlus />
                         Tambah Dept
@@ -217,6 +219,7 @@ const DepartemenPage = () => {
                 </div>
             </div>
 
+            {/* List Departemen */}
             <div className="flex flex-col gap-4">
                 {isLoading ? (
                     <div className="text-neutral-400 text-center py-8">Loading...</div>
@@ -228,9 +231,9 @@ const DepartemenPage = () => {
                     departemenList.map((dept) => (
                         <div key={dept.id} className="border border-neutral-800 bg-neutral-900/30">
                             {/* Header Departemen */}
-                            <div className="flex justify-between items-center p-4 border-l-4 border-l-yellow-400 hover:bg-neutral-800/50 transition-colors">
+                            <div className="flex flex-col md:flex-row md:justify-between md:items-center p-4 border-l-4 border-l-yellow-400 hover:bg-neutral-800/50 transition-colors gap-4 md:gap-0">
                                 <div
-                                    className="flex items-center gap-4 cursor-pointer flex-1"
+                                    className="flex items-start md:items-center gap-4 cursor-pointer flex-1"
                                     onClick={() => toggleDept(dept.id)}
                                 >
                                     <div className="w-10 h-10 bg-yellow-400/10 text-[#ffd700] flex items-center justify-center shrink-0">
@@ -242,30 +245,33 @@ const DepartemenPage = () => {
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-4">
-                                    <span className="border border-neutral-700 bg-neutral-800 px-3 py-1 text-xs text-neutral-300">
+                                {/* Aksi Departemen */}
+                                <div className="flex items-center justify-between md:justify-end w-full md:w-auto gap-2 md:gap-4 pt-3 md:pt-0 border-t md:border-transparent border-neutral-800">
+                                    <span className="border border-neutral-700 bg-neutral-800 px-3 py-1 text-xs text-neutral-300 whitespace-nowrap">
                                         {dept.anggota?.length || 0} Anggota
                                     </span>
-                                    <button onClick={() => handleOpenDeptModal(dept)} className="text-neutral-400 hover:text-white p-2">
-                                        <FaPen className="text-sm" />
-                                    </button>
-                                    <button onClick={() => handleDeleteDept(dept.id)} className="text-neutral-400 hover:text-red-500 p-2">
-                                        <FaTrash className="text-sm" />
-                                    </button>
-                                    <button onClick={() => toggleDept(dept.id)} className="text-neutral-400 p-2">
-                                        {expandedDept === dept.id ? <FaChevronUp className="text-sm" /> : <FaChevronDown className="text-sm" />}
-                                    </button>
+                                    <div className="flex items-center gap-1 md:gap-4">
+                                        <button onClick={() => handleOpenDeptModal(dept)} className="text-neutral-400 hover:text-white p-2">
+                                            <FaPen className="text-sm" />
+                                        </button>
+                                        <button onClick={() => handleDeleteDept(dept.id)} className="text-neutral-400 hover:text-red-500 p-2">
+                                            <FaTrash className="text-sm" />
+                                        </button>
+                                        <button onClick={() => toggleDept(dept.id)} className="text-neutral-400 p-2">
+                                            {expandedDept === dept.id ? <FaChevronUp className="text-sm" /> : <FaChevronDown className="text-sm" />}
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
                             {/* Konten Expand: Daftar Anggota */}
                             {expandedDept === dept.id && (
                                 <div className="p-4 border-t border-neutral-800 bg-neutral-900/50">
-                                    <div className="flex justify-between items-center mb-4">
+                                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mb-4">
                                         <h4 className="text-neutral-400 text-sm font-medium">Daftar Anggota Departemen</h4>
                                         <button
                                             onClick={() => handleOpenAnggotaModal(dept.id)}
-                                            className="flex items-center gap-1 text-[#ffd700] text-sm font-semibold hover:text-[#ffd700]"
+                                            className="flex items-center gap-1 text-[#ffd700] text-sm font-semibold hover:text-yellow-300 w-full sm:w-auto"
                                         >
                                             <FaPlus className="text-xs" />
                                             Tambah Anggota
@@ -280,20 +286,22 @@ const DepartemenPage = () => {
                                                         {anggota.image ? (
                                                             <img src={anggota.image} alt={anggota.nama} className="w-10 h-10 object-cover" />
                                                         ) : (
-                                                            <div className="w-10 h-10 bg-neutral-700 text-[#ffd700] font-bold flex items-center justify-center text-sm">
+                                                            <div className="w-10 h-10 bg-neutral-700 text-[#ffd700] font-bold flex items-center justify-center text-sm shrink-0">
                                                                 {anggota.nama.substring(0, 2).toUpperCase()}
                                                             </div>
                                                         )}
-                                                        <div>
-                                                            <p className="text-white font-medium text-sm">
+                                                        <div className="overflow-hidden">
+                                                            <p className="text-white font-medium text-sm truncate">
                                                                 {anggota.nama}
-                                                                {anggota.jabatan.toLowerCase() !== 'anggota' && (
-                                                                    <span className="text-[#ffd700] text-xs ml-1">({anggota.jabatan})</span>
-                                                                )}
                                                             </p>
+                                                            {anggota.jabatan.toLowerCase() !== 'anggota' && (
+                                                                <p className="text-[#ffd700] text-xs truncate">
+                                                                    {anggota.jabatan}
+                                                                </p>
+                                                            )}
                                                         </div>
                                                     </div>
-                                                    <button onClick={() => handleDeleteAnggota(anggota.id)} className="text-neutral-500 hover:text-red-400 transition-colors p-2">
+                                                    <button onClick={() => handleDeleteAnggota(anggota.id)} className="text-neutral-500 hover:text-red-400 transition-colors p-2 shrink-0">
                                                         <FaTimes />
                                                     </button>
                                                 </div>
@@ -311,8 +319,8 @@ const DepartemenPage = () => {
 
             {/* Modal Departemen */}
             {isDeptModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-                    <div className="bg-neutral-900 border border-neutral-800 p-6 w-full max-w-md">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+                    <div className="bg-neutral-900 border border-neutral-800 p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
                         <h3 className="text-xl text-white font-bold mb-4">
                             {isEditDept ? "Edit Departemen" : "Tambah Departemen"}
                         </h3>
@@ -350,9 +358,9 @@ const DepartemenPage = () => {
                                     rows={3}
                                 />
                             </div>
-                            <div className="flex justify-end gap-3 mt-4">
-                                <button type="button" onClick={() => setIsDeptModalOpen(false)} className="px-4 py-2 border border-neutral-700 text-neutral-300">Batal</button>
-                                <button type="submit" className="px-4 py-2 bg-yellow-400 text-black font-semibold">Simpan</button>
+                            <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 mt-4">
+                                <button type="button" onClick={() => setIsDeptModalOpen(false)} className="w-full sm:w-auto px-4 py-2 border border-neutral-700 text-neutral-300 text-center">Batal</button>
+                                <button type="submit" className="w-full sm:w-auto px-4 py-2 bg-yellow-400 text-black font-semibold text-center">Simpan</button>
                             </div>
                         </form>
                     </div>
@@ -361,8 +369,8 @@ const DepartemenPage = () => {
 
             {/* Modal Anggota */}
             {isAnggotaModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-                    <div className="bg-neutral-900 border border-neutral-800 p-6 w-full max-w-md">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+                    <div className="bg-neutral-900 border border-neutral-800 p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
                         <h3 className="text-xl text-white font-bold mb-4">Tambah Anggota</h3>
                         <form onSubmit={submitAnggota} className="flex flex-col gap-4">
                             <div>
@@ -391,12 +399,12 @@ const DepartemenPage = () => {
                                     type="file"
                                     accept="image/*"
                                     onChange={(e) => setAnggotaForm({ ...anggotaForm, file: e.target.files?.[0] || null })}
-                                    className="w-full bg-neutral-800 border border-neutral-700 px-3 py-2 text-white file:mr-4 file:py-1 file:px-3 file:border-0 file:bg-neutral-700 file:text-neutral-300 hover:file:bg-neutral-600 cursor-pointer"
+                                    className="w-full bg-neutral-800 border border-neutral-700 px-3 py-2 text-white file:mr-4 file:py-1 file:px-3 file:border-0 file:bg-neutral-700 file:text-neutral-300 hover:file:bg-neutral-600 cursor-pointer text-sm"
                                 />
                             </div>
-                            <div className="flex justify-end gap-3 mt-4">
-                                <button type="button" onClick={() => setIsAnggotaModalOpen(false)} disabled={isUploading} className="px-4 py-2 border border-neutral-700 text-neutral-300">Batal</button>
-                                <button type="submit" disabled={isUploading} className="px-4 py-2 bg-yellow-400 text-black font-semibold">
+                            <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 mt-4">
+                                <button type="button" onClick={() => setIsAnggotaModalOpen(false)} disabled={isUploading} className="w-full sm:w-auto px-4 py-2 border border-neutral-700 text-neutral-300 text-center">Batal</button>
+                                <button type="submit" disabled={isUploading} className="w-full sm:w-auto px-4 py-2 bg-yellow-400 text-black font-semibold text-center flex justify-center">
                                     {isUploading ? "Mengunggah..." : "Simpan"}
                                 </button>
                             </div>

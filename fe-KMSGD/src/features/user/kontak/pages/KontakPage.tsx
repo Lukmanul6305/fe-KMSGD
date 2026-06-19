@@ -1,5 +1,6 @@
 import { useState } from "react";
 import UserLayout from "../../../../layouts/UserLayout";
+import PetaInteraktif from "../components/PetaInteraktif";
 
 const KontakPage = () => {
   const [form, setForm] = useState({
@@ -93,22 +94,7 @@ const KontakPage = () => {
               </div>
             </div>
 
-            {/* MAP */}
-            <div className="w-full h-72 md:h-96 bg-[#353535] relative overflow-hidden border border-[#4d4732]">
-              <img
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIdtauCQ_j0rIsOgalTxCdZOBv50qodZDm1AEtzjUx6VlTTIGOnS44jaxrkciljhrAfgeajj156hshCq7qcZKp9FTXM_LrQWfT_QgKdlHss_gKO-93b9EONmrmAHhXPWBKg7tSpcBIXq5BpvW1oFkxsDPOLZC01Wm8V621UmQonITvDjNJxzhePznLcWOFL7BVkjSXmffY7rw3M9FMg-iiKJHhdQEuceDw9OxR7KuABmHAvgLT0OD86NDoVajBcWSYuv-I2jbcRLbx"
-                alt="Map"
-                className="w-full h-full object-cover opacity-50 grayscale"
-              />
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="bg-[#20201f] border border-[#ffd700] px-6 py-3 shadow-lg flex items-center gap-2">
-                  <span className="text-[#ffd700]">🗺</span>
-                  <span className="text-[#e5e2e1] text-sm font-semibold">
-                    Peta Interaktif Jabodetabek
-                  </span>
-                </div>
-              </div>
-            </div>
+            <PetaInteraktif/>
           </div>
 
           {/* KANAN: FORM */}

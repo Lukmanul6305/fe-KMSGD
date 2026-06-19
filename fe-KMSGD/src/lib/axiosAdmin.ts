@@ -1,11 +1,18 @@
 import axios from "axios";
+import type { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
+
+const axiosPublicAuth = axios.create({
+  baseURL: API_URL,
+  withCredentials: true,
+});
 
 const axiosAdmin = axios.create({
   baseURL: API_URL,
   withCredentials: true,
 });
+
 
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -21,12 +28,36 @@ const processQueue = (error: unknown) => {
   failedQueue = [];
 };
 
+let onForceLogout: (() => void) | null = null;
+
+export const setForceLogoutHandler = (handler: () => void) => {
+  onForceLogout = handler;
+};
+
+const forceLogout = () => {
+  if (onForceLogout) {
+    onForceLogout();
+  }
+};
+
+interface RetryableRequestConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean;
+}
+
 axiosAdmin.interceptors.response.use(
   (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
+  async (error: AxiosError) => {
+    const originalRequest = error.config as RetryableRequestConfig | undefined;
 
-    const isTokenExpired = error.response?.status === 401 && error.response?.data?.code === "TOKEN_EXPIRED" && !originalRequest._retry;
+    if (!originalRequest) {
+      return Promise.reject(error);
+    }
+
+    const responseData = error.response?.data as { code?: string } | undefined;
+    const isTokenExpired =
+      error.response?.status === 401 &&
+      responseData?.code === "TOKEN_EXPIRED" &&
+      !originalRequest._retry;
 
     if (!isTokenExpired) {
       return Promise.reject(error);
@@ -44,11 +75,12 @@ axiosAdmin.interceptors.response.use(
     isRefreshing = true;
 
     try {
-      await axiosAdmin.post("/auth/refresh");
+      await axiosPublicAuth.post("/auth/refresh");
       processQueue(null);
       return axiosAdmin(originalRequest);
     } catch (refreshError) {
       processQueue(refreshError);
+      forceLogout();
       return Promise.reject(refreshError);
     } finally {
       isRefreshing = false;

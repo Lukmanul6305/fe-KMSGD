@@ -31,7 +31,7 @@ const PengumumanTable = ({ data, loading, page, perPage, onDeleteClick }: Props)
                 <img
                     src={p.image}
                     alt={p.title}
-                    className="w-15 h-10 object-cover border border-[#2a2a2a] block"
+                    className="w-54 object-cover border border-[#2a2a2a] block"
                     onError={(e) => { e.currentTarget.style.display = "none"; }}
                 />
             ) : (

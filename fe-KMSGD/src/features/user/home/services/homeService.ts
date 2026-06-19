@@ -8,9 +8,9 @@ export const homeNavLinks = [
 ];
 
 export const homeStats = [
-  { value: "500+", label: "Anggota Aktif" },
-  { value: "50+", label: "Program Kegiatan" },
-  { value: "15+", label: "Tahun berdiri" },
+  // { value: "500+", label: "Anggota Aktif" },
+  // { value: "50+", label: "Program Kegiatan" },
+  { value: "20+", label: "Tahun berdiri" },
 ];
 
 export const homeFounders = [
@@ -18,36 +18,36 @@ export const homeFounders = [
     nama: "Achmadi",
     peran: "Pendiri Utama",
     tahun: "1928â€“1962",
-    img: "../../../../../public/dewanPendiri/Achmadi.jpg",
+    img: "@/../public/dewanPendiri/Achmadi.jpg",
   },
   {
     nama: "Dr Priguna Sidharta",
     peran: "Dewan Pendiri",
     tahun: "1928â€“1950",
-    img: "../../../../../public/dewanPendiri/DrPrigunaSidharta.jpg",
+    img: "@/../public/dewanPendiri/DrPrigunaSidharta.jpg",
   },
   {
     nama: "Machmud Pasha",
     peran: "Dewan Pendiri",
     tahun: "1928â€“1955",
-    img: "../../../../../public/dewanPendiri/MachmudPasha.jpg",
+    img: "@/../public/dewanPendiri/MachmudPasha.jpg",
   },
   {
     nama: "Moh. Matsna HS",
     peran: "Dewan Pendiri",
     tahun: "1928â€“1968",
-    img: "../../../../../public/dewanPendiri/Moh.MatsnaHS.jpg",
+    img: "@/../public/dewanPendiri/Moh.MatsnaHS.jpg",
   },
   {
     nama: "Soeparno",
     peran: "Dewan Pendiri",
     tahun: "1928â€“1968",
-    img: "../../../../../public/dewanPendiri/Soeparno.png",
+    img: "@/../public/dewanPendiri/Soeparno.png",
   },
   {
     nama: "Surya Darma",
     peran: "Dewan Pendiri",
     tahun: "1928â€“1968",
-    img: "../../../../../public/dewanPendiri/Suryadarma.jpg",
+    img: "@/../public/dewanPendiri/Suryadarma.jpg",
   },
 ];

@@ -70,7 +70,7 @@ export default function KegiatanPage() {
                     <p className="text-[#555] text-sm">Silakan coba beberapa saat lagi.</p>
                 </div>
             ) : paginatedList.length > 0 ? (
-                <div className="grid grid-cols-1 gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-1 gap-3 md:gap-6">
                     {paginatedList.map((ev) => (
                         <EventCard key={ev.id} event={ev} />
                     ))}

@@ -67,7 +67,7 @@ export default function HeroSection() {
             <div className="max-w-7xl mx-auto w-full relative z-10">
                 <div className="max-w-2xl flex flex-col gap-4 md:gap-6">
 
-                    <h1 className="text-4xl md:text-6xl font-bold font-['Montserrat'] text-[#e5e2e1] leading-tight mt-1 md:mt-0">
+                    <h1 className="flex flex-col text-4xl md:text-6xl font-bold font-['Montserrat'] text-[#e5e2e1] leading-tight mt-1 md:mt-0">
                         Keluarga Mahasiswa Sunan Gunung Djati{" "}
                         <span className="text-[#ffd700]">Jabodetabek</span>
                     </h1>

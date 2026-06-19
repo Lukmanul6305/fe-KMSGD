@@ -1,4 +1,4 @@
-import axiosPublic from "../../../../lib/axiosPublic";
+import axiosPublic from "@/lib/axiosPublic";
 import type { Pengumuman } from "../types/pengumuman.types";
 
 export const CONTENT_HEADER = {

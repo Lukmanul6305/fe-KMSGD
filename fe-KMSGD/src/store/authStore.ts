@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import type { Admin } from "../types/auth";
 import { loginRequest, logoutRequest, getMeRequest } from "../service/authService";
+import { setForceLogoutHandler } from "../lib/axiosAdmin";
 
 interface AuthState {
   admin: Admin | null;
@@ -50,3 +51,18 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   clearError: () => set({ error: null }),
 }));
+
+/**
+ * Register forceLogout handler — menghubungkan axios interceptor
+ * dengan auth store. Ketika refresh token gagal, interceptor
+ * memanggil handler ini untuk reset state auth tanpa memanggil
+ * API logout (karena semua token sudah invalid).
+ */
+setForceLogoutHandler(() => {
+  useAuthStore.setState({
+    admin: null,
+    status: "unauthenticated",
+    error: null,
+  });
+});
+

@@ -135,7 +135,7 @@ const PeriodePage = () => {
 
     return (
         <div className="w-full">
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col md:flex-row md:justify-between gap-4">
                 <div className="flex items-center gap-3 text-[#ffd700]">
                     <FaCalendarAlt className="text-xl" />
                     <h2 className="text-xl font-bold">Periode Organisasi</h2>

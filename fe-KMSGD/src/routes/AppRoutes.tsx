@@ -24,6 +24,7 @@ import PengurusPage from "../features/admin/kepengurusan/pengurus/PengurusPage";
 import KegiatanEditForm from "../features/admin/kegiatan/page/KegiatanEditForm";
 import AdminPengumuman from "../features/admin/pengumuman/page/AdminPengumuman";
 import ProtectedRoute from "../components/ProtectedRoute";
+import GuestRoute from "../components/GuestRoute";
 import PengumumanForm from "@/features/admin/pengumuman/page/pengumumanForm";
 import AdminGaleri from "@/features/admin/galeri/page/AdminGaleri";
 import AdminHomeBackground from "@/features/admin/homeBackground/AdminHomeBackground";
@@ -49,8 +50,10 @@ export const router = createBrowserRouter([
         ]
     },
     {
-        path: '/admin/login',
-        element: <AdminLoginPage />
+        element: <GuestRoute />,
+        children: [
+            { path: '/admin/login', element: <AdminLoginPage /> }
+        ]
     },
     {
         element: <ProtectedRoute />,

@@ -16,7 +16,7 @@ export default function MemberCard({
     if (variant === "ketua") {
         return (
             <div className={`inline-flex items-center gap-3 sm:gap-4 bg-[#151515] border border-[#ffd700]/20 px-3 sm:px-5 py-3 sm:py-4 ${className}`}>
-                <div className="w-11 h-11 sm:w-14 sm:h-14 bg-[#222] shrink-0 flex items-center justify-center overflow-hidden">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-[#222] shrink-0 flex items-center justify-center overflow-hidden">
                     {member.image ? (
                         <img src={member.image} alt={member.nama} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                     ) : (
@@ -38,7 +38,7 @@ export default function MemberCard({
     if (variant === "demisioner") {
         return (
             <div className={`bg-[#1a1a1a] border border-[#2a2a2a] p-4 flex items-center gap-4 hover:border-[#ffd700]/30 transition ${className}`}>
-                <div className="w-11 h-11 bg-[#202020] border border-[#333] shrink-0 flex items-center justify-center overflow-hidden">
+                <div className="w-14 h-14 bg-[#202020] border border-[#333] shrink-0 flex items-center justify-center overflow-hidden">
                     {member.image ? (
                         <img src={member.image} alt={member.nama} className="w-full h-full object-cover" loading="lazy" />
                     ) : (
@@ -59,7 +59,8 @@ export default function MemberCard({
 
     return (
         <div className={`bg-[#151515] border flex items-center border-[#1f1f1f] p-3 sm:p-5 hover:border-[#ffd700]/30 transition ${className}`}>
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#222] shrink-0 flex items-center justify-center overflow-hidden">
+            kocakoca
+            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#222] shrink-0 flex items-center justify-center overflow-hidden">
                 {member.image ? (
                     <img src={member.image} alt={member.nama} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                 ) : (

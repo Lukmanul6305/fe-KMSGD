@@ -11,7 +11,7 @@ const AdminHomeBackground = () => {
     const queryClient = useQueryClient();
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    
+
     // Form state
     const [editId, setEditId] = useState<number | null>(null);
     const [isActive, setIsActive] = useState<boolean>(true);
@@ -97,7 +97,7 @@ const AdminHomeBackground = () => {
             header: "Foto",
             cellClassName: "w-32",
             render: (item) => (
-                <div className="w-24 h-16 border border-[#2a2a2a] overflow-hidden bg-[#1a1a1a]">
+                <div className="w-54 border border-[#2a2a2a] overflow-hidden bg-[#1a1a1a]">
                     <img src={item.image} alt="Background" className="w-full h-full object-cover" />
                 </div>
             )
@@ -155,7 +155,7 @@ const AdminHomeBackground = () => {
                 </div>
                 <button
                     onClick={() => handleOpenForm()}
-                    className="flex items-center gap-2 bg-[#1a1500] border border-[#b8982a] text-[#ffd700] px-4 py-2 text-sm font-bold tracking-wider hover:bg-[#b8982a] hover:text-[#1a1a1a] transition-all cursor-pointer"
+                    className="flex items-center gap-2 bg-[#ffd700] text-[#0a0a0a] py-2 px-5 font-bold text-sm tracking-wider hover:bg-[#b8982a]/90 transition-colors cursor-pointer    "
                 >
                     <FaPlus /> TAMBAH FOTO
                 </button>

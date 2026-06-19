@@ -36,7 +36,7 @@ export default function PengumumanSection() {
                 </Link>
             </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
                 {latest.map((item, i) => (
                     <Reveal key={item.id} delay={i * 120}>
                         <PengumumanCard item={item} />

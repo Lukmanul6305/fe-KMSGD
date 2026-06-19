@@ -24,7 +24,7 @@ export const PhotoGallery = ({ photos, loading, onPhotoClick }: PhotoGalleryProp
                         <button
                             type="button"
                             key={photo.id}
-                            className="relative group cursor-pointer overflow-hidden border border-[#353535] bg-[#0f0f0f] text-left aspect-[4/3] sm:aspect-[5/4] hover:border-[#ffd700] transition-colors duration-300"
+                            className="relative group cursor-pointer overflow-hidden border border-[#353535] bg-[#0f0f0f] text-left aspect-4/3 sm:aspect-5/4 hover:border-[#ffd700] transition-colors duration-300"
                             onClick={() => onPhotoClick(index)}
                         >
                             <img
