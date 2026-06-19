@@ -2,11 +2,9 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { prisma } from "../../config/prisma";
+import { JWT_SECRET, REFRESH_SECRET, NODE_ENV } from "../../config/environment";
 
-const JWT_SECRET = process.env.JWT_SECRET!;
-const REFRESH_SECRET = process.env.REFRESH_SECRET!;
-
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = NODE_ENV === "production";
 
 export const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;

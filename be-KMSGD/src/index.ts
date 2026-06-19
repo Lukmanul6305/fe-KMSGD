@@ -1,11 +1,9 @@
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { connection } from "./database/connection";
 import globalRouter from "./routes/route";
-
-dotenv.config();
+import { PORT, HOST, CORS_ORIGIN } from "./config/environment";
 
 const app = express();
 
@@ -13,7 +11,7 @@ app.disable("x-powered-by");
 
 app.use(
   cors({
-    origin: (process.env.CORS_ORIGIN ?? "http://localhost:5173").split(",").map((origin) => origin.trim()),
+    origin: CORS_ORIGIN.split(",").map((origin) => origin.trim()),
     credentials: true,
   }),
 );
@@ -26,9 +24,6 @@ app.use((_, res, next) => {
 });
 
 app.use(express.json({ limit: "1mb" }));
-
-const PORT = process.env.PORT ?? 3000;
-const HOST = process.env.HOST;
 
 app.use(cookieParser());
 
