@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import type { Kegiatan } from "../../kegiatanTypes";
-import Table, { type Column } from "@/components/TableAdmin";
+import TableAdmin, { type Column } from "@/components/TableAdmin";
 
 interface Props {
     data: Kegiatan[];
@@ -82,9 +82,8 @@ const KegiatanTable = ({ data, loading, page, perPage, onDeleteClick }: Props) =
         {
             header: "Status",
             render: (k) => (
-                <span className={`border py-0.5 px-2.5 text-xs whitespace-nowrap ${
-                    k.isPublished ? "bg-[#0a1a0a] border-[#3b6d11] text-[#97c459]" : "bg-[#1a0a0a] border-[#7a1a1a] text-[#f09595]"
-                }`}>
+                <span className={`border py-0.5 px-2.5 text-xs whitespace-nowrap ${k.isPublished ? "bg-[#0a1a0a] border-[#3b6d11] text-[#97c459]" : "bg-[#1a0a0a] border-[#7a1a1a] text-[#f09595]"
+                    }`}>
                     {k.isPublished ? "Publik" : "Draft"}
                 </span>
             ),
@@ -111,13 +110,13 @@ const KegiatanTable = ({ data, loading, page, perPage, onDeleteClick }: Props) =
     ], [onDeleteClick]);
 
     return (
-        <Table
+        <TableAdmin
             data={data}
             columns={columns}
             loading={loading}
             page={page}
             perPage={perPage}
-            rowKey={(k) => k.id} // Unik, performant, aman
+            rowKey={(k) => k.id}
         />
     );
 };

@@ -35,16 +35,16 @@ const GaleriPage = () => {
     <div className="bg-[#131313] text-[#e5e2e1] font-['Inter'] min-h-screen flex flex-col pt-20">
       <GalleryHero />
 
-      <PhotoGallery
-        photos={photos}
-        loading={loading}
-        onPhotoClick={setSelectedPhotoIndex}
-      />
+        <PhotoGallery
+          photos={photos}
+          loading={loading}
+          onPhotoClick={setSelectedPhotoIndex}
+        />
 
-      <VideoGallery
-        videos={videos}
-        loading={loading}
-      />
+        <VideoGallery
+          videos={videos}
+          loading={loading}
+        />
 
       <Lightbox
         photos={photos}

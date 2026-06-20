@@ -39,7 +39,7 @@ export default function EventCard({ event }: Props) {
                     {event.title}
                 </h3>
 
-                <p className="text-xs md:text-sm text-[#888] leading-relaxed flex-1 font-['Inter'] line-clamp-2 md:line-clamp-none">
+                <p className="text-[#888] text-xs md:text-sm leading-relaxed line-clamp-2 overflow-hidden mb-3 md:mb-4">
                     {event.desc}
                 </p>
 

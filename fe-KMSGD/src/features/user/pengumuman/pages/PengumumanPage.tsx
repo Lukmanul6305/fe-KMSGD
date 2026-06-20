@@ -75,7 +75,7 @@ const PengumumanPage = () => {
                     ) : paginatedList.length > 0 ? (
                         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                             {paginatedList.map((item) => (
-                                <PengumumanCard key={`${item.id}-${item.title}`} item={item} />
+                                    <PengumumanCard item={item} />
                             ))}
                         </div>
                     ) : (

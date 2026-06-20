@@ -1,38 +1,24 @@
-import { useState } from "react";
-import UserLayout from "../../../../layouts/UserLayout";
+import UserLayout from "@/layouts/UserLayout";
+import FormUser from "../components/FormUser";
 import PetaInteraktif from "../components/PetaInteraktif";
 
 const KontakPage = () => {
-  const [form, setForm] = useState({
-    nama: "",
-    email: "",
-    subjek: "",
-    pesan: "",
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e: React.MouseEvent) => {
-    e.preventDefault();
-  };
 
   return (
     <div className="bg-[#131313] text-[#e5e2e1] font-['Inter'] min-h-screen flex flex-col">
       <UserLayout>
 
         {/* HEADER */}
-        <section className="mb-20 max-w-3xl">
-          <h1 className="text-4xl md:text-5xl font-bold font-['Montserrat'] text-[#ffd700] mb-4">
-            Hubungi Kami
-          </h1>
-          <p className="text-[#d0c6ab] text-lg leading-relaxed">
-            Kami selalu terbuka untuk berdiskusi, berkolaborasi, dan menjawab
-            pertanyaan Anda seputar Keluarga Mahasiswa Sunan Gunung Djati wilayah
-            Jabodetabek.
-          </p>
-        </section>
+          <section className="mb-20 max-w-3xl">
+            <h1 className="text-4xl md:text-5xl font-bold font-['Montserrat'] text-[#ffd700] mb-4">
+              Hubungi Kami
+            </h1>
+            <p className="text-[#d0c6ab] text-lg leading-relaxed">
+              Kami selalu terbuka untuk berdiskusi, berkolaborasi, dan menjawab
+              pertanyaan Anda seputar Keluarga Mahasiswa Sunan Gunung Djati wilayah
+              Jabodetabek.
+            </p>
+          </section>
 
         {/* GRID LAYOUT */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -94,80 +80,11 @@ const KontakPage = () => {
               </div>
             </div>
 
-            <PetaInteraktif/>
+            <PetaInteraktif />
           </div>
 
           {/* KANAN: FORM */}
-          <div className="lg:col-span-5 bg-[#20201f] border border-[#ffd700] p-8 sticky top-24">
-            <h2 className="text-xl font-bold font-['Montserrat'] text-[#e5e2e1] mb-6">
-              Kirim Pesan
-            </h2>
-            <div className="flex flex-col gap-4">
-
-              <div className="flex flex-col gap-2">
-                <label className="text-[#d0c6ab] text-xs font-semibold tracking-wide">
-                  Nama Lengkap
-                </label>
-                <input
-                  type="text"
-                  name="nama"
-                  placeholder="Masukkan nama Anda"
-                  value={form.nama}
-                  onChange={handleChange}
-                  className="bg-[#131313] border border-[#e5e2e1] text-[#e5e2e1] text-sm p-3 focus:border-[#ffd700] transition-colors outline-none placeholder:text-[#4d4732]"
-                />
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label className="text-[#d0c6ab] text-xs font-semibold tracking-wide">
-                  Alamat Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="contoh@email.com"
-                  value={form.email}
-                  onChange={handleChange}
-                  className="bg-[#131313] border border-[#e5e2e1] text-[#e5e2e1] text-sm p-3 focus:border-[#ffd700] transition-colors outline-none placeholder:text-[#4d4732]"
-                />
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label className="text-[#d0c6ab] text-xs font-semibold tracking-wide">
-                  Subjek
-                </label>
-                <input
-                  type="text"
-                  name="subjek"
-                  placeholder="Tujuan pesan"
-                  value={form.subjek}
-                  onChange={handleChange}
-                  className="bg-[#131313] border border-[#e5e2e1] text-[#e5e2e1] text-sm p-3 focus:border-[#ffd700] transition-colors outline-none placeholder:text-[#4d4732]"
-                />
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label className="text-[#d0c6ab] text-xs font-semibold tracking-wide">
-                  Pesan
-                </label>
-                <textarea
-                  name="pesan"
-                  placeholder="Tuliskan pesan Anda di sini..."
-                  value={form.pesan}
-                  onChange={handleChange}
-                  rows={5}
-                  className="bg-[#131313] border border-[#e5e2e1] text-[#e5e2e1] text-sm p-3 focus:border-[#ffd700] transition-colors outline-none resize-none placeholder:text-[#4d4732]"
-                />
-              </div>
-
-              <button
-                onClick={handleSubmit}
-                className="mt-4 bg-[#ffd700] text-[#131313] font-bold text-lg py-4 px-6 flex items-center justify-center gap-2 hover:bg-[#e9c400] transition-colors active:scale-[0.98]"
-              >
-                Kirim Pesan ➤
-              </button>
-            </div>
-          </div>
+          <FormUser />
 
         </div>
       </UserLayout>

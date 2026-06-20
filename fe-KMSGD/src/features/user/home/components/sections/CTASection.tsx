@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import Reveal from "../ui/Reveal";
 
 export default function CTASection() {
     return (
@@ -9,7 +8,6 @@ export default function CTASection() {
                 <div className="absolute bottom-10 right-10 w-60 h-60 border-4 border-[#1A1A1A] -rotate-12" />
             </div>
             <div className="max-w-7xl mx-auto text-center relative z-10">
-                <Reveal>
                     <h2 className="text-3xl md:text-5xl font-bold font-['Montserrat'] text-[#1A1A1A] mb-4">
                         Siap Berkontribusi & Tumbuh Bersama?
                     </h2>
@@ -24,7 +22,6 @@ export default function CTASection() {
                             Hubungi Kami
                         </Link>
                     </div>
-                </Reveal>
             </div>
         </section>
     );

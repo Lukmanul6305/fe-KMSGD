@@ -38,7 +38,7 @@ export default function PengumumanCard({ item }: Props) {
                         {item.title}
                     </h3>
 
-                    <p className="text-[#d0c6ab] text-xs md:text-sm leading-relaxed line-clamp-2 md:line-clamp-3 mb-3 md:mb-4">
+                    <p className="text-[#888] text-xs md:text-sm leading-relaxed line-clamp-2 overflow-hidden mb-3 md:mb-4">
                         {item.desc}
                     </p>
                 </div>

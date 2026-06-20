@@ -72,7 +72,7 @@ export default function KegiatanPage() {
             ) : paginatedList.length > 0 ? (
                 <div className="grid grid-cols-2 md:grid-cols-1 gap-3 md:gap-6">
                     {paginatedList.map((ev) => (
-                        <EventCard key={ev.id} event={ev} />
+                            <EventCard event={ev} />
                     ))}
                 </div>
             ) : (

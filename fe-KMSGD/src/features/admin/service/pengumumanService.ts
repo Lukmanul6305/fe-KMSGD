@@ -72,7 +72,7 @@ export async function createPengumuman(payload: CreatePengumumanPayload): Promis
 
 export async function updatePengumuman(id: number, payload: UpdatePengumumanPayload): Promise<Pengumuman> {
   const fd = buildFormData(payload as CreatePengumumanPayload);
-  const res = await axiosAdmin.put<{ data: Pengumuman }>(`${BASE}/pengumuman/${id}`, fd, {
+  const res = await axiosAdmin.put<{ data: Pengumuman }>(`${BASE}/${id}`, fd, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return res.data.data;

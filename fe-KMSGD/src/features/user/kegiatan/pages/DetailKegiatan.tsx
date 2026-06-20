@@ -47,29 +47,29 @@ const DetailKegiatan = () => {
 
     const aside = (
         <>
-            <DetailAsideCard
-                title="Kegiatan Terbaru"
-                emptyText="Belum ada kegiatan terbaru."
-                items={(asideQuery.data?.kegiatan ?? [])
-                    .filter((item) => item.id !== kegiatanId)
-                    .slice(0, 3)
-                    .map((item) => ({
+                <DetailAsideCard
+                    title="Kegiatan Terbaru"
+                    emptyText="Belum ada kegiatan terbaru."
+                    items={(asideQuery.data?.kegiatan ?? [])
+                        .filter((item) => item.id !== kegiatanId)
+                        .slice(0, 3)
+                        .map((item) => ({
+                            id: item.id,
+                            title: item.title,
+                            meta: item.date,
+                            to: `/kegiatan/detail/${item.id}`,
+                        }))}
+                />
+                <DetailAsideCard
+                    title="Pengumuman Terbaru"
+                    emptyText="Belum ada pengumuman terbaru."
+                    items={(asideQuery.data?.pengumuman ?? []).slice(0, 3).map((item) => ({
                         id: item.id,
                         title: item.title,
-                        meta: item.date,
-                        to: `/kegiatan/detail/${item.id}`,
+                        meta: item.fullDate,
+                        to: `/pengumuman/detail/${item.id}`,
                     }))}
-            />
-            <DetailAsideCard
-                title="Pengumuman Terbaru"
-                emptyText="Belum ada pengumuman terbaru."
-                items={(asideQuery.data?.pengumuman ?? []).slice(0, 3).map((item) => ({
-                    id: item.id,
-                    title: item.title,
-                    meta: item.fullDate,
-                    to: `/pengumuman/detail/${item.id}`,
-                }))}
-            />
+                />
         </>
     );
 
@@ -88,7 +88,8 @@ const DetailKegiatan = () => {
             ) : detailQuery.isError || !kegiatan ? (
                 <EmptyState title="Gagal memuat kegiatan" message="Data kegiatan tidak tersedia atau sudah tidak dipublikasikan." to="/kegiatan" />
             ) : (
-                <InfoDetailKegiatan kegiatan={kegiatan} />
+                    <InfoDetailKegiatan kegiatan={kegiatan} />
+                
             )}
         </DetailPostTemplate>
     );

@@ -79,7 +79,7 @@ export const router = createBrowserRouter([
                     },
                     { path: 'pengumuman', element: <AdminPengumuman /> },
                     { path: 'pengumuman/tambah', element: <PengumumanForm /> },
-                    // { path: 'pengumuman/edit/:id', element: <KegiatanEditForm /> },
+                    { path: 'pengumuman/edit/:id', element: <PengumumanForm /> },
                     { path: 'galeri', element: <AdminGaleri /> },
                     { path: 'home-background', element: <AdminHomeBackground /> }
                 ]

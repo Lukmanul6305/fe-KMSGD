@@ -1,14 +1,13 @@
-// import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getActiveHomeBackgrounds } from "../../services/homeBackgroundService";
 
 export default function HeroSection() {
     const [bgImages, setBgImages] = useState<string[]>(["/bg.jpeg"]);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
         let isMounted = true;
-
         const fetchImages = async () => {
             try {
                 const res = await getActiveHomeBackgrounds();
@@ -33,15 +32,20 @@ export default function HeroSection() {
         };
     }, []);
 
-    // Jalankan interval pergantian gambar setiap 2 detik
     useEffect(() => {
         if (bgImages.length <= 1) return;
         const interval = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % bgImages.length);
-        }, 2500); // 2.5 detik sesuai instruksi (2/3 detik)
+        }, 5000);
 
         return () => clearInterval(interval);
     }, [bgImages]);
+
+    // Trigger animasi setelah komponen pertama kali ter-mount
+    useEffect(() => {
+        const timer = setTimeout(() => setMounted(true), 100);
+        return () => clearTimeout(timer);
+    }, []);
 
     return (
         <section className="relative min-h-dvh flex items-center px-6 md:px-12 pt-28 pb-16">
@@ -67,12 +71,18 @@ export default function HeroSection() {
             <div className="max-w-7xl mx-auto w-full relative z-10">
                 <div className="max-w-2xl flex flex-col gap-4 md:gap-6">
 
-                    <h1 className="flex flex-col text-4xl md:text-6xl font-bold font-['Montserrat'] text-[#e5e2e1] leading-tight mt-1 md:mt-0">
+                    <h1
+                        className={`flex flex-col text-4xl md:text-6xl font-bold font-['Montserrat'] text-[#e5e2e1] leading-tight mt-1 md:mt-0 transition-all duration-700 ease-out ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                            }`}
+                    >
                         Keluarga Mahasiswa Sunan Gunung Djati{" "}
                         <span className="text-[#ffd700]">Jabodetabek</span>
                     </h1>
 
-                    <p className="text-[#d0c6ab] text-sm md:text-lg leading-relaxed max-w-[90%] md:max-w-xl">
+                    <p
+                        className={`text-[#d0c6ab] text-sm md:text-lg leading-relaxed max-w-[90%] md:max-w-xl transition-all duration-700 ease-out delay-150 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                            }`}
+                    >
                         Wadah silaturahmi, kolaborasi, dan pengembangan diri bagi mahasiswa Sunan Gunung Djati
                         di kawasan metropolitan Jabodetabek.
                     </p>

@@ -88,6 +88,12 @@ const PengumumanForm = () => {
         setForm((prev) => ({ ...prev, [name]: value }));
     };
 
+    // Contact person hanya boleh berisi angka
+    const handleContactPersonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const onlyNumbers = e.target.value.replace(/[^0-9]/g, "");
+        setForm((prev) => ({ ...prev, contactPerson: onlyNumbers }));
+    };
+
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
@@ -128,13 +134,26 @@ const PengumumanForm = () => {
     const addTimeline = () => {
         const agenda = timelineAgenda.trim();
         const tanggal = timelineTanggal.trim();
-        if (!agenda || !tanggal) return;
+
+        if (!agenda || !tanggal) {
+            alert("Harap isi bagian Agenda dan Tanggal!"); // Notifikasi ditambahkan
+            return;
+        }
+
         setTimeline((prev) => [...prev, { agenda, tanggal }]);
         setTimelineAgenda("");
         setTimelineTanggal("");
     };
     const removeTimeline = (index: number) => {
         setTimeline((prev) => prev.filter((_, i) => i !== index));
+    };
+
+    // Format tanggal ISO (YYYY-MM-DD) jadi "DD Bulan YYYY" untuk ditampilkan di daftar timeline
+    const formatTanggal = (isoDate: string) => {
+        if (!isoDate) return "";
+        const date = new Date(`${isoDate}T00:00:00`);
+        if (Number.isNaN(date.getTime())) return isoDate;
+        return date.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -287,15 +306,25 @@ const PengumumanForm = () => {
                     </div>
                     <div>
                         <label className="block text-yellow-600 text-xs font-bold tracking-widest uppercase mb-2">Contact Person</label>
-                        <input type="text" name="contactPerson" value={form.contactPerson} onChange={handleChange} placeholder="081234567890"
-                            className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700" />
+                        <input
+                            type="text"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            name="contactPerson"
+                            value={form.contactPerson}
+                            onChange={handleContactPersonChange}
+                            placeholder="081234567890"
+                            className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700"
+                        />
                     </div>
                 </div>
 
                 {/* Link Pendaftaran + Status */}
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-yellow-600 text-xs font-bold tracking-widest uppercase mb-2">Link Pendaftaran</label>
+                        <label className="block text-yellow-600 text-xs font-bold tracking-widest uppercase mb-2">
+                            Link Pendaftaran <span className="normal-case text-neutral-600">(Opsional)</span>
+                        </label>
                         <input type="url" name="linkPendaftaran" value={form.linkPendaftaran} onChange={handleChange} placeholder="https://..."
                             className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700" />
                     </div>
@@ -391,16 +420,16 @@ const PengumumanForm = () => {
                             type="text"
                             value={timelineAgenda}
                             onChange={(e) => setTimelineAgenda(e.target.value)}
+                            onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addTimeline(); } }}
                             placeholder="Agenda (cth: Pendaftaran)"
                             className="bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700"
                         />
                         <input
-                            type="text"
+                            type="date"
                             value={timelineTanggal}
                             onChange={(e) => setTimelineTanggal(e.target.value)}
                             onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addTimeline(); } }}
-                            placeholder="Tanggal (cth: 10 - 31 Oktober 2025)"
-                            className="bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700"
+                            className="bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700"
                         />
                         <button type="button" onClick={addTimeline}
                             className="px-4 py-2 text-sm border border-yellow-700 text-[#ffd700] hover:bg-yellow-700 hover:text-black transition-colors cursor-pointer">
@@ -413,7 +442,7 @@ const PengumumanForm = () => {
                                 <div key={i} className="flex items-center justify-between gap-3 px-3 py-2 bg-neutral-900 border border-neutral-700 text-sm">
                                     <div className="flex flex-col">
                                         <span className="text-[#ffd700]">{t.agenda}</span>
-                                        <span className="text-neutral-500 text-xs">{t.tanggal}</span>
+                                        <span className="text-neutral-500 text-xs">{formatTanggal(t.tanggal)}</span>
                                     </div>
                                     <button type="button" onClick={() => removeTimeline(i)} className="text-red-400 hover:text-red-300 cursor-pointer shrink-0">×</button>
                                 </div>
