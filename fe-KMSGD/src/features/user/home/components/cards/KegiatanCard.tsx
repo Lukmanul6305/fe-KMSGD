@@ -15,7 +15,7 @@ export default function KegiatanCard({ id, img, title, desc, date, category, loc
     const categoryColor = isSpecial ? "text-[#ffd700]" : "text-[#22c55e]";
 
     return (
-        <div className="bg-[#20201f] border-t-2 border-[#ffd700] group hover:-translate-y-1 transition-transform duration-300 flex flex-col">
+        <div className="bg-[#20201f] border-t-2 border-[#ffd700] group hover:-translate-y-1 hover:shadow-lg hover:shadow-black/40 transition-all duration-300 flex flex-col">
             <div className="h-32 md:h-48 overflow-hidden relative">
                 <img
                     src={img}
@@ -40,7 +40,7 @@ export default function KegiatanCard({ id, img, title, desc, date, category, loc
                 <p className="text-[#888] text-xs md:text-sm leading-relaxed line-clamp-2 overflow-hidden mb-3 md:mb-4">
                     {desc}
                 </p>
-                <div className="flex items-center justify-between pt-2 border-t border-[#353535]">
+                <div className="flex items-center justify-between pt-2 border-t border-[#353535] group-hover:border-[#4d4732] transition-colors duration-300">
                     {/* Location */}
                     <div className="flex items-center gap-1.5 text-[#666] min-w-0">
                         <svg className="w-3 h-3 shrink-0 text-[#ffd700]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -52,9 +52,10 @@ export default function KegiatanCard({ id, img, title, desc, date, category, loc
                     </div>
                     <Link
                         to={`/kegiatan/detail/${id}`}
-                        className="text-[#ffd700] text-xs md:text-sm font-semibold hover:underline shrink-0 ml-2"
+                        className="group/link text-[#ffd700] text-xs md:text-sm font-semibold hover:underline shrink-0 ml-2 inline-flex items-center gap-1"
                     >
-                        Detail →
+                        Detail
+                        <span className="inline-block transition-transform duration-200 group-hover/link:translate-x-1">→</span>
                     </Link>
                 </div>
             </div>

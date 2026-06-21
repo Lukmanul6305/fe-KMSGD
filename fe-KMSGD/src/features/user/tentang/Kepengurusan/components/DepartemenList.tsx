@@ -5,6 +5,7 @@ import type { AnggotaDepartemen } from "../types/kepengurusanTypes";
 import DepartemenCard from "./DepartemenCard";
 import ShowMoreButton from "../../../../../components/ShowMoreButton";
 import { useShowMore } from "@/hooks/useShowMore";
+import RevealItem from "@/components/RevealItem";
 
 export default function DepartemenList() {
     const [departemenData, setDepartemenData] = useState<Department[]>([]);
@@ -49,18 +50,20 @@ export default function DepartemenList() {
             
             {!loading && !error && (
                 <>
-                    <section className="pt-20 pb-4 border-t border-[#2a2a2a] flex flex-col gap-4">
-                        <div className="space-y-5">
-                            {visibleItems.map((dept, index) => (
-                                <DepartemenCard
-                                    key={index}
-                                    dept={dept}
-                                    isOpen={openIndex === index}
-                                    onToggle={() => toggleDepartment(index)}
-                                />
-                            ))}
-                        </div>
-                    </section>
+                    <RevealItem animation="animate-fade-in">
+                        <section className="pt-20 pb-4 border-t border-[#2a2a2a] flex flex-col gap-4">
+                            <div className="space-y-5">
+                                {visibleItems.map((dept, index) => (
+                                    <DepartemenCard
+                                        key={index}
+                                        dept={dept}
+                                        isOpen={openIndex === index}
+                                        onToggle={() => toggleDepartment(index)}
+                                    />
+                                ))}
+                            </div>
+                        </section>
+                    </RevealItem>
 
                     {hasMore && (
                         <ShowMoreButton showAll={showAll} onToggle={toggle} />

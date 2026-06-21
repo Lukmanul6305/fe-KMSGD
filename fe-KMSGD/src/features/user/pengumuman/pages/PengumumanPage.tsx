@@ -8,6 +8,7 @@ import { usePaginatedFilter } from "../../../../hooks/usePaginatedFilter";
 import UserLayout from "../../../../layouts/UserLayout";
 import Header from "../../../../components/Header";
 import type { Pengumuman } from "../types/pengumuman.types";
+import RevealItem from "@/components/RevealItem";
 
 const ITEMS_PER_PAGE = 6;
 const EMPTY_PENGUMUMAN: Pengumuman[] = [];
@@ -73,11 +74,13 @@ const PengumumanPage = () => {
                             <p className="text-[#555] text-sm">Silakan coba beberapa saat lagi.</p>
                         </div>
                     ) : paginatedList.length > 0 ? (
-                        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
-                            {paginatedList.map((item) => (
-                                    <PengumumanCard item={item} />
-                            ))}
-                        </div>
+                        <RevealItem animation="animate-fade-in">
+                            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+                                {paginatedList.map((item) => (
+                                        <PengumumanCard item={item} />
+                                ))}
+                            </div>
+                        </RevealItem>
                     ) : (
                         <div className="flex flex-col items-center justify-center py-24 text-center">
                             <p className="text-[#999077] text-lg mb-2">Tidak ada hasil</p>

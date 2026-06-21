@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getSambutan } from "../../../../../service/sambutanService";
+import RevealItem from "@/components/RevealItem";
 
 export default function KetuaSection() {
     const { data: sambutan, isLoading } = useQuery({
@@ -25,7 +26,7 @@ export default function KetuaSection() {
             <div className="bg-[#20201f] border-l-4 border-[#ffd700] p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center">
 
                 {/* IMAGE */}
-                <div className="w-full max-w-xs md:w-72 flex shrink-0">
+                <RevealItem animation="animate-slide-in-left" className="w-full max-w-xs md:w-72 flex shrink-0">
                     <div className="aspect-4/5 w-full border border-[#353535] relative group overflow-hidden">
                         <img
                             src={sambutan.image ?? "/bg.jpeg"}
@@ -44,10 +45,10 @@ export default function KetuaSection() {
                             </div>
                         </div>
                     </div>
-                </div>
+                </RevealItem>
 
                 {/* CONTENT */}
-                <div className="flex flex-col gap-4">
+                <RevealItem animation="animate-slide-in-right" className="flex flex-col gap-4 flex-1">
                     <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#e5e2e1]">
                         Sambutan Ketua Umum
                     </h2>
@@ -57,7 +58,7 @@ export default function KetuaSection() {
                     <p className="text-[#d0c6ab] text-lg leading-relaxed italic whitespace-pre-wrap">
                         "{sambutan.isi}"
                     </p>
-                </div>
+                </RevealItem>
 
             </div>
 

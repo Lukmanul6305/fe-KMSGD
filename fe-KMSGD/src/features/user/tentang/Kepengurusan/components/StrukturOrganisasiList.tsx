@@ -4,6 +4,7 @@ import { getPengurusInti, getAnggotaDepartemen } from "../services/kepengurusan"
 import type { PengurusInti, AnggotaDepartemen } from "../types/kepengurusanTypes";
 import ShowMoreButton from "@/components/ShowMoreButton";
 import StrukturOrganisasiCard from "./StrukturOrganisasiCard";
+import RevealItem from "@/components/RevealItem";
 
 export default function StrukturOrganisasiList() {
     const [pengurusInti, setPengurusInti] = useState<PengurusInti[]>([]);
@@ -34,9 +35,11 @@ export default function StrukturOrganisasiList() {
 
     return (
         <section className="bg-[#131313] text-[#e5e2e1] font-['Inter'] min-h-screen py-16 md:py-20 px-4 sm:px-6 md:px-15 border-t border-[#2a2a2a]">
-            <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#ffd700] mb-12 text-center">
-                <span className="text-white">Struktur</span> Kepengurusan Aktif
-            </h2>
+            <RevealItem animation="animate-fade-in-up">
+                <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#ffd700] mb-12 text-center">
+                    <span className="text-white">Struktur</span> Kepengurusan Aktif
+                </h2>
+            </RevealItem>
 
             {loading && <p className="text-center text-[#ffd700]/50 py-20">Memuat...</p>}
             {error && <p className="text-center text-red-400 py-20">{error}</p>}
@@ -45,7 +48,7 @@ export default function StrukturOrganisasiList() {
                 <div className="max-w-6xl mx-auto">
                     {/* Ketua */}
                     {ketua && (
-                        <div className="flex justify-center mb-10 md:mb-12">
+                        <RevealItem animation="animate-scale-in" className="flex justify-center mb-10 md:mb-12">
                             <StrukturOrganisasiCard
                                 isKetua
                                 jabatan={ketua.jabatan}
@@ -53,20 +56,22 @@ export default function StrukturOrganisasiList() {
                                 image={ketua.image}
                                 quote={ketua.slogan}
                             />
-                        </div>
+                        </RevealItem>
                     )}
 
-                    {/* Semua Anggota (BPI & Departemen) */}
-                    <div className="grid grid-cols-3 gap-2.5 sm:gap-4 md:gap-6 lg:gap-8">
-                        {visibleItems.map((item) => (
-                            <StrukturOrganisasiCard
-                                key={item.id}
-                                jabatan={item.jabatan}
-                                nama={item.nama}
-                                image={item.image}
-                            />
-                        ))}
-                    </div>
+                    {/* Semua Anggota — grid wrapper animated as a section (may exceed 20 with ShowMore) */}
+                    <RevealItem animation="animate-fade-in">
+                        <div className="grid grid-cols-3 gap-2.5 sm:gap-4 md:gap-6 lg:gap-8">
+                            {visibleItems.map((item) => (
+                                <StrukturOrganisasiCard
+                                    key={item.id}
+                                    jabatan={item.jabatan}
+                                    nama={item.nama}
+                                    image={item.image}
+                                />
+                            ))}
+                        </div>
+                    </RevealItem>
                     {hasMore && (
                         <div className="flex justify-center mt-12">
                             <ShowMoreButton showAll={showAll} onToggle={toggle} />

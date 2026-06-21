@@ -61,7 +61,7 @@ const AdminSidebar = () => {
                 {/* Brand */}
                 <div className="px-5 py-5 border-b border-neutral-800 pt-16 md:pt-5 shrink-0">
                     <div className="inline-flex items-center justify-center w-10 h-10 bg-[#FACC15] mb-3">
-                        <img src="/logo.jpeg" alt="logo" />
+                        <img src="/logo.webp" alt="logo" />
                     </div>
                     <h2 className="text-white font-bold text-sm tracking-wide leading-tight">
                         KMSGD

@@ -4,6 +4,7 @@ import DemisionerCard from "./DemisionerCard";
 import StrukturOrganisasiCard from "./StrukturOrganisasiCard";
 import type { PengurusInti } from "../types/kepengurusanTypes";
 import { ChevronDown } from "lucide-react";
+import RevealItem from "@/components/RevealItem";
 
 interface DemisionerDataGroup {
     periode: string;
@@ -63,7 +64,8 @@ export default function DemisionerList() {
             )}
 
             {!loading && !error && demisionerData.length > 0 && (
-                <section className="pt-10 pb-4 border-t border-[#2a2a2a] flex flex-col gap-10">
+                <RevealItem animation="animate-fade-in">
+                    <section className="pt-10 pb-4 border-t border-[#2a2a2a] flex flex-col gap-10">
                     <div className="flex flex-col items-center gap-4 mb-4">
                         <label htmlFor="periode-select" className="text-white text-lg font-semibold font-['Montserrat']">
                             Pilih Periode Demisioner
@@ -111,7 +113,9 @@ export default function DemisionerList() {
                                 {/* BPI Section */}
                                 {group.pengurusInti.length > 0 && (
                                     <div className="mb-14">
-                                        <h4 className="text-xl font-semibold text-white mb-8 text-center">Badan Pengurus Inti</h4>
+                                        <RevealItem animation="animate-fade-in-up">
+                                            <h4 className="text-xl font-semibold text-white mb-8 text-center">Badan Pengurus Inti</h4>
+                                        </RevealItem>
                                         {ketua && (
                                             <div className="flex justify-center mb-8 md:mb-10">
                                                 <StrukturOrganisasiCard
@@ -139,7 +143,9 @@ export default function DemisionerList() {
                                 {/* Departemen Section */}
                                 {group.departemen.length > 0 && (
                                     <div>
-                                        <h4 className="text-xl font-semibold text-white mb-6 text-center">Departemen</h4>
+                                        <RevealItem animation="animate-fade-in-up">
+                                            <h4 className="text-xl font-semibold text-white mb-6 text-center">Departemen</h4>
+                                        </RevealItem>
                                         <div className="space-y-5">
                                             {group.departemen.map((dept, deptIdx) => (
                                                 <DemisionerCard
@@ -158,6 +164,7 @@ export default function DemisionerList() {
                         );
                     })()}
                 </section>
+                </RevealItem>
             )}
         </>
     );

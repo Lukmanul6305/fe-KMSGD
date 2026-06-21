@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { getGaleri } from "../../../galeri/services/galeriService";
+import RevealItem from "@/components/RevealItem";
 
 export default function GallerySection() {
     const wrapRef = useRef<HTMLDivElement>(null);
@@ -63,15 +64,19 @@ export default function GallerySection() {
         <section className="py-24 bg-[#0e0e0e] border-y border-[#353535] overflow-hidden">
             <div className="max-w-7xl mx-auto">
 
-                {/* HEADER (tanpa Reveal) */}
+                {/* HEADER — only the header is animated; carousel items are NOT (continuously scrolling) */}
                 <div className="flex justify-between items-end mb-12 border-b border-[#353535] pb-4 px-6">
                     <div>
-                        <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#ffd700] mb-2">
-                            <span className="text-white">Galeri</span> Kegiatan
-                        </h2>
-                        <p className="text-[#d0c6ab] text-base">
-                            Momen kebersamaan dan aksi nyata KMSGD.
-                        </p>
+                        <RevealItem animation="animate-fade-in-up">
+                            <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#ffd700] mb-2">
+                                <span className="text-white">Galeri</span> Kegiatan
+                            </h2>
+                        </RevealItem>
+                        <RevealItem animation="animate-fade-in-up" delay={80}>
+                            <p className="text-[#d0c6ab] text-base">
+                                Momen kebersamaan dan aksi nyata KMSGD.
+                            </p>
+                        </RevealItem>
                     </div>
 
                     <Link
