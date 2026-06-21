@@ -22,10 +22,9 @@ export default function KetuaSection() {
 
     return (
         <section className="py-16 px-6 max-w-7xl mx-auto">
-            
+
             <div className="bg-[#20201f] border-l-4 border-[#ffd700] p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center">
 
-                {/* IMAGE */}
                 <RevealItem animation="animate-slide-in-left" className="w-full max-w-xs md:w-72 flex shrink-0">
                     <div className="aspect-4/5 w-full border border-[#353535] relative group overflow-hidden">
                         <img
@@ -47,7 +46,6 @@ export default function KetuaSection() {
                     </div>
                 </RevealItem>
 
-                {/* CONTENT */}
                 <RevealItem animation="animate-slide-in-right" className="flex flex-col gap-4 flex-1">
                     <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#e5e2e1]">
                         Sambutan Ketua Umum
@@ -55,9 +53,10 @@ export default function KetuaSection() {
 
                     <div className="w-16 h-1 bg-[#ffd700]" />
 
-                    <p className="text-[#d0c6ab] text-lg leading-relaxed italic whitespace-pre-wrap">
+                    <blockquote className="text-[#d0c6ab] text-lg leading-relaxed italic whitespace-pre-wrap m-0">
                         "{sambutan.isi}"
-                    </p>
+                        <cite className="sr-only">{sambutan.nama}, {sambutan.jabatan}</cite>
+                    </blockquote>
                 </RevealItem>
 
             </div>

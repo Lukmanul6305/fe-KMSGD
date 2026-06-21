@@ -18,7 +18,7 @@ export default function FormUser() {
     };
 
     return (
-        <div className="lg:col-span-5 bg-[#20201f] border border-[#ffd700] p-8 sticky top-24 transform transition-all duration-500 hover:shadow-[0_0_20px_rgba(255,215,0,0.15)]">
+        <section className="lg:col-span-5 bg-[#20201f] border border-[#ffd700] p-8 sticky top-24 transform transition-all duration-500 hover:shadow-[0_0_20px_rgba(255,215,0,0.15)]">
             <h2 className="text-xl font-bold font-['Montserrat'] text-[#e5e2e1] mb-6 flex items-center gap-2">
                 Kirim Pesan
             </h2>
@@ -87,6 +87,6 @@ export default function FormUser() {
                     Kirim Pesan <span className="transition-transform duration-300 group-hover:translate-x-1">➤</span>
                 </button>
             </div>
-        </div>
+        </section>
     );
 }

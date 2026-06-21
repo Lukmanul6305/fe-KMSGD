@@ -10,7 +10,7 @@ interface Props {
 
 export default function DepartemenCard({ dept, isOpen, onToggle }: Props) {
     return (
-        <div className="bg-[#111] border border-[#1f1f1f] overflow-hidden">
+        <section className="bg-[#111] border border-[#1f1f1f] overflow-hidden">
 
             <button
                 onClick={onToggle}
@@ -54,6 +54,6 @@ export default function DepartemenCard({ dept, isOpen, onToggle }: Props) {
                     ))}
                 </div>
             </div>
-        </div>
+        </section>
     );
 }

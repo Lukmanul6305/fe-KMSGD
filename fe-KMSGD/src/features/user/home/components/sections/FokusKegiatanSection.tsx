@@ -15,8 +15,7 @@ export default function FokusKegiatanSection() {
     return (
         <section className="py-24 px-6 max-w-7xl mx-auto">
 
-            {/* Section header */}
-            <div className="flex justify-between items-end mb-12 border-b border-[#353535] pb-4">
+            <header className="flex justify-between items-end mb-12 border-b border-[#353535] pb-4">
                 <div>
                     <RevealItem animation="animate-fade-in-up">
                         <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#ffd700] mb-2">
@@ -36,9 +35,8 @@ export default function FokusKegiatanSection() {
                 >
                     Lihat Semua ↗
                 </Link>
-            </div>
+            </header>
 
-            {/* Cards — max 3 items, stagger each */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                 {latest.map((item, i) => (
                     <RevealItem

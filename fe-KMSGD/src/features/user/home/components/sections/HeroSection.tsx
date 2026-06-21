@@ -36,7 +36,7 @@ export default function HeroSection() {
         if (bgImages.length <= 1) return;
         const interval = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % bgImages.length);
-        }, 5000);
+        }, 2500);
 
         return () => clearInterval(interval);
     }, [bgImages]);
@@ -44,7 +44,6 @@ export default function HeroSection() {
     return (
         <section className="relative min-h-dvh flex items-center px-6 md:px-12 pt-28 pb-16">
 
-            {/* Background Slideshow */}
             <div className="absolute inset-0 z-0 bg-[#131313] overflow-hidden">
                 {bgImages.map((src, index) => (
                     <img
@@ -61,7 +60,6 @@ export default function HeroSection() {
                 <div className="absolute inset-0 bg-linear-to-r from-[#131313] via-[#131313]/90 to-transparent" />
             </div>
 
-            {/* Konten Utama */}
             <div className="max-w-7xl mx-auto w-full relative z-10">
                 <div className="max-w-2xl flex flex-col gap-4 md:gap-6">
 
@@ -82,8 +80,7 @@ export default function HeroSection() {
                 </div>
             </div>
 
-            {/* Panah bawah */}
-            <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+            <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 animate-bounce" aria-hidden="true">
                 <span className="text-[#FFD700] text-xl md:text-2xl">↓</span>
             </div>
         </section>

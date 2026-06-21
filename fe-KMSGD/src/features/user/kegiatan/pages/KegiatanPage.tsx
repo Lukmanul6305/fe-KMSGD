@@ -91,7 +91,7 @@ export default function KegiatanPage() {
             )}
 
             {totalPages > 1 && (
-                <div className="mt-10 flex flex-col items-center gap-3">
+                <section className="mt-10 flex flex-col items-center gap-3">
                     <p className="text-sm text-[#999077]">
                         Menampilkan{" "}
                         <span className="text-[#e5e2e1]">
@@ -107,7 +107,7 @@ export default function KegiatanPage() {
                         onPageChange={setPage}
                         siblingCount={1}
                     />
-                </div>
+                </section>
             )}
 
         </UserLayout>

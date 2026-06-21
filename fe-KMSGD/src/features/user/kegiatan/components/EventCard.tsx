@@ -10,7 +10,7 @@ export default function EventCard({ event }: Props) {
     const categoryColor = isSpecial ? "text-[#ffd700]" : "text-[#22c55e]";
 
     return (
-        <div className="flex flex-col md:flex-row bg-[#111] border border-[#1f1f1f] overflow-hidden md:min-h-48 hover:border-[#ffd700]/40 transition-all duration-300 group">
+        <section className="flex flex-col md:flex-row bg-[#111] border border-[#1f1f1f] overflow-hidden md:min-h-48 hover:border-[#ffd700]/40 transition-all duration-300 group">
 
             {/* Image */}
             <div className="w-full md:w-56 flex shrink-0 overflow-hidden">
@@ -72,6 +72,6 @@ export default function EventCard({ event }: Props) {
                     <ActionButton label={event.action} to={`/kegiatan/detail/${event.id}`} />
                 </div>
             </div>
-        </div>
+        </section>
     );
 }

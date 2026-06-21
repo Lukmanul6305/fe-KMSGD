@@ -6,7 +6,7 @@ import RevealItem from "@/components/RevealItem";
 const KontakPage = () => {
 
   return (
-    <div className="bg-[#131313] text-[#e5e2e1] font-['Inter'] min-h-screen flex flex-col">
+    <section className="bg-[#131313] text-[#e5e2e1] font-['Inter'] min-h-screen flex flex-col">
       <UserLayout>
 
         {/* HEADER */}
@@ -91,11 +91,13 @@ const KontakPage = () => {
           </div>
 
           {/* KANAN: FORM */}
-          <FormUser />
+          <aside>
+            <FormUser />
+          </aside>
 
         </div>
       </UserLayout>
-    </div>
+    </section>
   );
 };
 

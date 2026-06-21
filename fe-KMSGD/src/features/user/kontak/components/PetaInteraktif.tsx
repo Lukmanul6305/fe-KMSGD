@@ -70,7 +70,7 @@ const PetaInteraktif: React.FC = () => {
     };
 
     return (
-        <div className="w-full h-72 md:h-96 relative overflow-hidden border border-[#4d4732] z-0">
+        <section className="w-full h-72 md:h-96 relative overflow-hidden border border-[#4d4732] z-0">
 
             <MapContainer
                 center={posisiPusat}
@@ -110,7 +110,7 @@ const PetaInteraktif: React.FC = () => {
                 </Marker>
             </MapContainer>
 
-        </div>
+        </section>
     );
 };
 

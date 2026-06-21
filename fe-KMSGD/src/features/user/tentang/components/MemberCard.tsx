@@ -58,7 +58,7 @@ export default function MemberCard({
     }
 
     return (
-        <div className={`bg-[#151515] border flex items-center border-[#1f1f1f] p-3 sm:p-5 hover:border-[#ffd700]/30 transition ${className}`}>
+        <section className={`bg-[#151515] border flex items-center border-[#1f1f1f] p-3 sm:p-5 hover:border-[#ffd700]/30 transition ${className}`}>
             <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#222] shrink-0 flex items-center justify-center overflow-hidden">
                 {member.image ? (
                     <img src={member.image} alt={member.nama} className="w-full h-full object-cover" loading="lazy" decoding="async" />
@@ -74,6 +74,6 @@ export default function MemberCard({
                     {member.jabatan}
                 </p>
             </div>
-        </div>
+        </section>
     );
 }

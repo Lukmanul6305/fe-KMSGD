@@ -6,8 +6,7 @@ export default function DewanPendiriSection() {
         <section className="py-24 px-6 bg-[#0e0e0e] border-y border-[#353535]">
             <div className="max-w-7xl mx-auto">
 
-                {/* Header */}
-                <div className="text-center mb-16">
+                <header className="text-center mb-16">
                     <RevealItem animation="animate-fade-in">
                         <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#20201f] border border-[#353535] text-[#d0c6ab] text-xs font-semibold tracking-widest mb-6">
                             ✦ Legacy &amp; Honor
@@ -25,9 +24,8 @@ export default function DewanPendiriSection() {
                             Mengenang jasa para pendiri yang telah meletakkan dasar perjuangan dan nilai-nilai luhur organisasi ini.
                         </p>
                     </RevealItem>
-                </div>
+                </header>
 
-                {/* Founder Cards — only 4 items, safe to animate each */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                     {homeFounders.map((person, i) => (
                         <RevealItem
@@ -35,7 +33,7 @@ export default function DewanPendiriSection() {
                             animation="animate-fade-in-up"
                             delay={i * 60}
                         >
-                            <div className="group text-center">
+                            <figure className="group text-center m-0">
                                 <div className="relative overflow-hidden border-2 border-transparent hover:border-[#FFD700] transition-all duration-300 mb-4">
                                     <img
                                         src={person.img}
@@ -46,18 +44,20 @@ export default function DewanPendiriSection() {
                                     <div className="absolute inset-0 bg-[#FFD700]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                                 </div>
 
-                                <h4 className="text-[#FFD700] font-bold font-['Montserrat'] text-base mb-1">
-                                    {person.nama}
-                                </h4>
+                                <figcaption>
+                                    <h4 className="text-[#FFD700] font-bold font-['Montserrat'] text-base mb-1">
+                                        {person.nama}
+                                    </h4>
 
-                                <p className="text-[#d0c6ab] text-xs tracking-wider uppercase">
-                                    {person.peran}
-                                </p>
+                                    <p className="text-[#d0c6ab] text-xs tracking-wider uppercase">
+                                        {person.peran}
+                                    </p>
 
-                                <p className="text-[#d0c6ab]/60 text-xs mt-1">
-                                    {person.tahun}
-                                </p>
-                            </div>
+                                    <p className="text-[#d0c6ab]/60 text-xs mt-1">
+                                        {person.tahun}
+                                    </p>
+                                </figcaption>
+                            </figure>
                         </RevealItem>
                     ))}
                 </div>

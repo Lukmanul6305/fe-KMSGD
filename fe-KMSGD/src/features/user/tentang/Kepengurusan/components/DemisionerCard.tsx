@@ -21,7 +21,7 @@ export default function DemisionerCard({ periode, namaDepartemen, anggota, isOpe
     const staff = anggota.filter((a) => a !== ketua && a !== wakil);
 
     return (
-        <div
+        <section
             className={`bg-[#111] border transition-all duration-300 ${isOpen ? "border-[#2c2c2c]" : "border-[#1f1f1f] hover:border-[#2a2a2a]"
                 }`}
         >
@@ -73,6 +73,6 @@ export default function DemisionerCard({ periode, namaDepartemen, anggota, isOpe
                     ))}
                 </div>
             </div>
-        </div>
+        </section>
     );
 }

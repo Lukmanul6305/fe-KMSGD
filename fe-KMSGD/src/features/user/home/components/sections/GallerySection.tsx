@@ -64,8 +64,7 @@ export default function GallerySection() {
         <section className="py-24 bg-[#0e0e0e] border-y border-[#353535] overflow-hidden">
             <div className="max-w-7xl mx-auto">
 
-                {/* HEADER — only the header is animated; carousel items are NOT (continuously scrolling) */}
-                <div className="flex justify-between items-end mb-12 border-b border-[#353535] pb-4 px-6">
+                <header className="flex justify-between items-end mb-12 border-b border-[#353535] pb-4 px-6">
                     <div>
                         <RevealItem animation="animate-fade-in-up">
                             <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-[#ffd700] mb-2">
@@ -85,9 +84,8 @@ export default function GallerySection() {
                     >
                         Lihat Semua Foto ↗
                     </Link>
-                </div>
+                </header>
 
-                {/* LOADING */}
                 {isLoading ? (
                     <div className="flex justify-center items-center py-10">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#ffd700]" />
@@ -103,9 +101,9 @@ export default function GallerySection() {
                             style={{ width: "max-content" }}
                         >
                             {doubled.map((src, idx) => (
-                                <div
+                                <figure
                                     key={`${src}-${idx}`}
-                                    className="group relative overflow-hidden shrink-0 w-55 md:w-70 aspect-square"
+                                    className="group relative overflow-hidden shrink-0 w-55 md:w-70 aspect-square m-0"
                                 >
                                     <img
                                         src={src}
@@ -114,7 +112,7 @@ export default function GallerySection() {
                                         loading="lazy"
                                         decoding="async"
                                     />
-                                </div>
+                                </figure>
                             ))}
                         </div>
                     </div>
