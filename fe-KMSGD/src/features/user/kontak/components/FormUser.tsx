@@ -14,7 +14,7 @@ export default function FormUser() {
 
     const handleSubmit = (e: React.MouseEvent) => {
         e.preventDefault();
-        // Logika submit Anda di sini
+        // Logika submit
     };
 
     return (
