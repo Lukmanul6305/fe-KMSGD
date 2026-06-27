@@ -47,29 +47,29 @@ const DetailPengumuman = () => {
 
     const aside = (
         <>
-                <DetailAsideCard
-                    title="Kegiatan Terbaru"
-                    emptyText="Belum ada kegiatan terbaru."
-                    items={(asideQuery.data?.kegiatan ?? []).slice(0, 3).map((item) => ({
+            <DetailAsideCard
+                title="Kegiatan Terbaru"
+                emptyText="Belum ada kegiatan terbaru."
+                items={(asideQuery.data?.kegiatan ?? []).slice(0, 3).map((item) => ({
+                    id: item.id,
+                    title: item.title,
+                    meta: item.date,
+                    to: `/kegiatan/detail/${item.id}`,
+                }))}
+            />
+            <DetailAsideCard
+                title="Pengumuman Terbaru"
+                emptyText="Belum ada pengumuman terbaru."
+                items={(asideQuery.data?.pengumuman ?? [])
+                    .filter((item) => item.id !== pengumumanId)
+                    .slice(0, 3)
+                    .map((item) => ({
                         id: item.id,
                         title: item.title,
-                        meta: item.date,
-                        to: `/kegiatan/detail/${item.id}`,
+                        meta: item.fullDate,
+                        to: `/pengumuman/detail/${item.id}`,
                     }))}
-                />
-                <DetailAsideCard
-                    title="Pengumuman Terbaru"
-                    emptyText="Belum ada pengumuman terbaru."
-                    items={(asideQuery.data?.pengumuman ?? [])
-                        .filter((item) => item.id !== pengumumanId)
-                        .slice(0, 3)
-                        .map((item) => ({
-                            id: item.id,
-                            title: item.title,
-                            meta: item.fullDate,
-                            to: `/pengumuman/detail/${item.id}`,
-                        }))}
-                />
+            />
         </>
     );
 
@@ -78,7 +78,7 @@ const DetailPengumuman = () => {
             judul="Detail"
             judul2="Pengumuman"
             deskripsi={heroDescription}
-            bgImage={pengumuman?.image || "/bg.jpeg"}
+            bgImage={pengumuman?.image || "/bg.webp"}
             aside={aside}
         >
             {!pengumumanId ? (
@@ -88,7 +88,7 @@ const DetailPengumuman = () => {
             ) : detailQuery.isError || !pengumuman ? (
                 <EmptyState title="Gagal memuat pengumuman" message="Data pengumuman tidak tersedia atau sudah tidak dipublikasikan." to="/pengumuman" />
             ) : (
-                    <InfoDetailPengumuman pengumuman={pengumuman} />
+                <InfoDetailPengumuman pengumuman={pengumuman} />
             )}
         </DetailPostTemplate>
     );

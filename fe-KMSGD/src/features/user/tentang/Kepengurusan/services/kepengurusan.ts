@@ -7,24 +7,37 @@ interface PeriodeAktif {
   nama: string;
 }
 
-async function getPeriodeAktifPublic(): Promise<PeriodeAktif> {
-  const res = await axiosPublic.get<{ data: PeriodeAktif }>("/kepengurusan/periode/aktif");
-  return res.data.data;
+async function getPeriodeAktifPublic(): Promise<PeriodeAktif | null> {
+  try {
+    const res = await axiosPublic.get<{ data: PeriodeAktif }>("/kepengurusan/periode/aktif");
+    return res.data.data;
+  } catch {
+    return null;
+  }
 }
 
 export async function getPengurusInti(): Promise<PengurusInti[]> {
   const periode = await getPeriodeAktifPublic();
-  const res = await axiosPublic.get<{ data: PengurusInti[] }>("/kepengurusan/inti", {
-    params: { periodeId: periode.id },
-  });
-  return res.data.data;
+  if (!periode) return [];
+  try {
+    const res = await axiosPublic.get<{ data: PengurusInti[] }>("/kepengurusan/inti", {
+      params: { periodeId: periode.id },
+    });
+    return res.data.data ?? [];
+  } catch {
+    return [];
+  }
 }
 
 export async function getAnggotaDepartemen(departemenId?: number): Promise<AnggotaDepartemen[]> {
-  const res = await axiosPublic.get<{ data: AnggotaDepartemen[] }>("/kepengurusan/anggota", {
-    params: departemenId ? { departemenId } : undefined,
-  });
-  return res.data.data;
+  try {
+    const res = await axiosPublic.get<{ data: AnggotaDepartemen[] }>("/kepengurusan/anggota", {
+      params: departemenId ? { departemenId } : undefined,
+    });
+    return res.data.data ?? [];
+  } catch {
+    return [];
+  }
 }
 
 export async function getSambutan(): Promise<Sambutan[]> {
@@ -38,6 +51,10 @@ export async function getSemuaPeriode(): Promise<import("../types/kepengurusanTy
 }
 
 export async function getDepartemenAktif(): Promise<import("../types/kepengurusanTypes").Departemen[]> {
-  const res = await axiosPublic.get<{ data: import("../types/kepengurusanTypes").Departemen[] }>("/kepengurusan/departemen/aktif");
-  return res.data.data;
+  try {
+    const res = await axiosPublic.get<{ data: import("../types/kepengurusanTypes").Departemen[] }>("/kepengurusan/departemen/aktif");
+    return res.data.data ?? [];
+  } catch {
+    return [];
+  }
 }

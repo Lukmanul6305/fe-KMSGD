@@ -10,7 +10,6 @@ import RevealItem from "@/components/RevealItem";
 export default function DepartemenList() {
     const [departemenData, setDepartemenData] = useState<Department[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         getDepartemenAktif()
@@ -32,7 +31,7 @@ export default function DepartemenList() {
                 });
                 setDepartemenData(mapped);
             })
-            .catch(() => setError("Gagal memuat data departemen."))
+            .catch(() => {})
             .finally(() => setLoading(false));
     }, []);
 
@@ -46,9 +45,12 @@ export default function DepartemenList() {
     return (
         <>
             {loading && <p className="text-center text-[#ffd700]/50 py-10">Memuat departemen...</p>}
-            {error && <p className="text-center text-red-400 py-10">{error}</p>}
-            
-            {!loading && !error && (
+
+            {!loading && departemenData.length === 0 && (
+                <p className="text-center text-neutral-400 py-10">Belum ada data departemen.</p>
+            )}
+
+            {!loading && departemenData.length > 0 && (
                 <>
                     <RevealItem animation="animate-fade-in">
                         <section className="pt-20 pb-4 border-t border-[#2a2a2a] flex flex-col gap-4">

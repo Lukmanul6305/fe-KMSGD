@@ -29,7 +29,7 @@ const AdminSidebar = () => {
 
     const handleLogout = async () => {
         await logout();
-        navigate("/admin/login", { replace: true });
+        navigate("/portal-kmsgd/auth?access=K5GD-4dm1n-P0rt4l", { replace: true });
     };
 
     const toggleSidebar = () => setIsOpen(!isOpen);

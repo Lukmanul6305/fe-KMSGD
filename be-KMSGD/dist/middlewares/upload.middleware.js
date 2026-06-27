@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const multer_1 = __importDefault(require("multer"));
-const allowedImageTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
+const allowedImageTypes = new Set(["image/webp", "image/png", "image/webp"]);
 const upload = (0, multer_1.default)({
     storage: multer_1.default.memoryStorage(),
     limits: { fileSize: 5 * 1024 * 1024 }, // 5MB

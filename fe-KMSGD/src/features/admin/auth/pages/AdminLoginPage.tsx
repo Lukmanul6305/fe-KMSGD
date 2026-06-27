@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "@/store/authStore";
 
 export default function AdminLoginPage() {
     const navigate = useNavigate();
+    const location = useLocation();
     const { login, status, error: storeError, clearError } = useAuthStore();
     const [form, setForm] = useState({ username: "", password: "" });
     const [showPassword, setShowPassword] = useState(false);
@@ -15,7 +16,10 @@ export default function AdminLoginPage() {
         clearError();
         try {
             await login(form.username, form.password);
-            navigate("/admin/dashboard");
+            // Baca callback URL dari query param, fallback ke dashboard
+            const params = new URLSearchParams(location.search);
+            const redirectTo = params.get("redirect") || "/admin/dashboard";
+            navigate(redirectTo, { replace: true });
         } catch {
             // error sudah ditangani di store
         }

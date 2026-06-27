@@ -5,12 +5,11 @@ export const CONTENT_HEADER = {
   type: "kegiatan",
   judul: "Kegiatan",
   judul2: "Kami",
-  deskripsi:
-    "Jelajahi berbagai agenda, seminar, kompetisi, dan kegiatan sosial yang diselenggarakan oleh Keluarga Mahasiswa Sunan Gunung Djati Jabodetabek.",
+  deskripsi: "Jelajahi berbagai agenda, seminar, kompetisi, dan kegiatan sosial yang diselenggarakan oleh Keluarga Mahasiswa Sunan Gunung Djati Jabodetabek.",
   bgImage: "gambar",
 };
 
-const FALLBACK_IMAGE = "/bg.jpeg";
+const FALLBACK_IMAGE = "/bg.webp";
 
 type ApiResponse<T> = {
   data: T;
@@ -134,24 +133,18 @@ export const getKegiatanFilters = (items: Kegiatan[]): string[] => {
       .toLowerCase()
       .split(" ")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ")
+      .join(" "),
   );
 
   return ["Semua", ...labels];
 };
 
-export const getLatestKegiatan = async (
-  limit = 3,
-  signal?: AbortSignal
-): Promise<Kegiatan[]> => {
+export const getLatestKegiatan = async (limit = 3, signal?: AbortSignal): Promise<Kegiatan[]> => {
   const data = await getKegiatan(signal);
   return data.slice(0, limit);
 };
 
-export const getKegiatanById = async (
-  id: number,
-  signal?: AbortSignal
-): Promise<Kegiatan> => {
+export const getKegiatanById = async (id: number, signal?: AbortSignal): Promise<Kegiatan> => {
   const response = await axiosPublic.get<ApiResponse<KegiatanResponse>>(`/kegiatan/${id}`, {
     signal,
   });

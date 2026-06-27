@@ -8,8 +8,8 @@ interface DetailLayoutProps {
     bgImage?: string;
 }
 
-export default function DetailLayout({ children, judul, judul2, deskripsi, bgImage = "/bg.jpeg" }: DetailLayoutProps) {
-    const safeBgImage = bgImage.startsWith("/") || bgImage.startsWith("https://") ? bgImage : "/bg.jpeg";
+export default function DetailLayout({ children, judul, judul2, deskripsi, bgImage = "/bg.webp" }: DetailLayoutProps) {
+    const safeBgImage = bgImage.startsWith("/") || bgImage.startsWith("https://") ? bgImage : "/bg.webp";
 
     return (
         <div className="bg-[#131313] text-[#e5e2e1] font-['Inter'] min-h-screen">

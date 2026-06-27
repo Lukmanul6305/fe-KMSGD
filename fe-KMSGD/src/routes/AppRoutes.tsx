@@ -52,7 +52,7 @@ export const router = createBrowserRouter([
     {
         element: <GuestRoute />,
         children: [
-            { path: '/admin/login', element: <AdminLoginPage /> }
+            { path: '/portal-kmsgd/auth', element: <AdminLoginPage /> }
         ]
     },
     {

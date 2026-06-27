@@ -28,7 +28,7 @@ export default function KetuaSection() {
                 <RevealItem animation="animate-slide-in-left" className="w-full max-w-xs md:w-72 flex shrink-0">
                     <div className="aspect-4/5 w-full border border-[#353535] relative group overflow-hidden">
                         <img
-                            src={sambutan.image ?? "/bg.jpeg"}
+                            src={sambutan.image ?? "/bg.webp"}
                             alt="Ketua Umum"
                             className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                             loading="lazy"

@@ -3,12 +3,11 @@ import type { Pengumuman } from "../types/pengumuman.types";
 
 export const CONTENT_HEADER = {
   judul: "Pengumuman",
-  deskripsi:
-    "Informasi terbaru, edaran resmi, dan kabar penting seputar kegiatan dan keorganisasian KMSGD Jabodetabek.",
+  deskripsi: "Informasi terbaru, edaran resmi, dan kabar penting seputar kegiatan dan keorganisasian KMSGD Jabodetabek.",
   bgImage: "Gambar",
 };
 
-const FALLBACK_IMAGE = "/bg.jpeg";
+const FALLBACK_IMAGE = "/bg.webp";
 
 type ApiResponse<T> = {
   data: T;
@@ -95,9 +94,7 @@ const mapPengumuman = (item: PengumumanResponse): Pengumuman => {
           }))
           .filter((timeline) => timeline.agenda && timeline.tanggal)
       : [],
-    linkPendaftaran: isSafeExternalUrl(item.linkPendaftaran)
-      ? item.linkPendaftaran!
-      : undefined,
+    linkPendaftaran: isSafeExternalUrl(item.linkPendaftaran) ? item.linkPendaftaran! : undefined,
     contactPerson: item.contactPerson?.trim() || undefined,
   };
 };
@@ -127,18 +124,12 @@ export const getPengumumanFilters = (items: Pengumuman[]): string[] => {
   return ["Semua", ...categories];
 };
 
-export const getLatestPengumuman = async (
-  limit = 3,
-  signal?: AbortSignal
-): Promise<Pengumuman[]> => {
+export const getLatestPengumuman = async (limit = 3, signal?: AbortSignal): Promise<Pengumuman[]> => {
   const data = await getPengumuman(signal);
   return data.slice(0, limit);
 };
 
-export const getPengumumanById = async (
-  id: number,
-  signal?: AbortSignal
-): Promise<Pengumuman> => {
+export const getPengumumanById = async (id: number, signal?: AbortSignal): Promise<Pengumuman> => {
   const response = await axiosPublic.get<ApiResponse<PengumumanResponse>>(`/pengumuman/${id}`, {
     signal,
   });

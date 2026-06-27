@@ -3,7 +3,7 @@ import { getActiveHomeBackgrounds } from "../../services/homeBackgroundService";
 import RevealItem from "@/components/RevealItem";
 
 export default function HeroSection() {
-    const [bgImages, setBgImages] = useState<string[]>(["/bg.jpeg"]);
+    const [bgImages, setBgImages] = useState<string[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {

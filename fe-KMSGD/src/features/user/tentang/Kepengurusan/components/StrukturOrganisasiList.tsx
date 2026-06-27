@@ -10,7 +10,6 @@ export default function StrukturOrganisasiList() {
     const [pengurusInti, setPengurusInti] = useState<PengurusInti[]>([]);
     const [anggotaDepartemen, setAnggotaDepartemen] = useState<AnggotaDepartemen[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         Promise.all([getPengurusInti(), getAnggotaDepartemen()])
@@ -18,7 +17,7 @@ export default function StrukturOrganisasiList() {
                 setPengurusInti(inti);
                 setAnggotaDepartemen(anggota);
             })
-            .catch(() => setError("Gagal memuat data kepengurusan."))
+            .catch(() => {})
             .finally(() => setLoading(false));
     }, []);
 
@@ -42,9 +41,12 @@ export default function StrukturOrganisasiList() {
             </RevealItem>
 
             {loading && <p className="text-center text-[#ffd700]/50 py-20">Memuat...</p>}
-            {error && <p className="text-center text-red-400 py-20">{error}</p>}
 
-            {!loading && !error && (
+            {!loading && pengurusInti.length === 0 && anggotaDepartemen.length === 0 && (
+                <p className="text-center text-neutral-400 py-20">Belum ada data kepengurusan.</p>
+            )}
+
+            {!loading && (pengurusInti.length > 0 || anggotaDepartemen.length > 0) && (
                 <div className="max-w-6xl mx-auto">
                     {/* Ketua */}
                     {ketua && (
