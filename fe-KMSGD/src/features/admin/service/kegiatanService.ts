@@ -59,8 +59,13 @@ export async function getDepartemen(): Promise<Departemen[]> {
 
 /** Departemen dari periode aktif saja */
 export async function getDepartemenAktif(): Promise<Departemen[]> {
-  const res = await axiosAdmin.get<{ data: Departemen[] }>("/kepengurusan/departemen/aktif");
-  return res.data.data;
+  try {
+    const res = await axiosAdmin.get<{ data: Departemen[] }>("/kepengurusan/departemen/aktif");
+    return res.data.data;
+  } catch {
+    // Server mengembalikan 400/404 jika tidak ada periode aktif
+    return [];
+  }
 }
 
 // ─── FORM DATA BUILDER ────────────────────────────────────────────────────────

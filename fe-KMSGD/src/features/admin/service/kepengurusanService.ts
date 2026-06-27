@@ -9,9 +9,14 @@ export async function getPeriode(): Promise<PeriodeOrganisasi[]> {
   return res.data.data || [];
 }
 
-export async function getPeriodeAktif(): Promise<PeriodeOrganisasi> {
-  const res = await axiosAdmin.get<{ data: PeriodeOrganisasi }>(`${BASE_URL}/periode/aktif`);
-  return res.data.data;
+export async function getPeriodeAktif(): Promise<PeriodeOrganisasi | null> {
+  try {
+    const res = await axiosAdmin.get<{ data: PeriodeOrganisasi }>(`${BASE_URL}/periode/aktif`);
+    return res.data.data;
+  } catch {
+    // Server mengembalikan 400/404 jika tidak ada periode aktif
+    return null;
+  }
 }
 
 export async function createPeriode(payload: CreatePeriodeDto): Promise<PeriodeOrganisasi> {

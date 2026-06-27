@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaSitemap, FaPlus, FaPen, FaChevronDown, FaChevronUp, FaTimes, FaTrash } from "react-icons/fa";
+import ConfirmDeleteModal from "../../kegiatan/components/adminKegiatan/ConfirmDeleteModal";
 import {
     getPeriode,
     getPeriodeAktif,
@@ -45,6 +46,10 @@ const DepartemenPage = () => {
     });
     const [isUploading, setIsUploading] = useState(false);
 
+    // Confirm Delete
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    const [deleteTarget, setDeleteTarget] = useState<{ type: "dept" | "anggota"; id: number } | null>(null);
+
     useEffect(() => {
         fetchInitialData();
     }, []);
@@ -65,9 +70,13 @@ const DepartemenPage = () => {
                 setViewPeriodeId(periodeAktif.id);
             } else if (allPeriods.length > 0) {
                 setViewPeriodeId(allPeriods[0].id);
+            } else {
+                // Tidak ada periode sama sekali — hentikan loading
+                setIsLoading(false);
             }
         } catch (error) {
             console.error("Failed to fetch initial data:", error);
+            setIsLoading(false);
         }
     }
 
@@ -133,15 +142,9 @@ const DepartemenPage = () => {
         }
     };
 
-    const handleDeleteDept = async (id: number) => {
-        if (confirm("Hapus departemen ini beserta seluruh anggotanya?")) {
-            try {
-                await deleteDepartemen(id);
-                refetchCurrentView();
-            } catch (error) {
-                console.error(error);
-            }
-        }
+    const handleDeleteDept = (id: number) => {
+        setDeleteTarget({ type: "dept", id });
+        setConfirmDelete(true);
     };
 
     // --- ANGGOTA HANDLERS ---
@@ -178,14 +181,25 @@ const DepartemenPage = () => {
         }
     };
 
-    const handleDeleteAnggota = async (id: number) => {
-        if (confirm("Hapus anggota ini?")) {
-            try {
-                await deleteAnggota(id);
-                refetchCurrentView();
-            } catch (error) {
-                console.error(error);
+    const handleDeleteAnggota = (id: number) => {
+        setDeleteTarget({ type: "anggota", id });
+        setConfirmDelete(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (!deleteTarget) return;
+        try {
+            if (deleteTarget.type === "dept") {
+                await deleteDepartemen(deleteTarget.id);
+            } else {
+                await deleteAnggota(deleteTarget.id);
             }
+            refetchCurrentView();
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setConfirmDelete(false);
+            setDeleteTarget(null);
         }
     };
 
@@ -412,6 +426,12 @@ const DepartemenPage = () => {
                     </div>
                 </div>
             )}
+
+            <ConfirmDeleteModal
+                open={confirmDelete}
+                onCancel={() => { setConfirmDelete(false); setDeleteTarget(null); }}
+                onConfirm={handleConfirmDelete}
+            />
         </div>
     );
 };

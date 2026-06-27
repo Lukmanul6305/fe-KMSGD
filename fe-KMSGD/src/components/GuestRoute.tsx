@@ -1,28 +1,35 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import { useAuthStore } from "../store/authStore";
 
 /**
  * GuestRoute — kebalikan dari ProtectedRoute.
  * Hanya bisa diakses oleh user yang BELUM login.
- * Jika admin sudah login, langsung redirect ke dashboard.
- *
- * CATATAN: Tidak memanggil checkAuth() / API /auth/me di sini.
- * - Jika status "idle" (fresh load), tampilkan login page langsung
- *   tanpa API call → tidak ada error 401 di console.
- * - Jika status "authenticated" (admin sudah login sebelumnya),
- *   redirect ke dashboard.
- * - Keamanan halaman admin tetap dijaga oleh ProtectedRoute,
- *   yang melakukan checkAuth() saat mengakses route /admin/*.
+ * Jika sudah login, redirect ke halaman asal (callback) atau dashboard.
  */
 const GuestRoute = () => {
-    const status = useAuthStore((s) => s.status);
+    const { status, checkAuth } = useAuthStore();
+    const location = useLocation();
 
-    // Admin sudah terautentikasi → redirect ke dashboard
-    if (status === "authenticated") {
-        return <Navigate to="/admin/dashboard" replace />;
+    useEffect(() => {
+        if (status === "idle") {
+            checkAuth();
+        }
+    }, [status, checkAuth]);
+
+    // Tunggu verifikasi token selesai sebelum render apapun
+    if (status === "idle" || status === "loading") {
+        return <div className="p-8 text-center text-[#ffd700]">Memuat...</div>;
     }
 
-    // Status idle, loading, atau unauthenticated → tampilkan halaman login
+    // Sudah login → redirect ke halaman asal (callback) atau dashboard
+    if (status === "authenticated") {
+        const params = new URLSearchParams(location.search);
+        const redirectTo = params.get("redirect") || "/admin/dashboard";
+        return <Navigate to={redirectTo} replace />;
+    }
+
+    // Belum login → tampilkan halaman login
     return <Outlet />;
 };
 

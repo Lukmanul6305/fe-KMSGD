@@ -1,6 +1,8 @@
 import type { GaleriItem } from "../services/galeriService";
 import { LoadingSpinner } from "./LoadingSpinner";
 import RevealItem from "@/components/RevealItem";
+import { useShowMore } from "@/hooks/useShowMore";
+import ShowMoreButton from "@/components/ShowMoreButton";
 
 interface PhotoGalleryProps {
     photos: GaleriItem[];
@@ -9,6 +11,8 @@ interface PhotoGalleryProps {
 }
 
 export const PhotoGallery = ({ photos, loading, onPhotoClick }: PhotoGalleryProps) => {
+    const { visibleItems, showAll, hasMore, toggle } = useShowMore(photos, 6);
+
     if (loading) return <LoadingSpinner />;
 
     return (
@@ -22,10 +26,9 @@ export const PhotoGallery = ({ photos, loading, onPhotoClick }: PhotoGalleryProp
             {photos.length === 0 ? (
                 <p className="text-gray-400 italic">Belum ada foto yang diunggah.</p>
             ) : (
-                /* Grid wrapper is animated as a section — NOT individual items (could be >20) */
                 <RevealItem animation="animate-fade-in">
                     <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                        {photos.map((photo, index) => (
+                        {visibleItems.map((photo, index) => (
                             <button
                                 type="button"
                                 key={photo.id}
@@ -48,6 +51,12 @@ export const PhotoGallery = ({ photos, loading, onPhotoClick }: PhotoGalleryProp
                         ))}
                     </div>
                 </RevealItem>
+            )}
+
+            {hasMore && (
+                <div className="flex justify-center mt-8">
+                    <ShowMoreButton showAll={showAll} onToggle={toggle} />
+                </div>
             )}
         </section>
     );

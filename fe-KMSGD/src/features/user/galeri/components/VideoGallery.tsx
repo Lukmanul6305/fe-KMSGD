@@ -1,6 +1,8 @@
 import type { GaleriItem } from "../services/galeriService";
 import { LoadingSpinner } from "./LoadingSpinner";
 import RevealItem from "@/components/RevealItem";
+import { useShowMore } from "@/hooks/useShowMore";
+import ShowMoreButton from "@/components/ShowMoreButton";
 
 interface VideoGalleryProps {
     videos: GaleriItem[];
@@ -8,6 +10,8 @@ interface VideoGalleryProps {
 }
 
 export const VideoGallery = ({ videos, loading }: VideoGalleryProps) => {
+    const { visibleItems, showAll, hasMore, toggle } = useShowMore(videos, 4);
+
     if (loading) return <LoadingSpinner />;
 
     return (
@@ -23,7 +27,7 @@ export const VideoGallery = ({ videos, loading }: VideoGalleryProps) => {
                     <p className="text-gray-400 italic">Belum ada video yang diunggah.</p>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {videos.map((video, i) => (
+                        {visibleItems.map((video, i) => (
                             <RevealItem
                                 key={video.id}
                                 animation="animate-fade-in-up"
@@ -51,6 +55,12 @@ export const VideoGallery = ({ videos, loading }: VideoGalleryProps) => {
                                 </div>
                             </RevealItem>
                         ))}
+                    </div>
+                )}
+
+                {hasMore && (
+                    <div className="flex justify-center mt-10">
+                        <ShowMoreButton showAll={showAll} onToggle={toggle} />
                     </div>
                 )}
             </div>

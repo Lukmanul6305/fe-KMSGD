@@ -1,9 +1,10 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useAuthStore } from "../store/authStore";
 
 const ProtectedRoute = () => {
     const { status, checkAuth } = useAuthStore();
+    const location = useLocation();
 
     useEffect(() => {
         if (status === "idle") {
@@ -16,10 +17,10 @@ const ProtectedRoute = () => {
     }
 
     if (status === "unauthenticated") {
-        return <Navigate to="/admin/login" replace />;
+        return <Navigate to={`/admin/login?redirect=${encodeURIComponent(location.pathname + location.search)}`} replace />;
     }
 
     return <Outlet />;
 };
 
-export default ProtectedRoute;
+export default ProtectedRoute;

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaStar, FaUserPlus } from "react-icons/fa";
+import ConfirmDeleteModal from "../../kegiatan/components/adminKegiatan/ConfirmDeleteModal";
 import {
     getPeriode,
     getPeriodeAktif,
@@ -34,6 +35,10 @@ const PengurusPage = () => {
     });
     const [isUploading, setIsUploading] = useState(false);
 
+    // Confirm Delete
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    const [deleteId, setDeleteId] = useState<number | null>(null);
+
     useEffect(() => {
         fetchInitialData();
     }, []);
@@ -54,9 +59,13 @@ const PengurusPage = () => {
                 setViewPeriodeId(aktif.id);
             } else if (allPeriods.length > 0) {
                 setViewPeriodeId(allPeriods[0].id);
+            } else {
+                // Tidak ada periode sama sekali — hentikan loading
+                setIsLoading(false);
             }
         } catch (error) {
             console.error("Failed to fetch initial data:", error);
+            setIsLoading(false);
         }
     }
 
@@ -137,14 +146,21 @@ const PengurusPage = () => {
         }
     };
 
-    const handleDelete = async (id: number) => {
-        if (confirm("Hapus pengurus ini?")) {
-            try {
-                await deletePengurusInti(id);
-                refetchCurrentView();
-            } catch (error) {
-                console.error(error);
-            }
+    const handleDelete = (id: number) => {
+        setDeleteId(id);
+        setConfirmDelete(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (!deleteId) return;
+        try {
+            await deletePengurusInti(deleteId);
+            refetchCurrentView();
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setConfirmDelete(false);
+            setDeleteId(null);
         }
     };
 
@@ -353,6 +369,12 @@ const PengurusPage = () => {
                     </div>
                 </div>
             )}
+
+            <ConfirmDeleteModal
+                open={confirmDelete}
+                onCancel={() => { setConfirmDelete(false); setDeleteId(null); }}
+                onConfirm={handleConfirmDelete}
+            />
         </div>
     );
 };
