@@ -16,6 +16,17 @@ export const priodeRepository = {
       include: periodeInclude,
     });
   },
+  async findAllPeriodeSimple() {
+    return prisma.periodeOrganisasi.findMany({
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        periode: true,
+        status: true,
+        createdAt: true,
+      },
+    });
+  },
 
   async findPeriodeAktif() {
     return prisma.periodeOrganisasi.findFirst({

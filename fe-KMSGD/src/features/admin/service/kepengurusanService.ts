@@ -9,6 +9,11 @@ export async function getPeriode(): Promise<PeriodeOrganisasi[]> {
   return res.data.data || [];
 }
 
+export async function getPeriodeSimple(): Promise<Pick<PeriodeOrganisasi, "id" | "periode" | "status" | "createdAt">[]> {
+  const res = await axiosAdmin.get<{ data: Pick<PeriodeOrganisasi, "id" | "periode" | "status" | "createdAt">[] }>(`${BASE_URL}/periode/simple`);
+  return res.data.data || [];
+}
+
 export async function getPeriodeAktif(): Promise<PeriodeOrganisasi | null> {
   try {
     const res = await axiosAdmin.get<{ data: PeriodeOrganisasi }>(`${BASE_URL}/periode/aktif`);

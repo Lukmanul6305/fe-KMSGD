@@ -2,8 +2,16 @@ import { prisma } from "../../../config/prisma";
 import { Prisma } from "@prisma/client";
 
 export const kategoriKegiatanRepository = {
-  async findAll() {
+  async findAll(search?: string) {
     return prisma.kategoriKegiatan.findMany({
+      where: search
+        ? {
+            nama: {
+              contains: search,
+              mode: "insensitive",
+            },
+          }
+        : undefined,
       orderBy: { nama: "asc" },
     });
   },

@@ -13,7 +13,7 @@ import { getGaleriAdmin } from "../../service/galeriService";
 import {
     getDepartemenByPeriode,
     getPengurusIntiByPeriode,
-    getPeriode,
+    getPeriodeSimple,
 } from "../../service/kepengurusanService";
 import Statistik from "../components/Statistik";
 import TrenAnggota from "../components/TrenAnggota";
@@ -42,16 +42,25 @@ const formatDate = (value: string) =>
         year: "numeric",
     }).format(new Date(value));
 
+const DASHBOARD_FETCH_LIMIT = 1000;
 const DashboardAdmin = () => {
     const dashboardQuery = useQuery({
         queryKey: ["admin-dashboard-summary"],
         queryFn: async () => {
-            const [kegiatan, pengumuman, galeri, periodes] = await Promise.all([
-                getKegiatanAdmin(),
-                getPengumuman(),
-                getGaleriAdmin(),
-                getPeriode(),
+            const [kegiatanRes, pengumuman, galeri, periodes] = await Promise.all([
+                getKegiatanAdmin({ perPage: DASHBOARD_FETCH_LIMIT }),
+                getPengumuman(DASHBOARD_FETCH_LIMIT),
+                getGaleriAdmin(DASHBOARD_FETCH_LIMIT),
+                getPeriodeSimple(),
             ]);
+
+            const kegiatan = Array.isArray(kegiatanRes?.data) ? kegiatanRes.data : [];
+            if (!Array.isArray(kegiatanRes?.data)) {
+                console.warn(
+                    "getKegiatanAdmin tidak mengembalikan { data: Kegiatan[] } seperti yang diharapkan. Response diterima:",
+                    kegiatanRes,
+                );
+            }
 
             const periodsForTrend = [...periodes]
                 .sort((a, b) => a.periode.localeCompare(b.periode))
@@ -173,7 +182,7 @@ const DashboardAdmin = () => {
     return (
         <div className="w-full">
             <div className="mb-6 sm:mb-8 flex flex-col gap-1 sm:gap-2">
-                <h1 className="text-[#FACC15] text-xl sm:text-2xl font-bold tracking-wide">
+                <h1 className="text-[#FACC15] text-xl sm:text-3xl font-bold tracking-wide">
                     Dashboard Admin
                 </h1>
                 <p className="text-neutral-400 text-xs sm:text-sm">

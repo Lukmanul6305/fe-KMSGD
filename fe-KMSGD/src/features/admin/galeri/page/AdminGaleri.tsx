@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { getGaleriAdmin, createGaleri, updateGaleri, deleteGaleri } from "../../service/galeriService";
 import type { Galeri, CreateGaleriPayload } from "../galeriType";
 import GaleriFormModal from "../components/GaleriFormModal";
@@ -16,6 +16,9 @@ const AdminGaleri = () => {
     const [deleteId, setDeleteId] = useState<number | null>(null);
     const [confirmDelete, setConfirmDelete] = useState(false);
 
+    // cegah request duplikat dari StrictMode double-invoke di dev
+    const hasFetchedRef = useRef(false);
+
     const fetchData = useCallback(async () => {
         setLoading(true);
         setError(null);
@@ -30,7 +33,9 @@ const AdminGaleri = () => {
     }, []);
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
+        if (hasFetchedRef.current) return;
+        hasFetchedRef.current = true;
+
         fetchData();
     }, [fetchData]);
 
@@ -101,6 +106,8 @@ const AdminGaleri = () => {
                 open={confirmDelete}
                 onCancel={() => { setConfirmDelete(false); setDeleteId(null); }}
                 onConfirm={handleDelete}
+                title="Hapus Galeri"
+                description="Yakin ingin menghapus item galeri ini? Tindakan ini tidak bisa dibatalkan."
             />
         </section>
     );

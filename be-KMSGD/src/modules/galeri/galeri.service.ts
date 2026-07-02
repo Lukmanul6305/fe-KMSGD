@@ -48,16 +48,26 @@ export const galeriService = {
 
   async update(id: number, dto: UpdateGaleriDto, files?: { image?: Buffer; thumbnail?: Buffer }) {
     const existing = await galeriService.getById(id);
+    const effectiveTipe = dto.tipe ?? existing.tipe; // fallback ke tipe existing
+
     let url = dto.url ?? existing.url;
     let thumbnail = dto.thumbnail ?? existing.thumbnail ?? undefined;
 
-    if (dto.tipe === "FOTO" && files?.image) {
+    if (existing.tipe === "FOTO" && effectiveTipe === "VIDEO") {
+      await deleteImage(existing.url);
+    }
+
+    if (effectiveTipe === "FOTO" && files?.image) {
       if (existing.tipe === "FOTO") await deleteImage(existing.url);
       url = await uploadImage(files.image, "galeri/foto");
     }
     if (files?.thumbnail) {
       if (existing.thumbnail) await deleteImage(existing.thumbnail);
       thumbnail = await uploadImage(files.thumbnail, "galeri/thumbnail");
+    }
+
+    if (effectiveTipe === "VIDEO" && !url) {
+      throw new Error("Link video wajib diisi untuk tipe VIDEO");
     }
 
     return galeriRepository.update(id, {

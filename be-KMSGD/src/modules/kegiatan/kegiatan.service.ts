@@ -3,24 +3,24 @@ import { kegiatanRepository } from "./kegiatan.repository";
 import { CreateKegiatanDto, UpdateKegiatanDto } from "./kegiatan.validation";
 
 export const kegiatanService = {
-  async getAll() {
-    return kegiatanRepository.findAll();
+  async getAll(page?: number, limit?: number) {
+    return kegiatanRepository.findAll(page, limit);
   },
 
-  async getAllAdmin() {
-    return kegiatanRepository.findAllAdmin();
+  async getAllAdmin(page?: number, limit?: number) {
+    return kegiatanRepository.findAllAdmin(page, limit);
   },
 
   async getAllCategories() {
     return kegiatanRepository.findAllCategories();
   },
 
-  async getByCategory(kategoriId: number) {
-    return kegiatanRepository.findByCategory(kategoriId);
+  async getByCategory(kategoriId: number, page?: number, limit?: number) {
+    return kegiatanRepository.findByCategory(kategoriId, page, limit);
   },
 
-  async getByDepartemen(departemenId: number) {
-    return kegiatanRepository.findByDepartemen(departemenId);
+  async getByDepartemen(departemenId: number, page?: number, limit?: number) {
+    return kegiatanRepository.findByDepartemen(departemenId, page, limit);
   },
 
   async getById(id: number) {

@@ -44,7 +44,7 @@ const PengumumanTable = ({ data, loading, page, perPage, onDeleteClick }: Props)
             header: "Tanggal",
             cellClassName: "text-[#ccc] whitespace-nowrap",
             // FIX: Menggunakan p.createdAt karena p.date tidak ada di tipe Pengumuman
-            render: (p) => formatTanggal(p.createdAt),
+            render: (p) => formatTanggal(p.tanggal),
         },
         {
             header: "Judul",

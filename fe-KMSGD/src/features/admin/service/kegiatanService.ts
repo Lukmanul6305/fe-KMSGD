@@ -3,18 +3,42 @@ import type { Kegiatan, KategoriKegiatan, Departemen, CreateKegiatanPayload } fr
 
 const BASE = "/kegiatan";
 
-// ─── KEGIATAN ────────────────────────────────────────────────────────────────
+type PaginatedResponse<T> = {
+  data: T[];
+  meta: { total: number; page: number; limit: number; totalPages: number };
+};
 
-/** Public — hanya yang isPublished */
-export async function getKegiatan(): Promise<Kegiatan[]> {
-  const res = await axiosAdmin.get<{ data: Kegiatan[] }>(BASE);
-  return res.data.data;
+export interface GetKegiatanAdminParams {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  signal?: AbortSignal;
 }
 
-/** Admin — semua kegiatan termasuk draft */
-export async function getKegiatanAdmin(): Promise<Kegiatan[]> {
-  const res = await axiosAdmin.get<{ data: Kegiatan[] }>(`${BASE}/admin/all`);
-  return res.data.data;
+export interface GetKegiatanAdminResult {
+  data: Kegiatan[];
+  total: number;
+}
+
+export async function getKegiatan(): Promise<Kegiatan[]> {
+  const res = await axiosAdmin.get<{ data: PaginatedResponse<Kegiatan> }>(BASE);
+  return res.data.data.data;
+}
+
+export async function getKegiatanAdmin(params: GetKegiatanAdminParams = {}): Promise<GetKegiatanAdminResult> {
+  const { search, page, perPage, signal } = params;
+
+  const res = await axiosAdmin.get<{ data: PaginatedResponse<Kegiatan> }>(`${BASE}/admin/all`, {
+    params: {
+      search: search || undefined,
+      page,
+      limit: perPage, // backend pakai key "limit", bukan "perPage"
+    },
+    signal,
+  });
+
+  const { data, meta } = res.data.data;
+  return { data, total: meta.total };
 }
 
 export async function getKegiatanById(id: number): Promise<Kegiatan> {
@@ -22,16 +46,16 @@ export async function getKegiatanById(id: number): Promise<Kegiatan> {
   return res.data.data;
 }
 
-/** Kegiatan berdasarkan departemen (public) */
+/** Kegiatan berdasarkan departemen (public, dipaginasi di backend) */
 export async function getKegiatanByDepartemen(departemenId: number): Promise<Kegiatan[]> {
-  const res = await axiosAdmin.get<{ data: Kegiatan[] }>(`${BASE}/departemen/${departemenId}`);
-  return res.data.data;
+  const res = await axiosAdmin.get<{ data: PaginatedResponse<Kegiatan> }>(`${BASE}/departemen/${departemenId}`);
+  return res.data.data.data;
 }
 
-// ─── KATEGORI KEGIATAN ────────────────────────────────────────────────────────
+// ─── KATEGORI KEGIATAN (tidak dipaginasi) ────────────────────────────────────
 
-export async function getKategori(): Promise<KategoriKegiatan[]> {
-  const res = await axiosAdmin.get<{ data: KategoriKegiatan[] }>("/kategori-kegiatan");
+export async function getKategori(signal?: AbortSignal): Promise<KategoriKegiatan[]> {
+  const res = await axiosAdmin.get<{ data: KategoriKegiatan[] }>("/kategori-kegiatan", { signal });
   return res.data.data;
 }
 
@@ -49,7 +73,7 @@ export async function deleteKategori(id: number): Promise<void> {
   await axiosAdmin.delete(`/kategori-kegiatan/${id}`);
 }
 
-// ─── DEPARTEMEN ───────────────────────────────────────────────────────────────
+// ─── DEPARTEMEN (tidak dipaginasi) ────────────────────────────────────────────
 
 /** Semua departemen (admin) */
 export async function getDepartemen(): Promise<Departemen[]> {
@@ -63,7 +87,6 @@ export async function getDepartemenAktif(): Promise<Departemen[]> {
     const res = await axiosAdmin.get<{ data: Departemen[] }>("/kepengurusan/departemen/aktif");
     return res.data.data;
   } catch {
-    // Server mengembalikan 400/404 jika tidak ada periode aktif
     return [];
   }
 }
@@ -80,7 +103,6 @@ function buildFormData(payload: Omit<CreateKegiatanPayload, "file"> & { file?: F
     }
   });
 
-  // speakers dikirim sebagai JSON string
   fd.append("speakers", JSON.stringify(speakers ?? []));
 
   if (file) fd.append("image", file);

@@ -14,7 +14,7 @@ interface AuthState {
   clearError: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
   admin: null,
   status: "idle",
   error: null,
@@ -40,6 +40,14 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   checkAuth: async () => {
+    // ✅ Guard: kalau sudah loading/authenticated, jangan fetch ulang.
+    // Ini mencegah StrictMode double-invoke atau multiple komponen
+    // memicu request /auth/me lebih dari sekali secara bersamaan.
+    const currentStatus = get().status;
+    if (currentStatus === "loading" || currentStatus === "authenticated") {
+      return;
+    }
+
     set({ status: "loading" });
     try {
       const admin = await getMeRequest();
@@ -65,4 +73,3 @@ setForceLogoutHandler(() => {
     error: null,
   });
 });
-

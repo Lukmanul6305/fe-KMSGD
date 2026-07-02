@@ -3,12 +3,12 @@ import { CreatePengumumanDto, UpdatePengumumanDto } from "./pengumuman.validatio
 import { uploadImage, deleteImage } from "../../utils/uploadImage";
 
 export const pengumumanService = {
-  async getAll() {
-    return pengumumanRepository.findAll();
+  async getAll(page?: number, limit?: number) {
+    return pengumumanRepository.findAll(page, limit);
   },
 
-  async getPenting() {
-    return pengumumanRepository.findPenting();
+  async getPenting(page?: number, limit?: number) {
+    return pengumumanRepository.findPenting(page, limit);
   },
 
   async getById(id: number) {

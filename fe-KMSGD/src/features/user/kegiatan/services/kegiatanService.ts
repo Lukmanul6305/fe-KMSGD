@@ -15,6 +15,11 @@ type ApiResponse<T> = {
   data: T;
 };
 
+type PaginatedResponse<T> = {
+  data: T[];
+  meta: { total: number; page: number; limit: number; totalPages: number };
+};
+
 type KategoriKegiatanResponse = {
   nama?: string | null;
 };
@@ -119,11 +124,11 @@ const mapKegiatan = (item: KegiatanResponse): Kegiatan => ({
 });
 
 export const getKegiatan = async (signal?: AbortSignal): Promise<Kegiatan[]> => {
-  const response = await axiosPublic.get<ApiResponse<KegiatanResponse[]>>("/kegiatan", {
+  const response = await axiosPublic.get<ApiResponse<PaginatedResponse<KegiatanResponse>>>("/kegiatan", {
     signal,
   });
 
-  return response.data.data.map(mapKegiatan);
+  return response.data.data.data.map(mapKegiatan);
 };
 
 export const getKegiatanFilters = (items: Kegiatan[]): string[] => {

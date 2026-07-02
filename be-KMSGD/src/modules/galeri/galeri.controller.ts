@@ -49,12 +49,23 @@ export const galeriController = {
   async create(req: Request, res: Response) {
     try {
       const dto = createGaleriSchema.parse(req.body);
-      const files = {
-        image: (req.files as any)?.image?.[0]?.buffer,
-        thumbnail: (req.files as any)?.thumbnail?.[0]?.buffer,
+      const files = req.files as {
+        image?: Express.Multer.File[];
+        thumbnail?: Express.Multer.File[];
       };
 
-      const data = await galeriService.create(dto, files);
+      const imageBuffer = files?.image?.[0]?.buffer;
+      const thumbnailBuffer = files?.thumbnail?.[0]?.buffer;
+
+      if (dto.tipe === "FOTO" && !imageBuffer) {
+        return response.failed(res, "Gambar wajib diunggah untuk tipe FOTO", 400);
+      }
+
+      const data = await galeriService.create(dto, {
+        image: imageBuffer,
+        thumbnail: thumbnailBuffer,
+      });
+
       return response.success(res, data, "Galeri berhasil dibuat", 201);
     } catch (error) {
       return handleError(res, error);

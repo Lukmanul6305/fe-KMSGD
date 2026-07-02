@@ -2,39 +2,87 @@ import { prisma } from "../../config/prisma";
 import { Prisma } from "@prisma/client";
 
 export const kegiatanRepository = {
-  async findAll() {
-    return prisma.kegiatan.findMany({
-      where: { isPublished: true },
-      orderBy: { startTime: "desc" },
-      include: { galeri: true, kategori: true, departemen: true },
-    });
+  async findAll(page = 1, limit = 12) {
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await Promise.all([
+      prisma.kegiatan.findMany({
+        where: { isPublished: true },
+        orderBy: { startTime: "desc" },
+        include: { galeri: true, kategori: true, departemen: true },
+        skip,
+        take: limit,
+      }),
+      prisma.kegiatan.count({ where: { isPublished: true } }),
+    ]);
+
+    return {
+      data,
+      meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
+    };
   },
 
-  async findAllAdmin() {
-    return prisma.kegiatan.findMany({
-      orderBy: { startTime: "desc" },
-      include: { galeri: true, kategori: true, departemen: true },
-    });
+  async findAllAdmin(page = 1, limit = 12) {
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await Promise.all([
+      prisma.kegiatan.findMany({
+        orderBy: { startTime: "desc" },
+        include: { galeri: true, kategori: true, departemen: true },
+        skip,
+        take: limit,
+      }),
+      prisma.kegiatan.count(),
+    ]);
+
+    return {
+      data,
+      meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
+    };
   },
 
   async findAllCategories() {
     return prisma.kategoriKegiatan.findMany({ orderBy: { nama: "asc" } });
   },
 
-  async findByCategory(kategoriId: number) {
-    return prisma.kegiatan.findMany({
-      where: { kategoriId, isPublished: true },
-      orderBy: { startTime: "desc" },
-      include: { galeri: true, kategori: true, departemen: true },
-    });
+  async findByCategory(kategoriId: number, page = 1, limit = 12) {
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await Promise.all([
+      prisma.kegiatan.findMany({
+        where: { kategoriId, isPublished: true },
+        orderBy: { startTime: "desc" },
+        include: { galeri: true, kategori: true, departemen: true },
+        skip,
+        take: limit,
+      }),
+      prisma.kegiatan.count({ where: { kategoriId, isPublished: true } }),
+    ]);
+
+    return {
+      data,
+      meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
+    };
   },
 
-  async findByDepartemen(departemenId: number) {
-    return prisma.kegiatan.findMany({
-      where: { departemenId, isPublished: true },
-      orderBy: { startTime: "desc" },
-      include: { galeri: true, kategori: true, departemen: true },
-    });
+  async findByDepartemen(departemenId: number, page = 1, limit = 12) {
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await Promise.all([
+      prisma.kegiatan.findMany({
+        where: { departemenId, isPublished: true },
+        orderBy: { startTime: "desc" },
+        include: { galeri: true, kategori: true, departemen: true },
+        skip,
+        take: limit,
+      }),
+      prisma.kegiatan.count({ where: { departemenId, isPublished: true } }),
+    ]);
+
+    return {
+      data,
+      meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
+    };
   },
 
   async findById(id: number) {

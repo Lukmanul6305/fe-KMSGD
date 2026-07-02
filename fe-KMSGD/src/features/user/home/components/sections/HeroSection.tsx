@@ -1,36 +1,19 @@
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { getActiveHomeBackgrounds } from "../../services/homeBackgroundService";
 import RevealItem from "@/components/RevealItem";
+import { useState, useEffect } from "react";
 
 export default function HeroSection() {
-    const [bgImages, setBgImages] = useState<string[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    useEffect(() => {
-        let isMounted = true;
-        const fetchImages = async () => {
-            try {
-                const res = await getActiveHomeBackgrounds();
-                if (isMounted && res && res.length > 0) {
-                    const fetchedUrls = res.map(item => item.image).filter(Boolean);
-                    if (fetchedUrls.length > 0) {
-                        setBgImages(fetchedUrls);
-                        setCurrentIndex(0);
-                    }
-                }
-            } catch (error) {
-                if (isMounted) {
-                    console.error("Gagal memuat background hero:", error);
-                }
-            }
-        };
-
-        fetchImages();
-
-        return () => {
-            isMounted = false;
-        };
-    }, []);
+    const { data: bgImages = [] } = useQuery({
+        queryKey: ["home-background-active"],
+        queryFn: async () => {
+            const res = await getActiveHomeBackgrounds();
+            return res.map((item) => item.image).filter(Boolean);
+        },
+        staleTime: 5 * 60_000, // background jarang berubah, cache 5 menit
+    });
 
     useEffect(() => {
         if (bgImages.length <= 1) return;
@@ -43,7 +26,6 @@ export default function HeroSection() {
 
     return (
         <section className="relative min-h-dvh flex items-center px-6 md:px-12 pt-28 pb-16">
-
             <div className="absolute inset-0 z-0 bg-[#131313] overflow-hidden">
                 {bgImages.map((src, index) => (
                     <img
@@ -62,7 +44,6 @@ export default function HeroSection() {
 
             <div className="max-w-7xl mx-auto w-full relative z-10">
                 <div className="max-w-2xl flex flex-col gap-4 md:gap-6">
-
                     <RevealItem animation="animate-fade-in-up">
                         <h1 className="flex flex-col text-4xl md:text-6xl font-bold font-['Montserrat'] text-[#e5e2e1] leading-tight mt-1 md:mt-0">
                             Keluarga Mahasiswa Sunan Gunung Djati{" "}
@@ -76,7 +57,6 @@ export default function HeroSection() {
                             di kawasan metropolitan Jabodetabek.
                         </p>
                     </RevealItem>
-
                 </div>
             </div>
 

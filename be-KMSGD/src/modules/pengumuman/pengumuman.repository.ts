@@ -7,20 +7,44 @@ const include = {
 };
 
 export const pengumumanRepository = {
-  async findAll() {
-    return prisma.pengumuman.findMany({
-      where: { isPublished: true },
-      orderBy: { tanggal: "desc" },
-      include,
-    });
+  async findAll(page = 1, limit = 12) {
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await Promise.all([
+      prisma.pengumuman.findMany({
+        where: { isPublished: true },
+        orderBy: { tanggal: "desc" },
+        include,
+        skip,
+        take: limit,
+      }),
+      prisma.pengumuman.count({ where: { isPublished: true } }),
+    ]);
+
+    return {
+      data,
+      meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
+    };
   },
 
-  async findPenting() {
-    return prisma.pengumuman.findMany({
-      where: { isPublished: true, isPenting: true },
-      orderBy: { tanggal: "desc" },
-      include,
-    });
+  async findPenting(page = 1, limit = 12) {
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await Promise.all([
+      prisma.pengumuman.findMany({
+        where: { isPublished: true, isPenting: true },
+        orderBy: { tanggal: "desc" },
+        include,
+        skip,
+        take: limit,
+      }),
+      prisma.pengumuman.count({ where: { isPublished: true, isPenting: true } }),
+    ]);
+
+    return {
+      data,
+      meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
+    };
   },
 
   async findById(id: number) {

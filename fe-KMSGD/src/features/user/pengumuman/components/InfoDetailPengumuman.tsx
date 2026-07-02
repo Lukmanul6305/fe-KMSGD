@@ -20,16 +20,23 @@ function InfoDetailPengumuman({ pengumuman }: InfoDetailPengumumanProps) {
         const date = new Date(value);
         if (Number.isNaN(date.getTime())) return value;
 
-        return new Intl.DateTimeFormat("id-ID", {
+        const dateStr = new Intl.DateTimeFormat("id-ID", {
             day: "2-digit",
             month: "long",
             year: "numeric",
         }).format(date);
+
+        const timeStr = new Intl.DateTimeFormat("id-ID", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+        }).format(date).replace(":", ".");
+
+        return `${dateStr}, ${timeStr}`;
     };
 
     return (
         <article className="flex flex-col gap-8">
-            {/* Title & badges */}
             <RevealItem animation="animate-fade-in-up">
                 <div>
                     <div className="flex flex-wrap items-center gap-3 mb-4">
@@ -49,7 +56,7 @@ function InfoDetailPengumuman({ pengumuman }: InfoDetailPengumumanProps) {
                     <h2 className="text-3xl md:text-4xl font-bold font-['Montserrat'] text-white leading-tight mb-4">
                         {pengumuman.title}
                     </h2>
-                    <p className="text-[#d0c6ab] leading-7 whitespace-pre-line">
+                    <p className="text-[#d0c6ab] leading-7 whitespace-pre-line wrap-break-word overflow-hidden">
                         {pengumuman.desc}
                     </p>
                 </div>

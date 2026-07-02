@@ -7,9 +7,15 @@ export const FOUNDED_YEARS = 15;
 
 const toSafeCount = (value: number, fallback: number) => (Number.isFinite(value) && value >= 0 ? value : fallback);
 
+type PaginatedResponse<T> = {
+  data: T[];
+  meta: { total: number; page: number; limit: number; totalPages: number };
+};
+
 async function getPublishedKegiatanCount() {
-  const response = await axiosPublic.get<{ data: unknown[] }>("/kegiatan");
-  return Array.isArray(response.data.data) ? response.data.data.length : FALLBACK_PROGRAM_COUNT;
+  // limit=1 → payload minimal, kita cuma butuh meta.total, bukan isi datanya
+  const response = await axiosPublic.get<{ data: PaginatedResponse<unknown> }>("/kegiatan?limit=1");
+  return response.data.data.meta?.total ?? FALLBACK_PROGRAM_COUNT;
 }
 
 async function getActiveMemberCount() {

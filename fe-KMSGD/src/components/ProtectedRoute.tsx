@@ -1,7 +1,6 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useAuthStore } from "../store/authStore";
-import NotFoundPage from "../pages/NotFoundPage";
 
 /**
  * SECRET_ACCESS_TOKEN — harus sama dengan yang ada di GuestRoute.

@@ -187,7 +187,6 @@ const KegiatanEditForm = () => {
                         ) : (
                             <div className="text-neutral-600 text-sm">
                                 <p className="mb-1">Klik untuk pilih gambar</p>
-                                <p className="text-xs text-neutral-700">JPG, PNG, WEBP</p>
                             </div>
                         )}
                     </div>

@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { FaStar, FaUserPlus } from "react-icons/fa";
 import ConfirmDeleteModal from "../../kegiatan/components/adminKegiatan/ConfirmDeleteModal";
 import {
@@ -12,15 +13,23 @@ import {
 import type {
     PengurusInti,
     CreatePengurusIntiDto,
-    PeriodeOrganisasi
 } from "../kepengurusanTypes";
 import TableAdmin, { type Column } from "@/components/TableAdmin";
 
+const JABATAN_BPI_OPTIONS = [
+    "Ketua Umum",
+    "Wakil Ketua Umum",
+    "Sekretaris Utama",
+    "Wakil Sekretaris",
+    "Bendahara Utama",
+    "Wakil Bendahara",
+];
+
 const PengurusPage = () => {
-    const [pengurusList, setPengurusList] = useState<PengurusInti[]>([]);
-    const [periodes, setPeriodes] = useState<PeriodeOrganisasi[]>([]);
-    const [viewPeriodeId, setViewPeriodeId] = useState<number | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const queryClient = useQueryClient();
+
+    // Cuma menyimpan pilihan MANUAL user dari dropdown
+    const [manualPeriodeId, setManualPeriodeId] = useState<number | null>(null);
 
     // Modal State
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,50 +48,45 @@ const PengurusPage = () => {
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [deleteId, setDeleteId] = useState<number | null>(null);
 
+    // Combobox jabatan
+    const [jabatanOpen, setJabatanOpen] = useState(false);
+    const jabatanRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
-        fetchInitialData();
+        const handleClickOutside = (e: MouseEvent) => {
+            if (jabatanRef.current && !jabatanRef.current.contains(e.target as Node)) {
+                setJabatanOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    useEffect(() => {
-        if (viewPeriodeId) {
-            fetchPengurusData(viewPeriodeId);
-        }
-    }, [viewPeriodeId]);
+    // ── QUERIES ── queryKey SAMA PERSIS dengan DepartemenPage → cache dibagi, tidak fetch ulang
+    const { data: periodes = [] } = useQuery({
+        queryKey: ["periode-list"],
+        queryFn: getPeriode,
+        staleTime: 30_000,
+    });
 
-    async function fetchInitialData() {
-        try {
-            const allPeriods = await getPeriode();
-            setPeriodes(allPeriods);
+    const { data: periodeAktif } = useQuery({
+        queryKey: ["periode-aktif"],
+        queryFn: getPeriodeAktif,
+        staleTime: 30_000,
+    });
 
-            const aktif = await getPeriodeAktif();
-            if (aktif) {
-                setViewPeriodeId(aktif.id);
-            } else if (allPeriods.length > 0) {
-                setViewPeriodeId(allPeriods[0].id);
-            } else {
-                // Tidak ada periode sama sekali — hentikan loading
-                setIsLoading(false);
-            }
-        } catch (error) {
-            console.error("Failed to fetch initial data:", error);
-            setIsLoading(false);
-        }
-    }
+    // ✅ Derived value — bukan state, tidak perlu setState di effect
+    const viewPeriodeId = manualPeriodeId ?? periodeAktif?.id ?? periodes[0]?.id ?? null;
 
-    async function fetchPengurusData(periodeId: number) {
-        setIsLoading(true);
-        try {
-            const inti = await getPengurusIntiByPeriode(periodeId);
-            setPengurusList(inti);
-        } catch (error) {
-            console.error("Failed to fetch pengurus inti:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    const { data: pengurusList = [], isLoading } = useQuery({
+        queryKey: ["pengurus-inti-by-periode", viewPeriodeId],
+        queryFn: () => getPengurusIntiByPeriode(viewPeriodeId as number),
+        enabled: viewPeriodeId !== null,
+        staleTime: 15_000,
+    });
 
     const refetchCurrentView = () => {
-        if (viewPeriodeId) fetchPengurusData(viewPeriodeId);
+        queryClient.invalidateQueries({ queryKey: ["pengurus-inti-by-periode", viewPeriodeId] });
     };
 
     const handleOpenModal = (pengurus?: PengurusInti) => {
@@ -242,7 +246,6 @@ const PengurusPage = () => {
 
     return (
         <div className="w-full">
-            {/* Header (Responsif: Flex-col di mobile, Flex-row di PC) */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                 <div className="flex items-center gap-3 text-[#ffd700]">
                     <div className="border border-yellow-400 rounded-full p-1 shrink-0">
@@ -254,11 +257,11 @@ const PengurusPage = () => {
                 <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
                     <select
                         value={viewPeriodeId || ""}
-                        onChange={(e) => setViewPeriodeId(Number(e.target.value))}
+                        onChange={(e) => setManualPeriodeId(Number(e.target.value))}
                         className="bg-neutral-800 border border-neutral-700 text-white text-sm px-3 py-2 focus:outline-none focus:border-yellow-400 w-full sm:w-auto"
                     >
                         {periodes.map(p => (
-                            <option key={p.id} value={p.id} className="text-[8px] bg-neutral-800">
+                            <option key={p.id} value={p.id} className="text-[14px] bg-neutral-800">
                                 {p.periode} ({p.status})
                             </option>
                         ))}
@@ -273,7 +276,6 @@ const PengurusPage = () => {
                 </div>
             </div>
 
-            {/* Table */}
             <div className="overflow-x-auto">
                 <TableAdmin
                     data={pengurusList}
@@ -284,7 +286,6 @@ const PengurusPage = () => {
                 />
             </div>
 
-            {/* Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
                     <div className="bg-neutral-900 border border-neutral-800 p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
@@ -318,16 +319,42 @@ const PengurusPage = () => {
                                     className="w-full bg-neutral-800 border border-neutral-700 px-3 py-2 text-white text-sm focus:outline-none focus:border-yellow-400"
                                 />
                             </div>
-                            <div>
+                            <div className="relative" ref={jabatanRef}>
                                 <label className="block text-sm text-neutral-400 mb-1">Jabatan</label>
                                 <input
                                     type="text"
                                     required
                                     value={formData.jabatan}
-                                    onChange={(e) => setFormData({ ...formData, jabatan: e.target.value })}
-                                    placeholder="Contoh: Ketua Umum"
+                                    onChange={(e) => {
+                                        setFormData({ ...formData, jabatan: e.target.value });
+                                        setJabatanOpen(true);
+                                    }}
+                                    onFocus={() => setJabatanOpen(true)}
+                                    placeholder="Pilih atau ketik jabatan..."
                                     className="w-full bg-neutral-800 border border-neutral-700 px-3 py-2 text-white text-sm focus:outline-none focus:border-yellow-400"
+                                    autoComplete="off"
                                 />
+                                {jabatanOpen && (
+                                    <ul className="absolute z-50 left-0 right-0 bg-neutral-800 border border-neutral-700 border-t-0 max-h-48 overflow-y-auto">
+                                        {JABATAN_BPI_OPTIONS
+                                            .filter(opt =>
+                                                opt.toLowerCase().includes(formData.jabatan.toLowerCase())
+                                            )
+                                            .map((opt) => (
+                                                <li
+                                                    key={opt}
+                                                    onMouseDown={(e) => {
+                                                        e.preventDefault();
+                                                        setFormData({ ...formData, jabatan: opt });
+                                                        setJabatanOpen(false);
+                                                    }}
+                                                    className="px-3 py-2 text-sm text-white cursor-pointer hover:bg-yellow-400/10 hover:text-yellow-400 transition-colors"
+                                                >
+                                                    {opt}
+                                                </li>
+                                            ))}
+                                    </ul>
+                                )}
                             </div>
                             <div>
                                 <label className="block text-sm text-neutral-400 mb-1">Slogan / Quote (Opsional)</label>
@@ -374,6 +401,8 @@ const PengurusPage = () => {
                 open={confirmDelete}
                 onCancel={() => { setConfirmDelete(false); setDeleteId(null); }}
                 onConfirm={handleConfirmDelete}
+                title="Hapus Pengurus"
+                description="Yakin ingin menghapus data pengurus ini? Tindakan ini tidak bisa dibatalkan."
             />
         </div>
     );

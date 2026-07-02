@@ -59,7 +59,7 @@ export const homeBackgroundService = {
   },
 
   async update(id: number, dto: { isActive?: boolean }, fileBuffer?: Buffer) {
-    const existing = await this.getById(id);
+    const existing = await homeBackgroundService.getById(id);
 
     let imageUrl = existing.image;
 

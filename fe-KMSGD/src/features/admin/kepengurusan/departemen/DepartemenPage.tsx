@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { FaSitemap, FaPlus, FaPen, FaChevronDown, FaChevronUp, FaTimes, FaTrash } from "react-icons/fa";
 import ConfirmDeleteModal from "../../kegiatan/components/adminKegiatan/ConfirmDeleteModal";
 import {
@@ -16,14 +17,13 @@ import type {
     CreateDepartemenDto,
     UpdateDepartemenDto,
     CreateAnggotaDto,
-    PeriodeOrganisasi
 } from "../kepengurusanTypes";
 
 const DepartemenPage = () => {
-    const [departemenList, setDepartemenList] = useState<Departemen[]>([]);
-    const [periodes, setPeriodes] = useState<PeriodeOrganisasi[]>([]);
-    const [viewPeriodeId, setViewPeriodeId] = useState<number | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const queryClient = useQueryClient();
+
+    // Cuma menyimpan pilihan MANUAL user dari dropdown — null berarti "belum override, pakai default"
+    const [manualPeriodeId, setManualPeriodeId] = useState<number | null>(null);
     const [expandedDept, setExpandedDept] = useState<number | null>(null);
 
     // Modal Dept
@@ -41,7 +41,7 @@ const DepartemenPage = () => {
     const [anggotaForm, setAnggotaForm] = useState<CreateAnggotaDto & { file?: File | null }>({
         departemenId: 0,
         nama: "",
-        jabatan: "Anggota",
+        jabatan: "",
         file: null
     });
     const [isUploading, setIsUploading] = useState(false);
@@ -50,57 +50,39 @@ const DepartemenPage = () => {
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [deleteTarget, setDeleteTarget] = useState<{ type: "dept" | "anggota"; id: number } | null>(null);
 
-    useEffect(() => {
-        fetchInitialData();
-    }, []);
+    // ── QUERIES ──────────────────────────────────────────────
+    const { data: periodes = [] } = useQuery({
+        queryKey: ["periode-list"],
+        queryFn: getPeriode,
+        staleTime: 30_000,
+    });
 
-    useEffect(() => {
-        if (viewPeriodeId) {
-            fetchDepartemenData(viewPeriodeId);
-        }
-    }, [viewPeriodeId]);
+    const { data: periodeAktif } = useQuery({
+        queryKey: ["periode-aktif"],
+        queryFn: getPeriodeAktif,
+        staleTime: 30_000,
+    });
 
-    async function fetchInitialData() {
-        try {
-            const allPeriods = await getPeriode();
-            setPeriodes(allPeriods);
+    // ✅ Derived value — BUKAN state, jadi tidak butuh setState di dalam effect.
+    // Prioritas: pilihan manual user > periode aktif > periode pertama dalam list.
+    const viewPeriodeId = manualPeriodeId ?? periodeAktif?.id ?? periodes[0]?.id ?? null;
 
-            const periodeAktif = await getPeriodeAktif();
-            if (periodeAktif) {
-                setViewPeriodeId(periodeAktif.id);
-            } else if (allPeriods.length > 0) {
-                setViewPeriodeId(allPeriods[0].id);
-            } else {
-                // Tidak ada periode sama sekali — hentikan loading
-                setIsLoading(false);
-            }
-        } catch (error) {
-            console.error("Failed to fetch initial data:", error);
-            setIsLoading(false);
-        }
-    }
-
-    async function fetchDepartemenData(periodeId: number) {
-        setIsLoading(true);
-        try {
-            const depts = await getDepartemenByPeriode(periodeId);
-            setDepartemenList(depts);
-        } catch (error) {
-            console.error("Failed to fetch departemen data:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    const { data: departemenList = [], isLoading } = useQuery({
+        queryKey: ["departemen-by-periode", viewPeriodeId],
+        queryFn: () => getDepartemenByPeriode(viewPeriodeId as number),
+        enabled: viewPeriodeId !== null,
+        staleTime: 15_000,
+    });
 
     const refetchCurrentView = () => {
-        if (viewPeriodeId) fetchDepartemenData(viewPeriodeId);
+        queryClient.invalidateQueries({ queryKey: ["departemen-by-periode", viewPeriodeId] });
     };
 
     const toggleDept = (id: number) => {
         setExpandedDept(expandedDept === id ? null : id);
     };
 
-    // --- DEPARTEMEN HANDLERS ---
+    // ── DEPARTEMEN HANDLERS ──────────────────────────────────
     const handleOpenDeptModal = (dept?: Departemen) => {
         if (periodes.length === 0) {
             alert("Belum ada data periode.");
@@ -147,7 +129,7 @@ const DepartemenPage = () => {
         setConfirmDelete(true);
     };
 
-    // --- ANGGOTA HANDLERS ---
+    // ── ANGGOTA HANDLERS ─────────────────────────────────────
     const handleOpenAnggotaModal = (deptId: number) => {
         setAnggotaForm({
             departemenId: deptId,
@@ -205,7 +187,6 @@ const DepartemenPage = () => {
 
     return (
         <div className="w-full">
-            {/* Header / Kontrol Atas */}
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
                 <div className="flex items-center gap-3 text-[#ffd700]">
                     <FaSitemap className="text-xl" />
@@ -214,11 +195,11 @@ const DepartemenPage = () => {
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 md:gap-4 w-full md:w-auto">
                     <select
                         value={viewPeriodeId || ""}
-                        onChange={(e) => setViewPeriodeId(Number(e.target.value))}
+                        onChange={(e) => setManualPeriodeId(Number(e.target.value))}
                         className="bg-neutral-800 border border-neutral-700 text-white text-sm px-3 py-2 focus:outline-none focus:border-yellow-400 w-full sm:w-auto"
                     >
                         {periodes.map(p => (
-                            <option key={p.id} value={p.id} className="text-[8px] bg-neutral-800">
+                            <option key={p.id} value={p.id} className="text-[14px] bg-neutral-800">
                                 {p.periode} ({p.status})
                             </option>
                         ))}
@@ -233,7 +214,6 @@ const DepartemenPage = () => {
                 </div>
             </div>
 
-            {/* List Departemen */}
             <div className="flex flex-col gap-4">
                 {isLoading ? (
                     <div className="text-neutral-400 text-center py-8">Loading...</div>
@@ -244,7 +224,6 @@ const DepartemenPage = () => {
                 ) : (
                     departemenList.map((dept) => (
                         <div key={dept.id} className="border border-neutral-800 bg-neutral-900/30">
-                            {/* Header Departemen */}
                             <div className="flex flex-col md:flex-row md:justify-between md:items-center p-4 border-l-4 border-l-yellow-400 hover:bg-neutral-800/50 transition-colors gap-4 md:gap-0">
                                 <div
                                     className="flex items-start md:items-center gap-4 cursor-pointer flex-1"
@@ -259,7 +238,6 @@ const DepartemenPage = () => {
                                     </div>
                                 </div>
 
-                                {/* Aksi Departemen */}
                                 <div className="flex items-center justify-between md:justify-end w-full md:w-auto gap-2 md:gap-4 pt-3 md:pt-0 border-t md:border-transparent border-neutral-800">
                                     <span className="border border-neutral-700 bg-neutral-800 px-3 py-1 text-xs text-neutral-300 whitespace-nowrap">
                                         {dept.anggota?.length || 0} Anggota
@@ -278,7 +256,6 @@ const DepartemenPage = () => {
                                 </div>
                             </div>
 
-                            {/* Konten Expand: Daftar Anggota */}
                             {expandedDept === dept.id && (
                                 <div className="p-4 border-t border-neutral-800 bg-neutral-900/50">
                                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mb-4">
@@ -331,7 +308,6 @@ const DepartemenPage = () => {
                 )}
             </div>
 
-            {/* Modal Departemen */}
             {isDeptModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
                     <div className="bg-neutral-900 border border-neutral-800 p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
@@ -381,7 +357,6 @@ const DepartemenPage = () => {
                 </div>
             )}
 
-            {/* Modal Anggota */}
             {isAnggotaModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
                     <div className="bg-neutral-900 border border-neutral-800 p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
@@ -431,6 +406,8 @@ const DepartemenPage = () => {
                 open={confirmDelete}
                 onCancel={() => { setConfirmDelete(false); setDeleteTarget(null); }}
                 onConfirm={handleConfirmDelete}
+                title="Hapus Data"
+                description="Yakin ingin menghapus data ini? Tindakan ini tidak bisa dibatalkan."
             />
         </div>
     );

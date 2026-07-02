@@ -24,6 +24,7 @@ const KegiatanForm = () => {
         desc: "",
         location: "",
         price: "",
+        priceDisplay: "",
         registrationLink: "",
         departemenId: "",
         organizerCustom: "",
@@ -53,6 +54,35 @@ const KegiatanForm = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
+
+        // Harga: simpan angka murni di form.price, tampilkan dengan titik ribuan di priceDisplay
+        if (name === "price") {
+            const numeric = value.replace(/\D/g, "");
+            const formatted = numeric ? Number(numeric).toLocaleString("id-ID") : "";
+            setForm((prev) => ({ ...prev, price: numeric, priceDisplay: formatted }));
+            return;
+        }
+
+        // Contact Person: hanya simpan angka setelah +62
+        if (name === "contactPerson") {
+            // Hanya izinkan angka
+            const numericOnly = value.replace(/\D/g, "");
+            setForm((prev) => ({ ...prev, contactPerson: numericOnly }));
+            return;
+        }
+
+        // Departemen dipilih → kosongkan organizerCustom
+        if (name === "departemenId") {
+            setForm((prev) => ({ ...prev, departemenId: value, organizerCustom: "" }));
+            return;
+        }
+
+        // organizerCustom diisi → kosongkan departemenId
+        if (name === "organizerCustom") {
+            setForm((prev) => ({ ...prev, organizerCustom: value, departemenId: value ? "" : prev.departemenId }));
+            return;
+        }
+
         setForm((prev) => ({ ...prev, [name]: value }));
     };
 
@@ -95,7 +125,7 @@ const KegiatanForm = () => {
             ...(form.registrationLink && { registrationLink: form.registrationLink }),
             departemenId: form.departemenId ? Number(form.departemenId) : undefined,
             ...(form.organizerCustom && { organizerCustom: form.organizerCustom }),
-            ...(form.contactPerson && { contactPerson: form.contactPerson }),
+            ...(form.contactPerson && { contactPerson: String("+62" + form.contactPerson) }),
             isPublished: form.isPublished,
             speakers,
             file: imageFile,
@@ -147,7 +177,6 @@ const KegiatanForm = () => {
                         ) : (
                             <div className="text-neutral-600 text-sm">
                                 <p className="mb-1">Klik untuk pilih gambar</p>
-                                <p className="text-xs text-neutral-700">JPG, PNG, WEBP</p>
                             </div>
                         )}
                     </div>
@@ -166,18 +195,16 @@ const KegiatanForm = () => {
                     )}
                 </div>
 
-                {/* Tanggal + Kategori */}
-                <div className="grid grid-cols-2 gap-4">
-                    <div>
-                        <label className="block text-yellow-600 text-xs font-bold tracking-widest uppercase mb-2">Kategori *</label>
-                        <select name="kategoriId" value={form.kategoriId} onChange={handleChange} required
-                            className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700">
-                            <option value="">Pilih kategori</option>
-                            {kategoriList.map((k) => (
-                                <option key={k.id} value={k.id}>{k.nama}</option>
-                            ))}
-                        </select>
-                    </div>
+                {/* Kategori — full width */}
+                <div>
+                    <label className="block text-yellow-600 text-xs font-bold tracking-widest uppercase mb-2">Kategori *</label>
+                    <select name="kategoriId" value={form.kategoriId} onChange={handleChange} required
+                        className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700">
+                        <option value="">Pilih kategori</option>
+                        {kategoriList.map((k) => (
+                            <option key={k.id} value={k.id}>{k.nama}</option>
+                        ))}
+                    </select>
                 </div>
 
                 {/* Jam Mulai + Jam Selesai */}
@@ -221,8 +248,15 @@ const KegiatanForm = () => {
                         <label className="block text-yellow-600 text-xs font-bold tracking-widest uppercase mb-2">
                             Harga (Rp) <span className="text-neutral-600 normal-case font-normal">— 0 = Gratis</span>
                         </label>
-                        <input type="number" name="price" value={form.price} onChange={handleChange} placeholder="0" min={0}
-                            className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700" />
+                        <input
+                            type="text"
+                            name="price"
+                            value={form.priceDisplay}
+                            onChange={handleChange}
+                            placeholder="0"
+                            inputMode="numeric"
+                            className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700"
+                        />
                     </div>
                     <div>
                         <label className="block text-yellow-600 text-xs font-bold tracking-widest uppercase mb-2">Link Registrasi</label>
@@ -231,24 +265,47 @@ const KegiatanForm = () => {
                     </div>
                 </div>
 
-                {/* Departemen (dari periode aktif) + Contact Person */}
                 <div className="grid grid-cols-2 gap-4">
                     <div>
                         <label className="block text-yellow-600 text-xs font-bold tracking-widest uppercase mb-2">
                             Departemen <span className="text-neutral-600 normal-case font-normal">— periode aktif</span>
                         </label>
-                        <select name="departemenId" value={form.departemenId} onChange={handleChange}
-                            className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700">
+                        <select
+                            name="departemenId"
+                            value={form.departemenId}
+                            onChange={handleChange}
+                            disabled={!!form.organizerCustom}
+                            className={`w-full bg-neutral-900 border px-3 py-2 text-sm outline-none focus:border-yellow-700 transition-opacity ${
+                                form.organizerCustom
+                                    ? "border-neutral-800 text-neutral-600 opacity-40 cursor-not-allowed"
+                                    : "border-neutral-800 text-[#ffd700]"
+                            }`}
+                        >
                             <option value="">— Tidak ada / Umum —</option>
                             {departemenList.map((d) => (
                                 <option key={d.id} value={d.id}>{d.namaDepartemen}</option>
                             ))}
                         </select>
+                        {form.organizerCustom && (
+                            <p className="text-xs text-neutral-600 mt-1">Nonaktif karena penyelenggara custom diisi</p>
+                        )}
                     </div>
                     <div>
                         <label className="block text-yellow-600 text-xs font-bold tracking-widest uppercase mb-2">Contact Person</label>
-                        <input type="text" name="contactPerson" value={form.contactPerson} onChange={handleChange} placeholder="081234567890"
-                            className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700" />
+                        <div className="flex">
+                            <span className="bg-neutral-800 border border-neutral-700 border-r-0 text-[#ffd700] px-3 py-2 text-sm select-none shrink-0">
+                                +62
+                            </span>
+                            <input
+                                type="text"
+                                name="contactPerson"
+                                value={form.contactPerson}
+                                onChange={handleChange}
+                                placeholder="812345678"
+                                inputMode="numeric"
+                                className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700"
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -257,8 +314,22 @@ const KegiatanForm = () => {
                     <label className="block text-yellow-600 text-xs font-bold tracking-widest uppercase mb-2">
                         Penyelenggara Custom <span className="text-neutral-600 normal-case font-normal">— jika bukan departemen internal</span>
                     </label>
-                    <input type="text" name="organizerCustom" value={form.organizerCustom} onChange={handleChange} placeholder="Nama penyelenggara lain"
-                        className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700" />
+                    <input
+                        type="text"
+                        name="organizerCustom"
+                        value={form.organizerCustom}
+                        onChange={handleChange}
+                        placeholder="Nama penyelenggara lain"
+                        disabled={!!form.departemenId}
+                        className={`w-full bg-neutral-900 border px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700 transition-opacity ${
+                            form.departemenId
+                                ? "border-neutral-800 text-neutral-600 opacity-40 cursor-not-allowed"
+                                : "border-neutral-800 text-[#ffd700]"
+                        }`}
+                    />
+                    {form.departemenId && (
+                        <p className="text-xs text-neutral-600 mt-1">Nonaktif karena departemen sudah dipilih</p>
+                    )}
                 </div>
 
                 {/* Status */}

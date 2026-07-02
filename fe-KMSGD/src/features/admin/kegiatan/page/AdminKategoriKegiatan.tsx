@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import { getKategori, createKategori, updateKategori, deleteKategori } from "../../service/kegiatanService";
 import type { KategoriKegiatan } from "../kegiatanTypes";
 import Table, { type Column } from "@/components/TableAdmin";
@@ -15,21 +15,49 @@ const AdminKategoriKegiatan = () => {
     const [deleteId, setDeleteId] = useState<number | null>(null);
     const [confirmDelete, setConfirmDelete] = useState(false);
 
+    // cegah request duplikat (StrictMode double-invoke) & race condition
+    const requestIdRef = useRef(0);
+    const abortRef = useRef<AbortController | null>(null);
+    const hasFetchedRef = useRef(false);
+
     const fetchData = useCallback(async () => {
+        abortRef.current?.abort();
+        const controller = new AbortController();
+        abortRef.current = controller;
+
+        const currentRequestId = ++requestIdRef.current;
+
         setLoading(true);
         setError(null);
         try {
-            const result = await getKategori();
+            const result = await getKategori(controller.signal);
+
+            if (currentRequestId !== requestIdRef.current) return;
             setData(result);
-        } catch {
-            setError("Gagal memuat data kategori.");
+        } catch (err: unknown) {
+            const isAbort =
+                err instanceof Error &&
+                (err.name === "AbortError" || err.name === "CanceledError");
+            if (isAbort) return;
+
+            if (currentRequestId === requestIdRef.current) {
+                setError("Gagal memuat data kategori.");
+            }
         } finally {
-            setLoading(false);
+            if (currentRequestId === requestIdRef.current) {
+                setLoading(false);
+            }
         }
     }, []);
 
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    useEffect(() => { fetchData(); }, [fetchData]);
+    useEffect(() => {
+        // guard tambahan: cegah fetch ganda dari StrictMode double-invoke di dev
+        if (hasFetchedRef.current) return;
+        hasFetchedRef.current = true;
+        fetchData();
+
+        return () => abortRef.current?.abort();
+    }, [fetchData]);
 
     const handleOpenForm = (kategori?: KategoriKegiatan) => {
         if (kategori) {

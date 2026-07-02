@@ -3,14 +3,20 @@ import type { Galeri, CreateGaleriPayload } from "../galeri/galeriType";
 
 const BASE = "/galeri";
 
+type PaginatedResponse<T> = {
+  data: T[];
+  meta: { total: number; page: number; limit: number; totalPages: number };
+};
+
 export async function getGaleri(): Promise<Galeri[]> {
-  const res = await axiosAdmin.get<{ data: Galeri[] }>(BASE);
-  return res.data.data;
+  const res = await axiosAdmin.get<{ data: PaginatedResponse<Galeri> }>(BASE);
+  return res.data.data.data;
 }
 
-export async function getGaleriAdmin(): Promise<Galeri[]> {
-  const res = await axiosAdmin.get(BASE);
-
+export async function getGaleriAdmin(limit?: number): Promise<Galeri[]> {
+  const res = await axiosAdmin.get<{ data: PaginatedResponse<Galeri> }>(BASE, {
+    params: limit ? { limit } : undefined,
+  });
   return res.data.data.data;
 }
 

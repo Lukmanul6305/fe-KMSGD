@@ -3,16 +3,29 @@ import type { Pengumuman, CreatePengumumanPayload, KategoriPengumuman, KategoriP
 
 const BASE = "/pengumuman";
 
-// ─── PENGUMUMAN ────────────────────────────────────────────────────────────
+type PaginatedResponse<T> = {
+  data: T[];
+  meta: { total: number; page: number; limit: number; totalPages: number };
+};
 
-export async function getPengumuman(): Promise<Pengumuman[]> {
-  const res = await axiosAdmin.get<{ data: Pengumuman[] }>(BASE);
-  return res.data.data;
+export interface GetPengumumanParams {
+  limit?: number;
+  signal?: AbortSignal;
+}
+
+export async function getPengumuman(params?: number | GetPengumumanParams): Promise<Pengumuman[]> {
+  const { limit, signal } = typeof params === "number" ? { limit: params, signal: undefined } : (params ?? {});
+
+  const res = await axiosAdmin.get<{ data: PaginatedResponse<Pengumuman> }>(BASE, {
+    params: limit ? { limit } : undefined,
+    signal,
+  });
+  return res.data.data.data;
 }
 
 export async function getPengumumanPenting(): Promise<Pengumuman[]> {
-  const res = await axiosAdmin.get<{ data: Pengumuman[] }>(`${BASE}/penting`);
-  return res.data.data;
+  const res = await axiosAdmin.get<{ data: PaginatedResponse<Pengumuman> }>(`${BASE}/penting`);
+  return res.data.data.data;
 }
 
 export async function getPengumumanById(id: number): Promise<Pengumuman> {
@@ -20,7 +33,7 @@ export async function getPengumumanById(id: number): Promise<Pengumuman> {
   return res.data.data;
 }
 
-// ─── KATEGORI PENGUMUMAN ──────────────────────────────────────────────────
+// ─── KATEGORI PENGUMUMAN (tidak dipaginasi) ──────────────────────────────────
 
 export async function getKategoriPengumuman(): Promise<KategoriPengumuman[]> {
   const res = await axiosAdmin.get<{ data: KategoriPengumuman[] }>("/kategori-pengumuman");

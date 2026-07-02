@@ -55,7 +55,7 @@ const PengumumanForm = () => {
                 if (isEdit && id) {
                     const data = await getPengumumanById(Number(id));
                     setForm({
-                        tanggal: data.tanggal.slice(0, 10),
+                        tanggal: data.tanggal ? data.tanggal.slice(0, 16) : "",
                         kategoriId: String(data.kategoriId),
                         title: data.title,
                         desc: data.desc,
@@ -148,12 +148,14 @@ const PengumumanForm = () => {
         setTimeline((prev) => prev.filter((_, i) => i !== index));
     };
 
-    // Format tanggal ISO (YYYY-MM-DD) jadi "DD Bulan YYYY" untuk ditampilkan di daftar timeline
+    // Format datetime ISO jadi "DD Bulan YYYY, HH.mm" untuk ditampilkan di daftar timeline
     const formatTanggal = (isoDate: string) => {
         if (!isoDate) return "";
-        const date = new Date(`${isoDate}T00:00:00`);
+        const date = new Date(isoDate.includes("T") ? isoDate : `${isoDate}T00:00:00`);
         if (Number.isNaN(date.getTime())) return isoDate;
-        return date.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+        const dateStr = date.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+        const timeStr = date.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", hour12: false });
+        return `${dateStr}, ${timeStr}`;
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -243,7 +245,6 @@ const PengumumanForm = () => {
                         ) : (
                             <div className="text-neutral-600 text-sm">
                                 <p className="mb-1">Klik untuk pilih gambar</p>
-                                <p className="text-xs text-neutral-700">JPG, PNG, WEBP</p>
                             </div>
                         )}
                     </div>
@@ -268,7 +269,7 @@ const PengumumanForm = () => {
                 <div className="grid grid-cols-2 gap-4">
                     <div>
                         <label className="block text-yellow-600 text-xs font-bold tracking-widest uppercase mb-2">Tanggal *</label>
-                        <input type="date" name="tanggal" value={form.tanggal} onChange={handleChange} required
+                        <input type="datetime-local" name="tanggal" value={form.tanggal} onChange={handleChange} required
                             className="w-full bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700" />
                     </div>
                     <div>
@@ -425,7 +426,7 @@ const PengumumanForm = () => {
                             className="bg-neutral-900 border border-neutral-800 text-[#ffd700] px-3 py-2 text-sm outline-none focus:border-yellow-700 placeholder:text-neutral-700"
                         />
                         <input
-                            type="date"
+                            type="datetime-local"
                             value={timelineTanggal}
                             onChange={(e) => setTimelineTanggal(e.target.value)}
                             onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addTimeline(); } }}

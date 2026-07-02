@@ -7,7 +7,9 @@ import handleError from "../../exceptions/handleError";
 export const pengumumanController = {
   async getAll(req: Request, res: Response) {
     try {
-      const data = await pengumumanService.getAll();
+      const page = Number(req.query.page) || 1;
+      const limit = Number(req.query.limit) || 12;
+      const data = await pengumumanService.getAll(page, limit);
       return response.success(res, data, "Berhasil mengambil data pengumuman");
     } catch (error) {
       return handleError(res, error);
@@ -16,7 +18,9 @@ export const pengumumanController = {
 
   async getPenting(req: Request, res: Response) {
     try {
-      const data = await pengumumanService.getPenting();
+      const page = Number(req.query.page) || 1;
+      const limit = Number(req.query.limit) || 12;
+      const data = await pengumumanService.getPenting(page, limit);
       return response.success(res, data, "Berhasil mengambil pengumuman penting");
     } catch (error) {
       return handleError(res, error);

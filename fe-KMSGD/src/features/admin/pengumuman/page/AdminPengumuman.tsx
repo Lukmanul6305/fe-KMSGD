@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { getPengumuman, deletePengumuman } from "../../service/pengumumanService";
 import type { Pengumuman } from "../pengumumanTypes";
 import AdminKategoriPengumuman from "../components/AdminKategoriPengumuman";
@@ -20,21 +20,44 @@ const AdminPengumuman = () => {
     const [perPage, setPerPage] = useState(10);
     const [activeTab, setActiveTab] = useState<TabType>("pengumuman");
 
+    // cegah request duplikat (StrictMode double-invoke) & race condition
+    const requestIdRef = useRef(0);
+    const abortRef = useRef<AbortController | null>(null);
+    const hasFetchedRef = useRef(false);
+
     const fetchData = useCallback(async () => {
+        abortRef.current?.abort();
+        const controller = new AbortController();
+        abortRef.current = controller;
+
+        const currentRequestId = ++requestIdRef.current;
+
         setLoading(true);
         setError(null);
         try {
-            const result = await getPengumuman();
+            const result = await getPengumuman({ signal: controller.signal });
+
+            if (currentRequestId !== requestIdRef.current) return;
             setData(result);
-        } catch {
-            setError("Gagal memuat data pengumuman.");
+        } catch (err: unknown) {
+            const isAbort =
+                err instanceof Error &&
+                (err.name === "AbortError" || err.name === "CanceledError");
+            if (isAbort) return;
+
+            if (currentRequestId === requestIdRef.current) {
+                setError("Gagal memuat data pengumuman.");
+            }
         } finally {
-            setLoading(false);
+            if (currentRequestId === requestIdRef.current) {
+                setLoading(false);
+            }
         }
     }, []);
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
+        if (hasFetchedRef.current) return;
+        hasFetchedRef.current = true;
         fetchData();
     }, [fetchData]);
 
@@ -142,6 +165,8 @@ const AdminPengumuman = () => {
                         open={confirmDelete}
                         onCancel={() => { setConfirmDelete(false); setDeleteId(null); }}
                         onConfirm={handleDelete}
+                        title="Hapus Pengumuman"
+                        description="Yakin ingin menghapus pengumuman ini? Tindakan ini tidak bisa dibatalkan."
                     />
                 </>
             )

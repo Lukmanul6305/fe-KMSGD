@@ -13,6 +13,11 @@ type ApiResponse<T> = {
   data: T;
 };
 
+type PaginatedResponse<T> = {
+  data: T[];
+  meta: { total: number; page: number; limit: number; totalPages: number };
+};
+
 type KategoriPengumumanResponse = {
   nama?: string | null;
 };
@@ -41,6 +46,12 @@ const fullDateFormatter = new Intl.DateTimeFormat("id-ID", {
   day: "2-digit",
   month: "long",
   year: "numeric",
+});
+
+const timeFormatter = new Intl.DateTimeFormat("id-ID", {
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: false,
 });
 
 const toDate = (value?: string | null) => {
@@ -77,7 +88,7 @@ const mapPengumuman = (item: PengumumanResponse): Pengumuman => {
     day: date?.getDate() ?? 0,
     month: date ? monthFormatter.format(date) : "-",
     year: date?.getFullYear() ?? new Date().getFullYear(),
-    fullDate: date ? fullDateFormatter.format(date) : "-",
+    fullDate: date ? `${fullDateFormatter.format(date)}, ${timeFormatter.format(date).replace(":", ".")}` : "-",
     category: normalizeCategory(item.kategori?.nama),
     title: item.title?.trim() || "Pengumuman KMSGD",
     desc: item.desc?.trim() || "",
@@ -112,11 +123,11 @@ const sortPengumumanResponse = (items: PengumumanResponse[]) =>
   });
 
 export const getPengumuman = async (signal?: AbortSignal): Promise<Pengumuman[]> => {
-  const response = await axiosPublic.get<ApiResponse<PengumumanResponse[]>>("/pengumuman", {
+  const response = await axiosPublic.get<ApiResponse<PaginatedResponse<PengumumanResponse>>>("/pengumuman", {
     signal,
   });
 
-  return sortPengumumanResponse(response.data.data).map(mapPengumuman);
+  return sortPengumumanResponse(response.data.data.data).map(mapPengumuman);
 };
 
 export const getPengumumanFilters = (items: Pengumuman[]): string[] => {

@@ -6,6 +6,9 @@ export const priodeService = {
   async getAllPeriode() {
     return priodeRepository.findAllPeriode();
   },
+  async getAllPeriodeSimple() {
+    return priodeRepository.findAllPeriodeSimple();
+  },
 
   async getPeriodeAktif() {
     const data = await priodeRepository.findPeriodeAktif();
@@ -23,7 +26,7 @@ export const priodeService = {
     if (dto.status === "AKTIF") {
       await prisma.periodeOrganisasi.updateMany({
         where: { status: "AKTIF" },
-        data: { status: "DEMISIONER" }
+        data: { status: "DEMISIONER" },
       });
     }
     return priodeRepository.createPeriode(dto);
@@ -35,7 +38,7 @@ export const priodeService = {
     if (dto.status === "AKTIF") {
       await prisma.periodeOrganisasi.updateMany({
         where: { status: "AKTIF", NOT: { id } },
-        data: { status: "DEMISIONER" }
+        data: { status: "DEMISIONER" },
       });
     }
 

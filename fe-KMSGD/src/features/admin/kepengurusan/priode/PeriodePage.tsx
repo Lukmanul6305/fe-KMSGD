@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { FaCalendarAlt, FaPlus } from "react-icons/fa";
+import ConfirmDeleteModal from "../../kegiatan/components/adminKegiatan/ConfirmDeleteModal";
 import {
     getPeriode,
     createPeriode,
@@ -10,8 +12,13 @@ import type { PeriodeOrganisasi, CreatePeriodeDto, UpdatePeriodeDto } from "../k
 import Table, { type Column } from "@/components/TableAdmin";
 
 const PeriodePage = () => {
-    const [periodes, setPeriodes] = useState<PeriodeOrganisasi[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const queryClient = useQueryClient();
+
+    const { data: periodes = [], isLoading } = useQuery({
+        queryKey: ["periode-list"],
+        queryFn: getPeriode,
+        staleTime: 30_000,
+    });
 
     // Form Modal State
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,21 +29,12 @@ const PeriodePage = () => {
         status: "AKTIF"
     });
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+    // Confirm Delete
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    const [deleteId, setDeleteId] = useState<number | null>(null);
 
-    async function fetchData() {
-        setIsLoading(true);
-        try {
-            const data = await getPeriode();
-            setPeriodes(data);
-        } catch (error) {
-            console.error("Failed to fetch periode:", error);
-            alert("Gagal memuat data periode");
-        } finally {
-            setIsLoading(false);
-        }
+    const refetchPeriode = () => {
+        queryClient.invalidateQueries({ queryKey: ["periode-list"] });
     };
 
     const handleOpenModal = (periode?: PeriodeOrganisasi) => {
@@ -71,22 +69,29 @@ const PeriodePage = () => {
                 await createPeriode(formData);
             }
             handleCloseModal();
-            fetchData();
+            refetchPeriode();
         } catch (error) {
             console.error("Failed to save periode:", error);
             alert("Gagal menyimpan periode");
         }
     };
 
-    const handleDelete = async (id: number) => {
-        if (confirm("Apakah Anda yakin ingin menghapus periode ini?")) {
-            try {
-                await deletePeriode(id);
-                fetchData();
-            } catch (error) {
-                console.error("Failed to delete periode:", error);
-                alert("Gagal menghapus periode");
-            }
+    const handleDelete = (id: number) => {
+        setDeleteId(id);
+        setConfirmDelete(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (!deleteId) return;
+        try {
+            await deletePeriode(deleteId);
+            refetchPeriode();
+        } catch (error) {
+            console.error("Failed to delete periode:", error);
+            alert("Gagal menghapus periode");
+        } finally {
+            setConfirmDelete(false);
+            setDeleteId(null);
         }
     };
 
@@ -157,7 +162,6 @@ const PeriodePage = () => {
                 emptyMessage="Belum ada data periode."
             />
 
-            {/* Modal Form */}
             {isModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
                     <div className="bg-neutral-900 border border-neutral-800 p-6 w-full max-w-md">
@@ -165,18 +169,14 @@ const PeriodePage = () => {
                             {isEditing ? "Edit Periode" : "Tambah Periode"}
                         </h3>
                         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-
-                            {/* BAGIAN INPUT PERIODE */}
                             <div>
                                 <label className="block text-sm text-neutral-400 mb-1">Periode</label>
                                 <div className="flex items-center gap-2">
-                                    {/* Dropdown Tahun Mulai */}
                                     <select
                                         required
                                         value={formData.periode ? String(formData.periode).split("-")[0] : ""}
                                         onChange={(e) => {
                                             const tahunMulaiBaru = e.target.value;
-                                            // OTOMATIS: Set tahun selesai menjadi +1 tahun dari tahun mulai yang baru dipilih
                                             const tahunSelesaiOtomatis = String(Number(tahunMulaiBaru) + 1);
 
                                             setFormData({
@@ -197,7 +197,6 @@ const PeriodePage = () => {
 
                                     <span className="text-neutral-400">s/d</span>
 
-                                    {/* Dropdown Tahun Selesai */}
                                     <select
                                         required
                                         value={formData.periode ? String(formData.periode).split("-")[1] : ""}
@@ -205,7 +204,6 @@ const PeriodePage = () => {
                                             const tahunMulai = formData.periode ? String(formData.periode).split("-")[0] : "";
                                             const tahunSelesaiBaru = e.target.value;
 
-                                            // Jika user ganti manual tahun selesai, pastikan tidak lebih kecil dari tahun mulai
                                             if (Number(tahunSelesaiBaru) <= Number(tahunMulai)) {
                                                 alert("Tahun selesai harus lebih besar dari tahun mulai!");
                                                 return;
@@ -229,7 +227,6 @@ const PeriodePage = () => {
                                 </div>
                             </div>
 
-                            {/* BAGIAN STATUS */}
                             <div>
                                 <label className="block text-sm text-neutral-400 mb-1">Status</label>
                                 <select
@@ -242,7 +239,6 @@ const PeriodePage = () => {
                                 </select>
                             </div>
 
-                            {/* TOMBOL AKSI */}
                             <div className="flex justify-end gap-3 mt-4">
                                 <button
                                     type="button"
@@ -262,6 +258,14 @@ const PeriodePage = () => {
                     </div>
                 </div>
             )}
+
+            <ConfirmDeleteModal
+                open={confirmDelete}
+                onCancel={() => { setConfirmDelete(false); setDeleteId(null); }}
+                onConfirm={handleConfirmDelete}
+                title="Hapus Periode"
+                description="Yakin ingin menghapus periode ini? Tindakan ini tidak bisa dibatalkan."
+            />
         </div>
     );
 };

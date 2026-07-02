@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import { getKategoriPengumuman, createKategoriPengumuman, updateKategoriPengumuman, deleteKategoriPengumuman } from "../../service/pengumumanService";
 import type { KategoriPengumuman } from "../pengumumanTypes";
 import Table, { type Column } from "@/components/TableAdmin";
@@ -15,6 +15,9 @@ const AdminKategoriPengumuman = () => {
     const [deleteId, setDeleteId] = useState<number | null>(null);
     const [confirmDelete, setConfirmDelete] = useState(false);
 
+    // cegah request duplikat dari StrictMode double-invoke di dev
+    const hasFetchedRef = useRef(false);
+
     const fetchData = useCallback(async () => {
         setLoading(true);
         setError(null);
@@ -29,7 +32,9 @@ const AdminKategoriPengumuman = () => {
     }, []);
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
+        if (hasFetchedRef.current) return;
+        hasFetchedRef.current = true;
+
         fetchData();
     }, [fetchData]);
 

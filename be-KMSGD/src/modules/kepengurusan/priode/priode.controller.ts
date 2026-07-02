@@ -13,6 +13,14 @@ export const priodeController = {
       return handleError(res, error);
     }
   },
+  async getAllSimple(req: Request, res: Response) {
+    try {
+      const data = await priodeService.getAllPeriodeSimple();
+      return response.success(res, data, "Berhasil mengambil daftar periode (ringkas)");
+    } catch (error) {
+      return handleError(res, error);
+    }
+  },
 
   async getPeriodeAktif(req: Request, res: Response) {
     try {

@@ -1,0 +1,887 @@
+{
+  "info": {
+    "name": "KMSGD API",
+    "_postman_id": "kmsgd-api-collection",
+    "description": "Koleksi endpoint API backend KMSGD. Base URL: http://localhost:3000/api\n\n🔐 Endpoint bertanda [AUTH] membutuhkan cookie `accessToken` yang didapat dari POST /auth/login.\nPostman otomatis menyimpan cookie jika 'Automatically follow redirects' dan cookie jar aktif.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "🔐 Auth",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"password123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Login admin. Response set cookie accessToken & refreshToken."
+          }
+        },
+        {
+          "name": "Get Me [AUTH]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/auth/me", "host": ["{{base_url}}"], "path": ["auth", "me"] },
+            "description": "Ambil data admin yang sedang login. Butuh cookie accessToken."
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/auth/refresh", "host": ["{{base_url}}"], "path": ["auth", "refresh"] },
+            "description": "Refresh accessToken menggunakan refreshToken cookie."
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/auth/logout", "host": ["{{base_url}}"], "path": ["auth", "logout"] },
+            "description": "Logout dan hapus cookie."
+          }
+        }
+      ]
+    },
+    {
+      "name": "👤 Admin (User Management)",
+      "item": [
+        {
+          "name": "Get All Admin",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/admin", "host": ["{{base_url}}"], "path": ["admin"] }
+          }
+        },
+        {
+          "name": "Get Admin by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/admin/1", "host": ["{{base_url}}"], "path": ["admin", "1"] }
+          }
+        },
+        {
+          "name": "Create Admin",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/admin", "host": ["{{base_url}}"], "path": ["admin"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin_baru\",\n  \"password\": \"password123\",\n  \"role\": \"ADMIN\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Update Admin",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/admin/1", "host": ["{{base_url}}"], "path": ["admin", "1"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin_updated\",\n  \"password\": \"newpassword\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Delete Admin",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{base_url}}/admin/1", "host": ["{{base_url}}"], "path": ["admin", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📅 Kepengurusan — Periode",
+      "item": [
+        {
+          "name": "Get All Periode",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kepengurusan/periode", "host": ["{{base_url}}"], "path": ["kepengurusan", "periode"] }
+          }
+        },
+        {
+          "name": "Get Periode Aktif",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kepengurusan/periode/aktif", "host": ["{{base_url}}"], "path": ["kepengurusan", "periode", "aktif"] }
+          }
+        },
+        {
+          "name": "Get Periode by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kepengurusan/periode/1", "host": ["{{base_url}}"], "path": ["kepengurusan", "periode", "1"] }
+          }
+        },
+        {
+          "name": "Create Periode [AUTH]",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/kepengurusan/periode", "host": ["{{base_url}}"], "path": ["kepengurusan", "periode"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"periode\": \"2024/2025\",\n  \"status\": \"AKTIF\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Update Periode [AUTH]",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/kepengurusan/periode/1", "host": ["{{base_url}}"], "path": ["kepengurusan", "periode", "1"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"periode\": \"2024/2025\",\n  \"status\": \"DEMISIONER\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Delete Periode [AUTH]",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kepengurusan/periode/1", "host": ["{{base_url}}"], "path": ["kepengurusan", "periode", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏢 Kepengurusan — Departemen",
+      "item": [
+        {
+          "name": "Get Departemen (semua / by periodeId)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/kepengurusan/departemen?periodeId=1",
+              "host": ["{{base_url}}"],
+              "path": ["kepengurusan", "departemen"],
+              "query": [{ "key": "periodeId", "value": "1", "description": "Kosongkan untuk semua departemen" }]
+            }
+          }
+        },
+        {
+          "name": "Get Departemen Aktif",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kepengurusan/departemen/aktif", "host": ["{{base_url}}"], "path": ["kepengurusan", "departemen", "aktif"] }
+          }
+        },
+        {
+          "name": "Create Departemen [AUTH]",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/kepengurusan/departemen", "host": ["{{base_url}}"], "path": ["kepengurusan", "departemen"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"periodeId\": 1,\n  \"namaDepartemen\": \"Departemen Pendidikan\",\n  \"deskripsi\": \"Menangani program pendidikan\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Update Departemen [AUTH]",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/kepengurusan/departemen/1", "host": ["{{base_url}}"], "path": ["kepengurusan", "departemen", "1"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"namaDepartemen\": \"Departemen Pendidikan Updated\",\n  \"deskripsi\": \"Deskripsi baru\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Delete Departemen [AUTH]",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kepengurusan/departemen/1", "host": ["{{base_url}}"], "path": ["kepengurusan", "departemen", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👥 Kepengurusan — Pengurus Inti (BPI)",
+      "item": [
+        {
+          "name": "Get Pengurus Inti by Periode",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/kepengurusan/inti?periodeId=1",
+              "host": ["{{base_url}}"],
+              "path": ["kepengurusan", "inti"],
+              "query": [{ "key": "periodeId", "value": "1" }]
+            }
+          }
+        },
+        {
+          "name": "Create Pengurus Inti [AUTH]",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kepengurusan/inti", "host": ["{{base_url}}"], "path": ["kepengurusan", "inti"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "periodeId", "value": "1", "type": "text" },
+                { "key": "nama", "value": "Ahmad Fulan", "type": "text" },
+                { "key": "jabatan", "value": "Ketua Umum", "type": "text" },
+                { "key": "slogan", "value": "Bersatu kita teguh", "type": "text" },
+                { "key": "image", "type": "file", "src": "", "description": "Opsional — file gambar JPG/PNG/WebP" }
+              ]
+            },
+            "description": "Body: multipart/form-data. Field image bersifat opsional."
+          }
+        },
+        {
+          "name": "Update Pengurus Inti [AUTH]",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kepengurusan/inti/1", "host": ["{{base_url}}"], "path": ["kepengurusan", "inti", "1"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "nama", "value": "Ahmad Fulan Updated", "type": "text" },
+                { "key": "jabatan", "value": "Ketua Umum", "type": "text" },
+                { "key": "slogan", "value": "Slogan baru", "type": "text" },
+                { "key": "image", "type": "file", "src": "", "description": "Opsional — kosongkan jika tidak ganti foto" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Pengurus Inti [AUTH]",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kepengurusan/inti/1", "host": ["{{base_url}}"], "path": ["kepengurusan", "inti", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👤 Kepengurusan — Anggota Departemen",
+      "item": [
+        {
+          "name": "Get Anggota (semua / by departemenId)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/kepengurusan/anggota?departemenId=1",
+              "host": ["{{base_url}}"],
+              "path": ["kepengurusan", "anggota"],
+              "query": [{ "key": "departemenId", "value": "1", "description": "Kosongkan untuk semua anggota" }]
+            }
+          }
+        },
+        {
+          "name": "Create Anggota [AUTH]",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kepengurusan/anggota", "host": ["{{base_url}}"], "path": ["kepengurusan", "anggota"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "departemenId", "value": "1", "type": "text" },
+                { "key": "nama", "value": "Budi Santoso", "type": "text" },
+                { "key": "jabatan", "value": "Anggota", "type": "text" },
+                { "key": "image", "type": "file", "src": "", "description": "Opsional — file gambar JPG/PNG/WebP" }
+              ]
+            },
+            "description": "Body: multipart/form-data. Field image bersifat opsional."
+          }
+        },
+        {
+          "name": "Update Anggota [AUTH]",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kepengurusan/anggota/1", "host": ["{{base_url}}"], "path": ["kepengurusan", "anggota", "1"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "nama", "value": "Budi Santoso Updated", "type": "text" },
+                { "key": "jabatan", "value": "Ketua Departemen", "type": "text" },
+                { "key": "image", "type": "file", "src": "", "description": "Opsional" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Anggota [AUTH]",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kepengurusan/anggota/1", "host": ["{{base_url}}"], "path": ["kepengurusan", "anggota", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🎉 Kegiatan",
+      "item": [
+        {
+          "name": "Get All Kegiatan (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kegiatan", "host": ["{{base_url}}"], "path": ["kegiatan"] }
+          }
+        },
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kegiatan/categories", "host": ["{{base_url}}"], "path": ["kegiatan", "categories"] }
+          }
+        },
+        {
+          "name": "Get Kegiatan by Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kegiatan/category/UMUM", "host": ["{{base_url}}"], "path": ["kegiatan", "category", "UMUM"] }
+          }
+        },
+        {
+          "name": "Get Kegiatan by Departemen",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kegiatan/departemen/1", "host": ["{{base_url}}"], "path": ["kegiatan", "departemen", "1"] }
+          }
+        },
+        {
+          "name": "Get Kegiatan by ID (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kegiatan/1", "host": ["{{base_url}}"], "path": ["kegiatan", "1"] }
+          }
+        },
+        {
+          "name": "Get All Kegiatan Admin [AUTH]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kegiatan/admin/all", "host": ["{{base_url}}"], "path": ["kegiatan", "admin", "all"] }
+          }
+        },
+        {
+          "name": "Get Kegiatan by ID Admin [AUTH]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kegiatan/admin/1", "host": ["{{base_url}}"], "path": ["kegiatan", "admin", "1"] }
+          }
+        },
+        {
+          "name": "Create Kegiatan [AUTH]",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kegiatan", "host": ["{{base_url}}"], "path": ["kegiatan"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "periodeId", "value": "1", "type": "text" },
+                { "key": "title", "value": "Webinar Nasional 2024", "type": "text" },
+                { "key": "desc", "value": "Deskripsi kegiatan webinar", "type": "text" },
+                { "key": "location", "value": "Zoom Meeting", "type": "text" },
+                { "key": "startTime", "value": "2024-08-01T09:00:00.000Z", "type": "text" },
+                { "key": "endTime", "value": "2024-08-01T12:00:00.000Z", "type": "text" },
+                { "key": "kategoriId", "value": "1", "type": "text" },
+                { "key": "price", "value": "0", "type": "text" },
+                { "key": "registrationLink", "value": "https://example.com/daftar", "type": "text" },
+                { "key": "departemenId", "value": "1", "type": "text" },
+                { "key": "organizerCustom", "value": "", "type": "text" },
+                { "key": "contactPerson", "value": "081234567890", "type": "text" },
+                { "key": "isPublished", "value": "true", "type": "text" },
+                { "key": "speakers", "value": "[\"Pembicara 1\", \"Pembicara 2\"]", "type": "text", "description": "JSON string array" },
+                { "key": "image", "type": "file", "src": "", "description": "Opsional" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Kegiatan [AUTH]",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kegiatan/1", "host": ["{{base_url}}"], "path": ["kegiatan", "1"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "title", "value": "Webinar Updated", "type": "text" },
+                { "key": "isPublished", "value": "true", "type": "text" },
+                { "key": "image", "type": "file", "src": "", "description": "Opsional" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Kegiatan [AUTH]",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kegiatan/1", "host": ["{{base_url}}"], "path": ["kegiatan", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏷️ Kategori Kegiatan",
+      "item": [
+        {
+          "name": "Get All Kategori Kegiatan",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kategori-kegiatan", "host": ["{{base_url}}"], "path": ["kategori-kegiatan"] }
+          }
+        },
+        {
+          "name": "Get Kategori Kegiatan by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kategori-kegiatan/1", "host": ["{{base_url}}"], "path": ["kategori-kegiatan", "1"] }
+          }
+        },
+        {
+          "name": "Create Kategori Kegiatan [AUTH]",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/kategori-kegiatan", "host": ["{{base_url}}"], "path": ["kategori-kegiatan"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nama\": \"SPESIAL\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Update Kategori Kegiatan [AUTH]",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/kategori-kegiatan/1", "host": ["{{base_url}}"], "path": ["kategori-kegiatan", "1"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nama\": \"UMUM\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Delete Kategori Kegiatan [AUTH]",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kategori-kegiatan/1", "host": ["{{base_url}}"], "path": ["kategori-kegiatan", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📢 Pengumuman",
+      "item": [
+        {
+          "name": "Get All Pengumuman (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/pengumuman", "host": ["{{base_url}}"], "path": ["pengumuman"] }
+          }
+        },
+        {
+          "name": "Get Pengumuman Penting",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/pengumuman/penting", "host": ["{{base_url}}"], "path": ["pengumuman", "penting"] }
+          }
+        },
+        {
+          "name": "Get Pengumuman by ID (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/pengumuman/1", "host": ["{{base_url}}"], "path": ["pengumuman", "1"] }
+          }
+        },
+        {
+          "name": "Get Pengumuman by ID Admin [AUTH]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/pengumuman/admin/1", "host": ["{{base_url}}"], "path": ["pengumuman", "admin", "1"] }
+          }
+        },
+        {
+          "name": "Create Pengumuman [AUTH]",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/pengumuman", "host": ["{{base_url}}"], "path": ["pengumuman"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "judul", "value": "Pengumuman Penting", "type": "text" },
+                { "key": "konten", "value": "Isi pengumuman...", "type": "text" },
+                { "key": "kategoriId", "value": "1", "type": "text" },
+                { "key": "isPenting", "value": "false", "type": "text" },
+                { "key": "isPublished", "value": "true", "type": "text" },
+                { "key": "image", "type": "file", "src": "", "description": "Opsional" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Pengumuman [AUTH]",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": { "raw": "{{base_url}}/pengumuman/1", "host": ["{{base_url}}"], "path": ["pengumuman", "1"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "judul", "value": "Pengumuman Updated", "type": "text" },
+                { "key": "isPublished", "value": "true", "type": "text" },
+                { "key": "image", "type": "file", "src": "", "description": "Opsional" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Pengumuman [AUTH]",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{base_url}}/pengumuman/1", "host": ["{{base_url}}"], "path": ["pengumuman", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏷️ Kategori Pengumuman",
+      "item": [
+        {
+          "name": "Get All Kategori Pengumuman",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kategori-pengumuman", "host": ["{{base_url}}"], "path": ["kategori-pengumuman"] }
+          }
+        },
+        {
+          "name": "Get Kategori Pengumuman by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kategori-pengumuman/1", "host": ["{{base_url}}"], "path": ["kategori-pengumuman", "1"] }
+          }
+        },
+        {
+          "name": "Create Kategori Pengumuman [AUTH]",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/kategori-pengumuman", "host": ["{{base_url}}"], "path": ["kategori-pengumuman"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nama\": \"Akademik\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Update Kategori Pengumuman [AUTH]",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/kategori-pengumuman/1", "host": ["{{base_url}}"], "path": ["kategori-pengumuman", "1"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nama\": \"Organisasi\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Delete Kategori Pengumuman [AUTH]",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{base_url}}/kategori-pengumuman/1", "host": ["{{base_url}}"], "path": ["kategori-pengumuman", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🖼️ Galeri",
+      "item": [
+        {
+          "name": "Get All Galeri",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/galeri", "host": ["{{base_url}}"], "path": ["galeri"] }
+          }
+        },
+        {
+          "name": "Get Galeri by Tipe",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/galeri/tipe/FOTO",
+              "host": ["{{base_url}}"],
+              "path": ["galeri", "tipe", "FOTO"],
+              "description": "Tipe: FOTO atau VIDEO"
+            }
+          }
+        },
+        {
+          "name": "Get Galeri by Kegiatan",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/galeri/kegiatan/1", "host": ["{{base_url}}"], "path": ["galeri", "kegiatan", "1"] }
+          }
+        },
+        {
+          "name": "Get Galeri by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/galeri/1", "host": ["{{base_url}}"], "path": ["galeri", "1"] }
+          }
+        },
+        {
+          "name": "Create Galeri FOTO [AUTH]",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/galeri", "host": ["{{base_url}}"], "path": ["galeri"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "judul", "value": "Foto Kegiatan Webinar", "type": "text" },
+                { "key": "tipe", "value": "FOTO", "type": "text" },
+                { "key": "kegiatanId", "value": "1", "type": "text", "description": "Opsional" },
+                { "key": "image", "type": "file", "src": "", "description": "Wajib untuk FOTO" },
+                { "key": "thumbnail", "type": "file", "src": "", "description": "Opsional" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Galeri VIDEO [AUTH]",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/galeri", "host": ["{{base_url}}"], "path": ["galeri"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "judul", "value": "Video Kegiatan", "type": "text" },
+                { "key": "tipe", "value": "VIDEO", "type": "text" },
+                { "key": "youtubeUrl", "value": "https://www.youtube.com/watch?v=xxxxx", "type": "text" },
+                { "key": "thumbnail", "type": "file", "src": "", "description": "Opsional" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Galeri [AUTH]",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": { "raw": "{{base_url}}/galeri/1", "host": ["{{base_url}}"], "path": ["galeri", "1"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "judul", "value": "Judul Updated", "type": "text" },
+                { "key": "image", "type": "file", "src": "", "description": "Opsional" },
+                { "key": "thumbnail", "type": "file", "src": "", "description": "Opsional" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Galeri [AUTH]",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{base_url}}/galeri/1", "host": ["{{base_url}}"], "path": ["galeri", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🎤 Sambutan",
+      "item": [
+        {
+          "name": "Get Sambutan",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/sambutan", "host": ["{{base_url}}"], "path": ["sambutan"] }
+          }
+        },
+        {
+          "name": "Create Sambutan [AUTH]",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/sambutan", "host": ["{{base_url}}"], "path": ["sambutan"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "nama", "value": "Ketua Umum", "type": "text" },
+                { "key": "jabatan", "value": "Ketua Umum KMSGD", "type": "text" },
+                { "key": "konten", "value": "Isi sambutan...", "type": "text" },
+                { "key": "image", "type": "file", "src": "", "description": "Opsional — foto pemberi sambutan" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Sambutan [AUTH]",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": { "raw": "{{base_url}}/sambutan/1", "host": ["{{base_url}}"], "path": ["sambutan", "1"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "konten", "value": "Isi sambutan yang diperbarui...", "type": "text" },
+                { "key": "image", "type": "file", "src": "", "description": "Opsional" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Sambutan [AUTH]",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{base_url}}/sambutan/1", "host": ["{{base_url}}"], "path": ["sambutan", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏠 Home Background",
+      "item": [
+        {
+          "name": "Get Active Background",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/home-background/active", "host": ["{{base_url}}"], "path": ["home-background", "active"] }
+          }
+        },
+        {
+          "name": "Get All Background",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/home-background", "host": ["{{base_url}}"], "path": ["home-background"] }
+          }
+        },
+        {
+          "name": "Get Background by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/home-background/1", "host": ["{{base_url}}"], "path": ["home-background", "1"] }
+          }
+        },
+        {
+          "name": "Create Background [AUTH]",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/home-background", "host": ["{{base_url}}"], "path": ["home-background"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "isActive", "value": "true", "type": "text" },
+                { "key": "image", "type": "file", "src": "", "description": "Wajib — file gambar JPG/PNG/WebP" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Background [AUTH]",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": { "raw": "{{base_url}}/home-background/1", "host": ["{{base_url}}"], "path": ["home-background", "1"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "isActive", "value": "false", "type": "text" },
+                { "key": "image", "type": "file", "src": "", "description": "Opsional" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Background [AUTH]",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{base_url}}/home-background/1", "host": ["{{base_url}}"], "path": ["home-background", "1"] }
+          }
+        }
+      ]
+    }
+  ]
+}

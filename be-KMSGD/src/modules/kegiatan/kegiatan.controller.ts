@@ -7,7 +7,9 @@ import handleError from "../../exceptions/handleError";
 export const kegiatanController = {
   async getAll(req: Request, res: Response) {
     try {
-      const data = await kegiatanService.getAll();
+      const page = Number(req.query.page) || 1;
+      const limit = Number(req.query.limit) || 12;
+      const data = await kegiatanService.getAll(page, limit);
       return response.success(res, data, "Berhasil mengambil data kegiatan");
     } catch (error) {
       return handleError(res, error);
@@ -17,7 +19,9 @@ export const kegiatanController = {
   // Untuk admin — tampilkan semua termasuk draft
   async getAllAdmin(req: Request, res: Response) {
     try {
-      const data = await kegiatanService.getAllAdmin();
+      const page = Number(req.query.page) || 1;
+      const limit = Number(req.query.limit) || 12;
+      const data = await kegiatanService.getAllAdmin(page, limit);
       return response.success(res, data, "Berhasil mengambil data kegiatan (admin)");
     } catch (error) {
       return handleError(res, error);
@@ -35,7 +39,9 @@ export const kegiatanController = {
 
   async getByCategory(req: Request, res: Response) {
     try {
-      const data = await kegiatanService.getByCategory(Number(req.params.category));
+      const page = Number(req.query.page) || 1;
+      const limit = Number(req.query.limit) || 12;
+      const data = await kegiatanService.getByCategory(Number(req.params.category), page, limit);
       return response.success(res, data, "Berhasil mengambil kegiatan by kategori");
     } catch (error) {
       return handleError(res, error);
@@ -44,7 +50,9 @@ export const kegiatanController = {
 
   async getByDepartemen(req: Request, res: Response) {
     try {
-      const data = await kegiatanService.getByDepartemen(Number(req.params.departemenId));
+      const page = Number(req.query.page) || 1;
+      const limit = Number(req.query.limit) || 12;
+      const data = await kegiatanService.getByDepartemen(Number(req.params.departemenId), page, limit);
       return response.success(res, data, "Berhasil mengambil kegiatan by departemen");
     } catch (error) {
       return handleError(res, error);

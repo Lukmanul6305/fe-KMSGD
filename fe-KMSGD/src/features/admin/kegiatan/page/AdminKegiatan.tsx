@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { getKegiatanAdmin, deleteKegiatan } from "../../service/kegiatanService";
 import type { Kegiatan } from "../kegiatanTypes";
 import AdminKategoriKegiatan from "./AdminKategoriKegiatan";
@@ -11,8 +11,18 @@ import type { TabItem } from "@/components/Tabs";
 
 type TabType = "kegiatan" | "kategori";
 
+function useDebouncedValue<T>(value: T, delay = 400): T {
+    const [debounced, setDebounced] = useState(value);
+    useEffect(() => {
+        const t = setTimeout(() => setDebounced(value), delay);
+        return () => clearTimeout(t);
+    }, [value, delay]);
+    return debounced;
+}
+
 const AdminKegiatan = () => {
     const [data, setData] = useState<Kegiatan[]>([]);
+    const [totalItems, setTotalItems] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [search, setSearch] = useState("");
@@ -22,30 +32,60 @@ const AdminKegiatan = () => {
     const [perPage, setPerPage] = useState(10);
     const [activeTab, setActiveTab] = useState<TabType>("kegiatan");
 
-    useEffect(() => {
-        let cancelled = false;
+    const debouncedSearch = useDebouncedValue(search, 400);
 
-        (async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const result = await getKegiatanAdmin();
-                if (!cancelled) setData(result);
-            } catch {
-                if (!cancelled) setError("Gagal memuat data kegiatan.");
-            } finally {
-                if (!cancelled) setLoading(false);
+    const requestIdRef = useRef(0);
+    const abortRef = useRef<AbortController | null>(null);
+
+    const fetchData = useCallback(async () => {
+        abortRef.current?.abort();
+        const controller = new AbortController();
+        abortRef.current = controller;
+
+        const currentRequestId = ++requestIdRef.current;
+
+        setLoading(true);
+        setError(null);
+
+        try {
+            const result = await getKegiatanAdmin({
+                search: debouncedSearch,
+                page,
+                perPage,
+                signal: controller.signal,
+            });
+
+            if (currentRequestId !== requestIdRef.current) return;
+
+            setData(result.data);
+            setTotalItems(result.total);
+        } catch (err: unknown) {
+            const isAbort =
+                err instanceof Error &&
+                (err.name === "AbortError" || err.name === "CanceledError");
+            if (isAbort) return;
+
+            if (currentRequestId === requestIdRef.current) {
+                setError("Gagal memuat data kegiatan.");
             }
-        })();
+        } finally {
+            if (currentRequestId === requestIdRef.current) {
+                setLoading(false);
+            }
+        }
+    }, [debouncedSearch, page, perPage]);
 
-        return () => { cancelled = true; };
-    }, []);
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        fetchData();
+        return () => abortRef.current?.abort();
+    }, [fetchData]);
 
     const handleDelete = async () => {
         if (!deleteId) return;
         try {
             await deleteKegiatan(deleteId);
-            setData((prev) => prev.filter((k) => k.id !== deleteId));
+            fetchData();
         } catch {
             setError("Gagal menghapus kegiatan.");
         } finally {
@@ -54,15 +94,7 @@ const AdminKegiatan = () => {
         }
     };
 
-    const filtered = data.filter(
-        (k) =>
-            k.title.toLowerCase().includes(search.toLowerCase()) ||
-            k.kategori.nama.toLowerCase().includes(search.toLowerCase()) ||
-            k.location.toLowerCase().includes(search.toLowerCase()) ||
-            (k.departemen?.namaDepartemen ?? "").toLowerCase().includes(search.toLowerCase())
-    );
-
-    const totalPages = Math.ceil(filtered.length / perPage);
+    const totalPages = Math.ceil(totalItems / perPage);
 
     const handleSearchChange = (value: string) => {
         setSearch(value);
@@ -74,8 +106,6 @@ const AdminKegiatan = () => {
         setPage(1);
     };
 
-    const paginated = filtered.slice((page - 1) * perPage, page * perPage);
-
     const tabs: TabItem<TabType>[] = [
         { key: "kegiatan", label: "KEGIATAN" },
         { key: "kategori", label: "KATEGORI" },
@@ -85,7 +115,9 @@ const AdminKegiatan = () => {
         <section className="font-sans text-[#ffd700]">
             <div className="mb-8 border-b border-[#b8982a] pb-4">
                 <h1 className="text-[1.75rem] font-bold text-[#ffd700] m-0">Manajemen Kegiatan</h1>
-                <p className="text-neutral-400 mt-1 m-0 text-[0.9rem]">Kelola data kegiatan, kategori, dan speaker</p>
+                <p className="text-neutral-400 mt-1 m-0 text-[0.9rem]">
+                    Kelola data kegiatan, kategori, dan speaker
+                </p>
             </div>
 
             <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
@@ -117,11 +149,14 @@ const AdminKegiatan = () => {
                     )}
 
                     <KegiatanTable
-                        data={paginated}
+                        data={data}
                         loading={loading}
                         page={page}
                         perPage={perPage}
-                        onDeleteClick={(id) => { setDeleteId(id); setConfirmDelete(true); }}
+                        onDeleteClick={(id) => {
+                            setDeleteId(id);
+                            setConfirmDelete(true);
+                        }}
                     />
 
                     {!loading && (
@@ -129,7 +164,7 @@ const AdminKegiatan = () => {
                             page={page}
                             totalPages={totalPages}
                             perPage={perPage}
-                            totalItems={filtered.length}
+                            totalItems={totalItems}
                             onPageChange={setPage}
                             onPerPageChange={handlePerPageChange}
                         />
@@ -137,8 +172,13 @@ const AdminKegiatan = () => {
 
                     <ConfirmDeleteModal
                         open={confirmDelete}
-                        onCancel={() => { setConfirmDelete(false); setDeleteId(null); }}
+                        onCancel={() => {
+                            setConfirmDelete(false);
+                            setDeleteId(null);
+                        }}
                         onConfirm={handleDelete}
+                        title="Hapus Kegiatan"
+                        description="Yakin ingin menghapus kegiatan ini? Tindakan ini tidak bisa dibatalkan."
                     />
                 </>
             )}
